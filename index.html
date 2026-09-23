@@ -19,7 +19,7 @@
         <p class="text-sm text-slate-400 mt-1">Encuentra a tu pareja ideal</p>
       </div>
 
-      <!-- Selector de Pestañas con cambio directo mediante inline onclick -->
+      <!-- Selector de Pestañas -->
       <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl mb-6">
         <button id="tab-login" type="button" onclick="switchTab('login')" class="py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md">
           Iniciar Sesión
@@ -101,7 +101,6 @@
   </main>
 
   <script>
-    // Función global inmediata para alternar pestañas sin esperar eventos
     function switchTab(mode) {
       const tabLogin = document.getElementById('tab-login');
       const tabRegister = document.getElementById('tab-register');
@@ -123,16 +122,23 @@
       if (authStatus) authStatus.classList.add('hidden');
     }
 
-    // Inicialización de Supabase con comprobación segura
-    const SUPABASE_URL = 'https://stackblitzstartersm4ejeehz-mdto.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; 
+    // CREDENCIALES INTEGRADAS CORRECTAMENTE DE TU PROYECTO
+    const SUPABASE_URL = 'https://iyazkymfqyaidupqkkg.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5YXpreW1mcXlhaWR1cHFra2tnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MjAwOTMsImV4cCI6MjEwNTM5NjA5M30.VhSJePG2tmijiNNIh1xD0NfsUmyoFlQHj_n6cKNuU3w'; 
 
     let supabaseClient = null;
-    if (window.supabase && window.supabase.createClient) {
-      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    function initSupabase() {
+      if (window.supabase && window.supabase.createClient) {
+        supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        return true;
+      }
+      return false;
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      initSupabase();
+
       const authSection = document.getElementById('auth-section');
       const appSection = document.getElementById('app-section');
       const formLogin = document.getElementById('form-login');
@@ -158,7 +164,7 @@
         authStatus.className = `mt-4 text-xs text-center p-2 rounded-lg ${isError ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'}`;
       }
 
-      // Registro
+      // Registro de usuario
       formRegister.onsubmit = async (e) => {
         e.preventDefault();
         const name = document.getElementById('register-name').value;
@@ -167,8 +173,8 @@
 
         showStatus('Creando cuenta...', false);
 
-        if (!supabaseClient) {
-          showStatus('Error: No se pudo conectar a Supabase. Revisa tu conexión.', true);
+        if (!supabaseClient && !initSupabase()) {
+          showStatus('Error: No se pudo conectar con el servidor.', true);
           return;
         }
 
@@ -185,7 +191,7 @@
         }
       };
 
-      // Login
+      // Inicio de Sesión
       formLogin.onsubmit = async (e) => {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
@@ -193,8 +199,8 @@
 
         showStatus('Iniciando sesión...', false);
 
-        if (!supabaseClient) {
-          showStatus('Error: No se pudo conectar a Supabase.', true);
+        if (!supabaseClient && !initSupabase()) {
+          showStatus('Error: No se pudo conectar con el servidor.', true);
           return;
         }
 
@@ -210,7 +216,7 @@
         }
       };
 
-      // Logout
+      // Cerrar Sesión
       btnLogout.onclick = async () => {
         if (supabaseClient) await supabaseClient.auth.signOut();
         updateUI(null);
@@ -240,7 +246,7 @@
         });
       }
 
-      // Chat
+      // Chat y navegación
       if (btnChat) {
         btnChat.onclick = () => {
           profileCard.classList.add('hidden');
