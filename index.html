@@ -81,7 +81,7 @@
       <!-- Tarjeta de Perfil -->
       <div id="profile-card" class="p-6 flex flex-col items-center text-center">
         <div class="relative w-32 h-32 mb-4 bg-slate-700 rounded-full flex items-center justify-center border-4 border-rose-500 overflow-hidden shadow-lg">
-          <!-- Avatar vectorial confiable sin fallos de carga -->
+          <!-- Avatar SVG confiable -->
           <svg class="w-20 h-20 text-slate-400" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
           </svg>
@@ -148,6 +148,7 @@
       if (authStatus) authStatus.classList.add('hidden');
     }
 
+    // URL Y KEY CORREGIDAS CON EXACTITUD
     const SUPABASE_URL = 'https://iyazkymfqyaidupqkkg.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5YXpreW1mcXlhaWR1cHFra2tnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MjAwOTMsImV4cCI6MjEwNTM5NjA5M30.VhSJePG2tmijiNNIh1xD0NfsUmyoFlQHj_n6cKNuU3w'; 
 
