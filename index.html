@@ -1,49 +1,108 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dating PWA</title>
-  <link rel="manifest" href="manifest.json">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dating App PWA</title>
+  <link rel="manifest" href="/manifest.json" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex items-center justify-center p-4">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
 
-  <main class="w-full max-w-sm">
-    <!-- Tarjeta de Perfil -->
-    <div id="profile-card" class="bg-slate-800 rounded-2xl p-6 shadow-2xl border border-slate-700 text-center flex flex-col items-center">
-      <img id="user-avatar" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=500" alt="Avatar" class="w-32 h-32 rounded-full object-cover mb-4 border-4 border-rose-500 shadow-md">
-      <h2 id="user-name" class="text-2xl font-bold text-white mb-1">Cargando...</h2>
-      <p id="user-bio" class="text-slate-400 text-sm mb-6 px-2">Conectando con Supabase...</p>
-      
-      <div class="flex gap-3 w-full">
-        <button onclick="nextProfile()" class="flex-1 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 rounded-xl transition">Pasar</button>
-        <button onclick="startChat()" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white font-semibold py-3 rounded-xl shadow-lg shadow-rose-600/30 transition">Iniciar Chat</button>
+  <main class="w-full max-w-md bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-700">
+    
+    <!-- PANTALLA DE AUTENTICACIÓN -->
+    <section id="auth-section" class="p-6">
+      <div class="text-center mb-6">
+        <h1 class="text-2xl font-bold text-rose-500">DatingApp</h1>
+        <p class="text-sm text-slate-400 mt-1">Encuentra a tu pareja ideal</p>
       </div>
-    </div>
 
-    <!-- Tarjeta de Chat -->
-    <div id="chat-card" class="bg-slate-800 rounded-2xl p-4 shadow-2xl border border-slate-700 flex flex-col h-[500px] hidden">
-      <div class="flex items-center gap-3 pb-3 border-b border-slate-700">
-        <img id="chat-avatar" src="" class="w-10 h-10 rounded-full object-cover">
+      <!-- Selector de Pestañas -->
+      <div class="flex border-b border-slate-700 mb-6">
+        <button id="tab-login" class="flex-1 pb-2 text-center font-medium border-b-2 border-rose-500 text-rose-500 transition-colors">
+          Iniciar Sesión
+        </button>
+        <button id="tab-register" class="flex-1 pb-2 text-center font-medium text-slate-400 hover:text-slate-200 transition-colors">
+          Registrarse
+        </button>
+      </div>
+
+      <!-- Formulario Login -->
+      <form id="form-login" class="space-y-4">
         <div>
-          <h3 id="chat-name" class="font-bold text-white text-sm">Usuario</h3>
-          <span class="text-xs text-emerald-400 flex items-center gap-1">● En línea</span>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Correo electrónico</label>
+          <input type="email" id="login-email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="tu@email.com">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Contraseña</label>
+          <input type="password" id="login-password" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="••••••••">
+        </div>
+        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 rounded-lg transition-colors shadow-lg shadow-rose-500/20">
+          Entrar
+        </button>
+      </form>
+
+      <!-- Formulario Registro -->
+      <form id="form-register" class="space-y-4 hidden">
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre de usuario</label>
+          <input type="text" id="register-name" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="Tu Nombre">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Correo electrónico</label>
+          <input type="email" id="register-email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="tu@email.com">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Contraseña</label>
+          <input type="password" id="register-password" required minlength="6" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="Mínimo 6 caracteres">
+        </div>
+        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2 rounded-lg transition-colors shadow-lg shadow-rose-500/20">
+          Crear cuenta
+        </button>
+      </form>
+
+      <!-- Mensaje de Estado / Error -->
+      <div id="auth-status" class="mt-4 text-xs text-center hidden"></div>
+    </section>
+
+    <!-- PANTALLA PRINCIPAL DE LA APP -->
+    <section id="app-section" class="hidden">
+      <!-- Barra superior de sesión -->
+      <header class="p-3 bg-slate-900 border-b border-slate-700 flex justify-between items-center text-xs">
+        <span id="user-display" class="text-slate-300 font-medium truncate max-w-[200px]">Cargando...</span>
+        <button id="btn-logout" class="text-rose-400 hover:text-rose-300 font-semibold underline">Cerrar sesión</button>
+      </header>
+
+      <!-- Tarjeta de Perfil -->
+      <div id="profile-card" class="p-6 flex flex-col items-center">
+        <div class="relative w-36 h-36 mb-4">
+          <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf37ffde?w=400" class="w-full h-full rounded-full object-cover border-4 border-rose-500" alt="Avatar">
+          <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-800 rounded-full"></span>
+        </div>
+        <h2 id="profile-name" class="text-xl font-bold">Usuario</h2>
+        <p id="profile-bio" class="text-xs text-slate-400 text-center mt-1">Sin biografía disponible</p>
+
+        <div class="flex gap-4 w-full mt-6">
+          <button id="btn-pass" class="flex-1 bg-slate-700 hover:bg-slate-600 font-semibold py-2 rounded-xl transition-colors">Pasar</button>
+          <button id="btn-chat" class="flex-1 bg-rose-500 hover:bg-rose-600 font-semibold py-2 rounded-xl transition-colors shadow-lg shadow-rose-500/20">Iniciar Chat</button>
         </div>
       </div>
 
-      <div id="chat-messages" class="flex-1 overflow-y-auto my-3 p-2 flex flex-col gap-2">
-        <p class="text-xs text-slate-500 text-center">Sin mensajes aún...</p>
+      <!-- Pantalla de Chat -->
+      <div id="chat-card" class="p-4 hidden flex-col h-[480px]">
+        <div id="messages-container" class="flex-1 overflow-y-auto space-y-3 pr-1"></div>
+        <form id="chat-form" class="mt-3 flex gap-2">
+          <input type="text" id="chat-input" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-rose-500" placeholder="Escribe un mensaje..." required>
+          <button type="submit" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold px-4 py-2 rounded-lg text-sm transition-colors">Enviar</button>
+        </form>
+        <button id="btn-back" class="mt-2 text-xs text-slate-400 hover:text-slate-200 text-center">Volver a perfiles</button>
       </div>
+    </section>
 
-      <div class="flex gap-2 pt-2 border-t border-slate-700">
-        <input type="text" id="message-input" placeholder="Escribe un mensaje..." class="flex-1 bg-slate-900 border border-slate-700 text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-rose-500" onkeypress="if(event.key === 'Enter') sendMessage()">
-        <button onclick="sendMessage()" class="bg-rose-600 hover:bg-rose-500 text-white px-4 py-2 rounded-xl font-semibold text-sm transition">Enviar</button>
-      </div>
-      <button onclick="closeChat()" class="text-xs text-slate-400 hover:text-white mt-2 text-center w-full">Volver a perfiles</button>
-    </div>
   </main>
 
-  <script type="module" src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
