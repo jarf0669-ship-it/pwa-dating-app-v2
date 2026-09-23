@@ -12,7 +12,7 @@
 
   <main class="w-full max-w-md bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-700">
     
-    <!-- AUTENTICACIÓN -->
+    <!-- PANTALLA DE AUTENTICACIÓN -->
     <section id="auth-section" class="p-6">
       <div class="text-center mb-6">
         <h1 class="text-2xl font-bold text-rose-500">DatingApp</h1>
@@ -69,18 +69,58 @@
 
     <!-- PANTALLA PRINCIPAL DE LA APP -->
     <section id="app-section" class="hidden">
+      <!-- Encabezado con correo e indicación de estado -->
       <header class="p-3 bg-slate-900 border-b border-slate-700 flex justify-between items-center text-xs">
-        <span id="user-display" class="text-slate-300 font-medium truncate max-w-[200px]">Cargando...</span>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="user-display" class="text-slate-300 font-medium truncate max-w-[180px]">Cargando...</span>
+        </div>
         <button id="btn-logout" class="text-rose-400 hover:text-rose-300 font-semibold underline">Cerrar sesión</button>
       </header>
 
-      <div id="profile-card" class="p-6 flex flex-col items-center">
-        <div class="relative w-36 h-36 mb-4">
-          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf37ffde?w=400" class="w-full h-full rounded-full object-cover border-4 border-rose-500" alt="Avatar">
+      <!-- Tarjeta de Perfil -->
+      <div id="profile-card" class="p-6 flex flex-col items-center text-center">
+        <div class="relative w-32 h-32 mb-4 bg-slate-700 rounded-full flex items-center justify-center border-4 border-rose-500 overflow-hidden shadow-lg">
+          <!-- Avatar vectorial confiable sin fallos de carga -->
+          <svg class="w-20 h-20 text-slate-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+          </svg>
           <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-800 rounded-full"></span>
         </div>
-        <h2 class="text-xl font-bold">¡Bienvenido!</h2>
-        <p class="text-xs text-slate-400 text-center mt-1">Has iniciado sesión correctamente.</p>
+
+        <h2 id="profile-title" class="text-xl font-bold">¡Bienvenido!</h2>
+        <p class="text-xs text-slate-400 mt-1">Has iniciado sesión correctamente.</p>
+
+        <!-- Botones de Acción -->
+        <div class="flex gap-3 w-full mt-6">
+          <button id="btn-pass" onclick="nextProfile()" class="flex-1 bg-slate-700 hover:bg-slate-600 font-semibold py-2.5 rounded-xl text-xs transition-colors">
+            ❌ Pasar
+          </button>
+          <button id="btn-chat" onclick="toggleChat(true)" class="flex-1 bg-rose-500 hover:bg-rose-600 font-semibold py-2.5 rounded-xl text-xs transition-colors shadow-lg shadow-rose-500/20">
+            💬 Iniciar Chat
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel de Chat -->
+      <div id="chat-card" class="p-4 hidden flex-col h-[400px]">
+        <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-700">
+          <h3 class="text-xs font-bold text-rose-400">Chat con Match</h3>
+          <button onclick="toggleChat(false)" class="text-xs text-slate-400 hover:text-slate-200">✕ Cerrar</button>
+        </div>
+
+        <div id="messages-container" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs">
+          <div class="bg-slate-700/60 p-2 rounded-lg max-w-[80%]">
+            ¡Hola! ¿Cómo estás?
+          </div>
+        </div>
+
+        <form id="chat-form" onsubmit="sendMessage(event)" class="mt-3 flex gap-2">
+          <input type="text" id="chat-input" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-rose-500" placeholder="Escribe un mensaje..." required>
+          <button type="submit" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold px-3 py-2 rounded-lg text-xs transition-colors">
+            Enviar
+          </button>
+        </form>
       </div>
     </section>
 
@@ -108,8 +148,7 @@
       if (authStatus) authStatus.classList.add('hidden');
     }
 
-    // URL Y CLAVE ALINEADAS CORRECTAMENTE
-    const SUPABASE_URL = 'https://iyazkymfqyaidupqkkkg.supabase.co';
+    const SUPABASE_URL = 'https://iyazkymfqyaidupqkkg.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5YXpreW1mcXlhaWR1cHFra2tnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MjAwOTMsImV4cCI6MjEwNTM5NjA5M30.VhSJePG2tmijiNNIh1xD0NfsUmyoFlQHj_n6cKNuU3w'; 
 
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
@@ -157,7 +196,7 @@
             }, 1000);
           }
         } catch (err) {
-          showStatus('❌ Fallo de red. Verifica la conexión.', true);
+          showStatus('❌ Error de red.', true);
         }
       };
 
@@ -200,6 +239,41 @@
         if (session) updateUI(session.user);
       });
     });
+
+    function toggleChat(open) {
+      const profileCard = document.getElementById('profile-card');
+      const chatCard = document.getElementById('chat-card');
+      if (open) {
+        profileCard.classList.add('hidden');
+        chatCard.classList.remove('hidden');
+        chatCard.classList.add('flex');
+      } else {
+        chatCard.classList.add('hidden');
+        chatCard.classList.remove('flex');
+        profileCard.classList.remove('hidden');
+      }
+    }
+
+    function nextProfile() {
+      const titles = ["María, 24", "Sofía, 26", "Carlos, 28", "Laura, 22"];
+      const randomTitle = titles[Math.floor(Math.random() * titles.length)];
+      document.getElementById('profile-title').textContent = randomTitle;
+    }
+
+    function sendMessage(e) {
+      e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const container = document.getElementById('messages-container');
+      if (!input.value.trim()) return;
+
+      const userMsg = document.createElement('div');
+      userMsg.className = 'bg-rose-500/80 text-white p-2 rounded-lg max-w-[80%] ml-auto text-right';
+      userMsg.textContent = input.value;
+      container.appendChild(userMsg);
+
+      input.value = '';
+      container.scrollTop = container.scrollHeight;
+    }
   </script>
 </body>
 </html>
