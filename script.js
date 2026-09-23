@@ -1,196 +1,205 @@
 // Configuración de Supabase
 const SUPABASE_URL = 'https://stackblitzstartersm4ejeehz-mdto.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; // Asegúrate de pegar tu clave completa aquí si es necesario
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; 
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-// Elementos DOM - Autenticación
-const authSection = document.getElementById('auth-section');
-const appSection = document.getElementById('app-section');
-const tabLogin = document.getElementById('tab-login');
-const tabRegister = document.getElementById('tab-register');
-const formLogin = document.getElementById('form-login');
-const formRegister = document.getElementById('form-register');
-const authStatus = document.getElementById('auth-status');
-const userDisplay = document.getElementById('user-display');
-const btnLogout = document.getElementById('btn-logout');
+// Función ejecutada cuando la ventana carga completamente
+window.onload = () => {
+  const authSection = document.getElementById('auth-section');
+  const appSection = document.getElementById('app-section');
+  const tabLogin = document.getElementById('tab-login');
+  const tabRegister = document.getElementById('tab-register');
+  const formLogin = document.getElementById('form-login');
+  const formRegister = document.getElementById('form-register');
+  const authStatus = document.getElementById('auth-status');
+  const userDisplay = document.getElementById('user-display');
+  const btnLogout = document.getElementById('btn-logout');
 
-// Elementos DOM - Chat y Navegación
-const profileCard = document.getElementById('profile-card');
-const chatCard = document.getElementById('chat-card');
-const btnChat = document.getElementById('btn-chat');
-const btnBack = document.getElementById('btn-back');
-const chatForm = document.getElementById('chat-form');
-const chatInput = document.getElementById('chat-input');
-const messagesContainer = document.getElementById('messages-container');
+  const profileCard = document.getElementById('profile-card');
+  const chatCard = document.getElementById('chat-card');
+  const btnChat = document.getElementById('btn-chat');
+  const btnBack = document.getElementById('btn-back');
+  const chatForm = document.getElementById('chat-form');
+  const chatInput = document.getElementById('chat-input');
+  const messagesContainer = document.getElementById('messages-container');
 
-let currentUser = null;
+  let currentUser = null;
 
-// --- NAVEGACIÓN ENTRE PESTAÑAS LOGIN / REGISTRO ---
-tabLogin.addEventListener('click', () => {
-  tabLogin.className = "flex-1 pb-2 text-center font-medium border-b-2 border-rose-500 text-rose-500 transition-colors";
-  tabRegister.className = "flex-1 pb-2 text-center font-medium text-slate-400 hover:text-slate-200 transition-colors";
-  formLogin.classList.remove('hidden');
-  formRegister.classList.add('hidden');
-  authStatus.classList.add('hidden');
-});
+  // Lógica directa para alternar pestañas
+  function setTab(activeTab) {
+    if (activeTab === 'login') {
+      tabLogin.style.backgroundColor = '#f43f5e'; // rojo rose-500
+      tabLogin.style.color = '#ffffff';
+      tabRegister.style.backgroundColor = 'transparent';
+      tabRegister.style.color = '#94a3b8';
 
-tabRegister.addEventListener('click', () => {
-  tabRegister.className = "flex-1 pb-2 text-center font-medium border-b-2 border-rose-500 text-rose-500 transition-colors";
-  tabLogin.className = "flex-1 pb-2 text-center font-medium text-slate-400 hover:text-slate-200 transition-colors";
-  formRegister.classList.remove('hidden');
-  formLogin.classList.add('hidden');
-  authStatus.classList.add('hidden');
-});
+      formLogin.classList.remove('hidden');
+      formRegister.classList.add('hidden');
+    } else {
+      tabRegister.style.backgroundColor = '#f43f5e'; // rojo rose-500
+      tabRegister.style.color = '#ffffff';
+      tabLogin.style.backgroundColor = 'transparent';
+      tabLogin.style.color = '#94a3b8';
 
-function showStatus(message, isError = true) {
-  authStatus.textContent = message;
-  authStatus.className = `mt-4 text-xs text-center ${isError ? 'text-rose-400' : 'text-emerald-400'}`;
-  authStatus.classList.remove('hidden');
-}
-
-// --- LOGICA SUPABASE AUTH ---
-
-// Registro
-formRegister.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const name = document.getElementById('register-name').value;
-  const email = document.getElementById('register-email').value;
-  const password = document.getElementById('register-password').value;
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: { data: { display_name: name } }
-  });
-
-  if (error) {
-    showStatus(error.message, true);
-  } else {
-    showStatus('¡Cuenta creada con éxito! Ya puedes iniciar sesión.', false);
-  }
-});
-
-// Login
-formLogin.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = document.getElementById('login-email').value;
-  const password = document.getElementById('login-password').value;
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    showStatus('Error al entrar: ' + error.message, true);
-  } else {
-    updateUI(data.user);
-  }
-});
-
-// Logout
-btnLogout.addEventListener('click', async () => {
-  await supabase.auth.signOut();
-  updateUI(null);
-});
-
-// Control de la Interfaz según la Sesión
-function updateUI(user) {
-  currentUser = user;
-  if (user) {
-    authSection.classList.add('hidden');
-    appSection.classList.remove('hidden');
-    userDisplay.textContent = user.email;
-    loadMessages();
-  } else {
-    authSection.classList.remove('hidden');
-    appSection.classList.add('hidden');
-    userDisplay.textContent = '';
-  }
-}
-
-// Persistencia del estado de sesión
-supabase.auth.onAuthStateChange((event, session) => {
-  if (session) {
-    updateUI(session.user);
-  } else {
-    updateUI(null);
-  }
-});
-
-// --- FUNCIONALIDAD DE CHAT Y PERFIL ---
-btnChat.addEventListener('click', () => {
-  profileCard.classList.add('hidden');
-  chatCard.classList.remove('hidden');
-  chatCard.classList.add('flex');
-});
-
-btnBack.addEventListener('click', () => {
-  chatCard.classList.add('hidden');
-  chatCard.classList.remove('flex');
-  profileCard.classList.remove('hidden');
-});
-
-// Cargar Mensajes desde Supabase
-async function loadMessages() {
-  const { data, error } = await supabase
-    .from('messages')
-    .select('*')
-    .order('created_at', { ascending: true });
-
-  if (error) {
-    console.error('Error cargando mensajes:', error);
-    return;
+      formRegister.classList.remove('hidden');
+      formLogin.classList.add('hidden');
+    }
+    if (authStatus) authStatus.classList.add('hidden');
   }
 
-  messagesContainer.innerHTML = '';
-  data.forEach(msg => appendMessage(msg));
-  messagesContainer.scrollTop = messagesContainer.scrollHeight;
-}
+  tabLogin.onclick = () => setTab('login');
+  tabRegister.onclick = () => setTab('register');
 
-// Renderizar un mensaje en la UI
-function appendMessage(msg) {
-  const isMe = currentUser && (msg.sender_id === currentUser.id || msg.sender === currentUser.email);
-  const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  function showStatus(message, isError = true) {
+    if (!authStatus) return;
+    authStatus.textContent = message;
+    authStatus.style.display = 'block';
+    authStatus.style.backgroundColor = isError ? 'rgba(244, 63, 94, 0.2)' : 'rgba(16, 185, 129, 0.2)';
+    authStatus.style.color = isError ? '#f87171' : '#34d399';
+  }
 
-  const msgHTML = `
-    <div class="flex flex-col ${isMe ? 'items-end' : 'items-start'}">
-      <div class="${isMe ? 'bg-rose-500 text-white' : 'bg-slate-700 text-slate-100'} px-3 py-2 rounded-xl max-w-[80%] text-sm">
-        ${msg.text || msg.content}
-      </div>
-      <span class="text-[10px] text-slate-500 mt-0.5 px-1">${time}</span>
-    </div>
-  `;
-  messagesContainer.insertAdjacentHTML('beforeend', msgHTML);
-}
+  // Registro
+  formRegister.onsubmit = async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('register-name').value;
+    const email = document.getElementById('register-email').value;
+    const password = document.getElementById('register-password').value;
 
-// Enviar Mensaje
-chatForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const text = chatInput.value.trim();
-  if (!text || !currentUser) return;
+    showStatus('Creando cuenta...', false);
 
-  chatInput.value = '';
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: { data: { display_name: name } }
+    });
 
-  const newMessage = {
-    text: text,
-    sender: currentUser.email,
-    sender_id: currentUser.id
+    if (error) {
+      showStatus(error.message, true);
+    } else {
+      showStatus('¡Cuenta creada! Inicia sesión ahora.', false);
+    }
   };
 
-  const { data, error } = await supabase.from('messages').insert([newMessage]);
+  // Login
+  formLogin.onsubmit = async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value;
+    const password = document.getElementById('login-password').value;
 
-  if (error) {
-    console.error('Error al enviar mensaje:', error);
+    showStatus('Iniciando sesión...', false);
+
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) {
+      showStatus('Error al entrar: ' + error.message, true);
+    } else {
+      updateUI(data.user);
+    }
+  };
+
+  // Logout
+  btnLogout.onclick = async () => {
+    await supabase.auth.signOut();
+    updateUI(null);
+  };
+
+  function updateUI(user) {
+    currentUser = user;
+    if (user) {
+      authSection.classList.add('hidden');
+      appSection.classList.remove('hidden');
+      userDisplay.textContent = user.email;
+      loadMessages();
+    } else {
+      authSection.classList.remove('hidden');
+      appSection.classList.add('hidden');
+      userDisplay.textContent = '';
+    }
   }
-});
 
-// Escuchar Chat en Tiempo Real
-supabase
-  .channel('public:messages')
-  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-    appendMessage(payload.new);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-  })
-  .subscribe();
+  supabase.auth.onAuthStateChange((event, session) => {
+    if (session) {
+      updateUI(session.user);
+    } else {
+      updateUI(null);
+    }
+  });
+
+  // Chat
+  if (btnChat) {
+    btnChat.onclick = () => {
+      profileCard.classList.add('hidden');
+      chatCard.classList.remove('hidden');
+      chatCard.classList.add('flex');
+    };
+  }
+
+  if (btnBack) {
+    btnBack.onclick = () => {
+      chatCard.classList.add('hidden');
+      chatCard.classList.remove('flex');
+      profileCard.classList.remove('hidden');
+    };
+  }
+
+  async function loadMessages() {
+    const { data, error } = await supabase
+      .from('messages')
+      .select('*')
+      .order('created_at', { ascending: true });
+
+    if (error || !data) return;
+
+    if (messagesContainer) {
+      messagesContainer.innerHTML = '';
+      data.forEach(msg => appendMessage(msg));
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+  }
+
+  function appendMessage(msg) {
+    if (!messagesContainer) return;
+    const isMe = currentUser && (msg.sender_id === currentUser.id || msg.sender === currentUser.email);
+    const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    const msgHTML = `
+      <div class="flex flex-col ${isMe ? 'items-end' : 'items-start'}">
+        <div class="${isMe ? 'bg-rose-500 text-white' : 'bg-slate-700 text-slate-100'} px-3 py-2 rounded-xl max-w-[80%] text-sm">
+          ${msg.text || msg.content}
+        </div>
+        <span class="text-[10px] text-slate-500 mt-0.5 px-1">${time}</span>
+      </div>
+    `;
+    messagesContainer.insertAdjacentHTML('beforeend', msgHTML);
+  }
+
+  if (chatForm) {
+    chatForm.onsubmit = async (e) => {
+      e.preventDefault();
+      const text = chatInput.value.trim();
+      if (!text || !currentUser) return;
+
+      chatInput.value = '';
+
+      const newMessage = {
+        text: text,
+        sender: currentUser.email,
+        sender_id: currentUser.id
+      };
+
+      await supabase.from('messages').insert([newMessage]);
+    };
+  }
+
+  supabase
+    .channel('public:messages')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+      appendMessage(payload.new);
+      if (messagesContainer) messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    })
+    .subscribe();
+};
