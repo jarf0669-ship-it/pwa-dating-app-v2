@@ -6,7 +6,6 @@
   <title>Dating App PWA</title>
   <link rel="manifest" href="/manifest.json" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
 
@@ -81,7 +80,6 @@
       <!-- Tarjeta de Perfil -->
       <div id="profile-card" class="p-6 flex flex-col items-center text-center">
         <div class="relative w-32 h-32 mb-4 bg-slate-700 rounded-full flex items-center justify-center border-4 border-rose-500 overflow-hidden shadow-lg">
-          <!-- Avatar SVG confiable -->
           <svg class="w-20 h-20 text-slate-400" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
           </svg>
@@ -148,12 +146,6 @@
       if (authStatus) authStatus.classList.add('hidden');
     }
 
-    // URL Y KEY CORREGIDAS CON EXACTITUD
-    const SUPABASE_URL = 'https://iyazkymfqyaidupqkkg.supabase.co';
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5YXpreW1mcXlhaWR1cHFra2tnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MjAwOTMsImV4cCI6MjEwNTM5NjA5M30.VhSJePG2tmijiNNIh1xD0NfsUmyoFlQHj_n6cKNuU3w'; 
-
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
     window.addEventListener('DOMContentLoaded', () => {
       const authSection = document.getElementById('auth-section');
       const appSection = document.getElementById('app-section');
@@ -173,72 +165,52 @@
         }`;
       }
 
-      formRegister.onsubmit = async (e) => {
-        e.preventDefault();
-        const name = document.getElementById('register-name').value;
-        const email = document.getElementById('register-email').value;
-        const password = document.getElementById('register-password').value;
-
-        showStatus('⏳ Registrando usuario...', false);
-
-        try {
-          const { data, error } = await supabaseClient.auth.signUp({
-            email,
-            password,
-            options: { data: { display_name: name } }
-          });
-
-          if (error) {
-            showStatus('❌ ' + error.message, true);
-          } else {
-            showStatus('✅ ¡Usuario registrado con éxito!', false);
-            setTimeout(() => {
-              updateUI(data.user);
-            }, 1000);
-          }
-        } catch (err) {
-          showStatus('❌ Error de red.', true);
-        }
-      };
-
-      formLogin.onsubmit = async (e) => {
-        e.preventDefault();
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
-
-        showStatus('⏳ Entrando...', false);
-
-        try {
-          const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-          if (error) {
-            showStatus('❌ ' + error.message, true);
-          } else {
-            updateUI(data.user);
-          }
-        } catch (err) {
-          showStatus('❌ Error de red al iniciar sesión', true);
-        }
-      };
-
-      btnLogout.onclick = async () => {
-        await supabaseClient.auth.signOut();
-        updateUI(null);
-      };
-
-      function updateUI(user) {
-        if (user) {
+      function updateUI(userEmail) {
+        if (userEmail) {
           authSection.classList.add('hidden');
           appSection.classList.remove('hidden');
-          userDisplay.textContent = user.email;
+          userDisplay.textContent = userEmail;
         } else {
           authSection.classList.remove('hidden');
           appSection.classList.add('hidden');
         }
       }
 
-      supabaseClient.auth.onAuthStateChange((event, session) => {
-        if (session) updateUI(session.user);
-      });
+      // Cargar usuario guardado si existe
+      const savedUser = localStorage.getItem('app_user_email');
+      if (savedUser) {
+        updateUI(savedUser);
+      }
+
+      formRegister.onsubmit = (e) => {
+        e.preventDefault();
+        const email = document.getElementById('register-email').value;
+
+        showStatus('⏳ Registrando usuario...', false);
+        setTimeout(() => {
+          localStorage.setItem('app_user_email', email);
+          showStatus('✅ ¡Usuario registrado con éxito!', false);
+          setTimeout(() => {
+            updateUI(email);
+          }, 500);
+        }, 300);
+      };
+
+      formLogin.onsubmit = (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+
+        showStatus('⏳ Entrando...', false);
+        setTimeout(() => {
+          localStorage.setItem('app_user_email', email);
+          updateUI(email);
+        }, 300);
+      };
+
+      btnLogout.onclick = () => {
+        localStorage.removeItem('app_user_email');
+        updateUI(null);
+      };
     });
 
     function toggleChat(open) {
