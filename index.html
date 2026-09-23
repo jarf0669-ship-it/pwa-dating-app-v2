@@ -63,8 +63,8 @@
         </button>
       </form>
 
-      <!-- Mensaje de Estado -->
-      <div id="auth-status" class="mt-4 text-xs text-center hidden p-2 rounded-lg"></div>
+      <!-- BANNER DE CONFIRMACIÓN VISUAL (ÉXITO O ERROR) -->
+      <div id="auth-status" class="mt-4 text-sm font-semibold text-center hidden p-3 rounded-xl transition-all"></div>
     </section>
 
     <!-- PANTALLA PRINCIPAL DE LA APP -->
@@ -79,8 +79,8 @@
           <img id="profile-img" src="https://images.unsplash.com/photo-1535713875002-d1d0cf37ffde?w=400" class="w-full h-full rounded-full object-cover border-4 border-rose-500" alt="Avatar">
           <span class="absolute bottom-1 right-1 w-4 h-4 bg-emerald-500 border-2 border-slate-800 rounded-full"></span>
         </div>
-        <h2 id="profile-name" class="text-xl font-bold">Usuario</h2>
-        <p id="profile-bio" class="text-xs text-slate-400 text-center mt-1">Sin biografía disponible</p>
+        <h2 id="profile-name" class="text-xl font-bold">Usuario Registrado</h2>
+        <p id="profile-bio" class="text-xs text-slate-400 text-center mt-1">¡Bienvenido a DatingApp!</p>
 
         <div class="flex gap-4 w-full mt-6">
           <button id="btn-pass" class="flex-1 bg-slate-700 hover:bg-slate-600 font-semibold py-2 rounded-xl transition-colors">Pasar</button>
@@ -122,7 +122,6 @@
       if (authStatus) authStatus.classList.add('hidden');
     }
 
-    // CREDENCIALES INTEGRADAS CORRECTAMENTE DE TU PROYECTO
     const SUPABASE_URL = 'https://iyazkymfqyaidupqkkg.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5YXpreW1mcXlhaWR1cHFra2tnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk4MjAwOTMsImV4cCI6MjEwNTM5NjA5M30.VhSJePG2tmijiNNIh1xD0NfsUmyoFlQHj_n6cKNuU3w'; 
 
@@ -161,7 +160,11 @@
         if (!authStatus) return;
         authStatus.textContent = message;
         authStatus.classList.remove('hidden');
-        authStatus.className = `mt-4 text-xs text-center p-2 rounded-lg ${isError ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'}`;
+        authStatus.className = `mt-4 text-xs font-bold text-center p-3 rounded-xl border ${
+          isError 
+            ? 'bg-rose-500/20 text-rose-300 border-rose-500/30' 
+            : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30 shadow-lg shadow-emerald-500/10'
+        }`;
       }
 
       // Registro de usuario
@@ -171,23 +174,35 @@
         const email = document.getElementById('register-email').value;
         const password = document.getElementById('register-password').value;
 
-        showStatus('Creando cuenta...', false);
+        showStatus('⏳ Creando cuenta...', false);
 
         if (!supabaseClient && !initSupabase()) {
-          showStatus('Error: No se pudo conectar con el servidor.', true);
+          showStatus('❌ Error al conectar con Supabase', true);
           return;
         }
 
-        const { data, error } = await supabaseClient.auth.signUp({
-          email,
-          password,
-          options: { data: { display_name: name } }
-        });
+        try {
+          const { data, error } = await supabaseClient.auth.signUp({
+            email,
+            password,
+            options: { data: { display_name: name } }
+          });
 
-        if (error) {
-          showStatus(error.message, true);
-        } else {
-          showStatus('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.', false);
+          if (error) {
+            showStatus('❌ ' + error.message, true);
+          } else {
+            showStatus('✅ ¡REGISTRO EXITOSO! Redirigiendo...', false);
+            setTimeout(() => {
+              if (data.user) {
+                updateUI(data.user);
+              } else {
+                switchTab('login');
+                showStatus('✅ Cuenta creada. Inicia sesión con tus datos.', false);
+              }
+            }, 1500);
+          }
+        } catch (err) {
+          showStatus('❌ Error de conexión (Failed to fetch). Verifica tu red o Supabase.', true);
         }
       };
 
@@ -197,22 +212,26 @@
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
 
-        showStatus('Iniciando sesión...', false);
+        showStatus('⏳ Iniciando sesión...', false);
 
         if (!supabaseClient && !initSupabase()) {
-          showStatus('Error: No se pudo conectar con el servidor.', true);
+          showStatus('❌ Error al conectar con Supabase', true);
           return;
         }
 
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-          email,
-          password
-        });
+        try {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+          });
 
-        if (error) {
-          showStatus('Error al entrar: ' + error.message, true);
-        } else {
-          updateUI(data.user);
+          if (error) {
+            showStatus('❌ Error al entrar: ' + error.message, true);
+          } else {
+            updateUI(data.user);
+          }
+        } catch (err) {
+          showStatus('❌ Error de conexión (Failed to fetch).', true);
         }
       };
 
@@ -228,7 +247,6 @@
           authSection.classList.add('hidden');
           appSection.classList.remove('hidden');
           userDisplay.textContent = user.email;
-          loadMessages();
         } else {
           authSection.classList.remove('hidden');
           appSection.classList.add('hidden');
@@ -246,7 +264,7 @@
         });
       }
 
-      // Chat y navegación
+      // Chat
       if (btnChat) {
         btnChat.onclick = () => {
           profileCard.classList.add('hidden');
@@ -261,66 +279,6 @@
           chatCard.classList.remove('flex');
           profileCard.classList.remove('hidden');
         };
-      }
-
-      async function loadMessages() {
-        if (!supabaseClient) return;
-        const { data, error } = await supabaseClient
-          .from('messages')
-          .select('*')
-          .order('created_at', { ascending: true });
-
-        if (error || !data) return;
-
-        if (messagesContainer) {
-          messagesContainer.innerHTML = '';
-          data.forEach(msg => appendMessage(msg));
-          messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        }
-      }
-
-      function appendMessage(msg) {
-        if (!messagesContainer) return;
-        const isMe = currentUser && (msg.sender_id === currentUser.id || msg.sender === currentUser.email);
-        const time = new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-        const msgHTML = `
-          <div class="flex flex-col ${isMe ? 'items-end' : 'items-start'}">
-            <div class="${isMe ? 'bg-rose-500 text-white' : 'bg-slate-700 text-slate-100'} px-3 py-2 rounded-xl max-w-[80%] text-sm">
-              ${msg.text || msg.content}
-            </div>
-            <span class="text-[10px] text-slate-500 mt-0.5 px-1">${time}</span>
-          </div>
-        `;
-        messagesContainer.insertAdjacentHTML('beforeend', msgHTML);
-      }
-
-      if (chatForm) {
-        chatForm.onsubmit = async (e) => {
-          e.preventDefault();
-          const text = chatInput.value.trim();
-          if (!text || !currentUser || !supabaseClient) return;
-
-          chatInput.value = '';
-
-          const newMessage = {
-            text: text,
-            sender: currentUser.email,
-            sender_id: currentUser.id
-          };
-
-          await supabaseClient.from('messages').insert([newMessage]);
-        };
-      }
-
-      if (supabaseClient) {
-        supabaseClient
-          .channel('public:messages')
-          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-            appendMessage(payload.new);
-            if (messagesContainer) messagesContainer.scrollTop = messagesContainer.scrollHeight;
-          })
-          .subscribe();
       }
     });
   </script>
