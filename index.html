@@ -19,7 +19,7 @@
       </div>
 
       <!-- Pestañas -->
-      <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl mb-6">
+      <div id="auth-tabs" class="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl mb-6">
         <button id="tab-login" type="button" onclick="switchTab('login')" class="py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200">
           Iniciar Sesión
         </button>
@@ -28,14 +28,17 @@
         </button>
       </div>
 
-      <!-- Formulario Login -->
+      <!-- Formulario Login (Punto 1.1) -->
       <form id="form-login" class="space-y-4 hidden">
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Correo electrónico</label>
           <input type="email" id="login-email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="tu@email.com">
         </div>
         <div>
-          <label class="block text-xs font-semibold text-slate-400 mb-1">Contraseña</label>
+          <div class="flex justify-between items-center mb-1">
+            <label class="block text-xs font-semibold text-slate-400">Contraseña</label>
+            <button type="button" onclick="switchTab('forgot')" class="text-[11px] text-rose-400 hover:underline">¿Olvidaste tu contraseña?</button>
+          </div>
           <input type="password" id="login-password" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="••••••••">
         </div>
         <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2.5 rounded-lg transition-colors">
@@ -43,7 +46,7 @@
         </button>
       </form>
 
-      <!-- Formulario Registro -->
+      <!-- Formulario Registro (Punto 1.2) -->
       <form id="form-register" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre de usuario</label>
@@ -62,13 +65,31 @@
         </button>
       </form>
 
+      <!-- Formulario Recuperación de Contraseña (Punto 1.3) -->
+      <form id="form-forgot" class="space-y-4 hidden" onsubmit="handleForgotPassword(event)">
+        <div class="text-center mb-2">
+          <h2 class="text-sm font-bold text-slate-200">Recuperar Contraseña</h2>
+          <p class="text-[11px] text-slate-400 mt-0.5">Escribe tu correo para enviarte un enlace de recuperación.</p>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-1">Correo registrado</label>
+          <input type="email" id="forgot-email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="tu@email.com">
+        </div>
+        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2.5 rounded-lg transition-colors">
+          Enviar enlace de recuperación
+        </button>
+        <button type="button" onclick="switchTab('login')" class="w-full text-center text-xs text-slate-400 hover:text-slate-200 mt-2 block">
+          ← Volver a Iniciar Sesión
+        </button>
+      </form>
+
       <!-- Estado -->
       <div id="auth-status" class="mt-4 text-xs font-bold text-center hidden p-3 rounded-xl border"></div>
     </section>
 
     <!-- PANTALLA PRINCIPAL DE LA APP -->
     <section id="app-section" class="hidden">
-      <!-- Encabezado con Botón de Ajustes (Punto 3.1) -->
+      <!-- Encabezado con Botón de Ajustes (Bloque 3) -->
       <header class="p-3 bg-slate-900 border-b border-slate-700 flex justify-between items-center text-xs">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -113,7 +134,7 @@
         </div>
       </div>
 
-      <!-- VISTA DE AJUSTES DEL PERFIL (Puntos 3.1, 3.2, 3.3) -->
+      <!-- VISTA DE AJUSTES DEL PERFIL (Bloque 3) -->
       <div id="settings-card" class="p-5 hidden flex-col space-y-4 max-h-[500px] overflow-y-auto">
         <div class="flex justify-between items-center pb-2 border-b border-slate-700">
           <h3 class="text-sm font-bold text-rose-400 flex items-center gap-2">⚙️ Mi Perfil de Usuario</h3>
@@ -246,20 +267,45 @@
       const tabRegister = document.getElementById('tab-register');
       const formLogin = document.getElementById('form-login');
       const formRegister = document.getElementById('form-register');
+      const formForgot = document.getElementById('form-forgot');
+      const authTabs = document.getElementById('auth-tabs');
       const authStatus = document.getElementById('auth-status');
 
       if (mode === 'register') {
+        authTabs.classList.remove('hidden');
         tabRegister.className = "py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md";
         tabLogin.className = "py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
         formRegister.classList.remove('hidden');
         formLogin.classList.add('hidden');
-      } else {
+        formForgot.classList.add('hidden');
+      } else if (mode === 'login') {
+        authTabs.classList.remove('hidden');
         tabLogin.className = "py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md";
         tabRegister.className = "py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
         formLogin.classList.remove('hidden');
         formRegister.classList.add('hidden');
+        formForgot.classList.add('hidden');
+      } else if (mode === 'forgot') {
+        authTabs.classList.add('hidden');
+        formLogin.classList.add('hidden');
+        formRegister.classList.add('hidden');
+        formForgot.classList.remove('hidden');
       }
       if (authStatus) authStatus.classList.add('hidden');
+    }
+
+    function handleForgotPassword(e) {
+      e.preventDefault();
+      const email = document.getElementById('forgot-email').value;
+      const authStatus = document.getElementById('auth-status');
+
+      authStatus.textContent = '⏳ Enviando enlace de recuperación...';
+      authStatus.classList.remove('hidden');
+      authStatus.className = 'mt-4 text-xs font-bold text-center p-3 rounded-xl border bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
+
+      setTimeout(() => {
+        authStatus.textContent = `✅ Te hemos enviado un enlace de recuperación a ${email}. Revisa tu bandeja de entrada.`;
+      }, 600);
     }
 
     function renderProfile() {
