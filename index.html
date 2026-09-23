@@ -6,14 +6,12 @@
   <title>Dating App PWA</title>
   <link rel="manifest" href="/manifest.json" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Cliente oficial de Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
 
   <main class="w-full max-w-md bg-slate-800 rounded-2xl shadow-xl overflow-hidden border border-slate-700 relative">
     
-    <!-- PANTALLA DE AUTENTICACIÓN -->
+    <!-- PANTALLA DE AUTENTICACIÓN (Bloque 1) -->
     <section id="auth-section" class="p-6">
       <div class="text-center mb-6">
         <h1 class="text-2xl font-bold text-rose-500">DatingApp</h1>
@@ -70,37 +68,33 @@
 
     <!-- PANTALLA PRINCIPAL DE LA APP -->
     <section id="app-section" class="hidden">
-      <!-- Encabezado -->
+      <!-- Encabezado con Botón de Ajustes (Punto 3.1) -->
       <header class="p-3 bg-slate-900 border-b border-slate-700 flex justify-between items-center text-xs">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span id="user-display" class="text-slate-300 font-medium truncate max-w-[180px]">Cargando...</span>
+          <span id="user-display" class="text-slate-300 font-medium truncate max-w-[140px]">Cargando...</span>
         </div>
-        <button id="btn-logout" class="text-rose-400 hover:text-rose-300 font-semibold underline">Cerrar sesión</button>
+        <div class="flex items-center gap-3">
+          <button onclick="toggleSettings(true)" class="text-slate-300 hover:text-white font-semibold flex items-center gap-1 bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors">
+            ⚙️ <span class="hidden sm:inline">Ajustes</span>
+          </button>
+          <button id="btn-logout" class="text-rose-400 hover:text-rose-300 font-semibold underline">Salir</button>
+        </div>
       </header>
 
-      <!-- Tarjeta de Perfil con Galería -->
+      <!-- Tarjeta de Perfiles para Deslizar (Bloque 2) -->
       <div id="profile-card" class="p-4 flex flex-col items-center">
-        
         <!-- Contenedor de la Imagen y Galería -->
         <div class="relative w-full h-80 rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900 group select-none">
-          
-          <!-- Imagen de Perfil -->
           <img id="profile-img" src="" alt="Foto de perfil" class="w-full h-full object-cover transition-all duration-300">
-
-          <!-- Indicadores de Galería (Barritas superiores) -->
           <div id="gallery-bars" class="absolute top-2 left-2 right-2 flex gap-1 z-10"></div>
-
-          <!-- Capa de degradado -->
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-black/20 pointer-events-none"></div>
 
-          <!-- Datos en la parte inferior de la foto -->
           <div class="absolute bottom-3 left-4 right-4 text-left pointer-events-none">
             <h2 id="profile-title" class="text-2xl font-black text-white drop-shadow-md">Cargando...</h2>
             <p id="profile-bio" class="text-xs text-slate-300 mt-1 line-clamp-2 drop-shadow">...</p>
           </div>
 
-          <!-- Zonas clicables para navegar la galería -->
           <div onclick="prevPhoto()" class="absolute left-0 top-0 bottom-0 w-1/2 cursor-pointer z-0"></div>
           <div onclick="nextPhoto()" class="absolute right-0 top-0 bottom-0 w-1/2 cursor-pointer z-0"></div>
         </div>
@@ -117,6 +111,49 @@
             💬
           </button>
         </div>
+      </div>
+
+      <!-- VISTA DE AJUSTES DEL PERFIL (Puntos 3.1, 3.2, 3.3) -->
+      <div id="settings-card" class="p-5 hidden flex-col space-y-4 max-h-[500px] overflow-y-auto">
+        <div class="flex justify-between items-center pb-2 border-b border-slate-700">
+          <h3 class="text-sm font-bold text-rose-400 flex items-center gap-2">⚙️ Mi Perfil de Usuario</h3>
+          <button onclick="toggleSettings(false)" class="text-xs text-slate-400 hover:text-slate-200">✕ Cerrar</button>
+        </div>
+
+        <form id="settings-form" onsubmit="saveUserSettings(event)" class="space-y-4 text-xs">
+          <!-- Vista previa de foto personal -->
+          <div class="flex flex-col items-center gap-2">
+            <img id="settings-avatar-preview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="Tu foto" class="w-20 h-20 rounded-full object-cover border-2 border-rose-500 shadow-md">
+            <label class="block text-[11px] text-slate-400">URL de tu foto de perfil</label>
+            <input type="url" id="user-photo-url" oninput="updateAvatarPreview(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="https://..." required>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div class="col-span-2">
+              <label class="block font-semibold text-slate-400 mb-1">Nombre</label>
+              <input type="text" id="user-name-input" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Edad</label>
+              <input type="number" id="user-age-input" min="18" max="99" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-400 mb-1">Biografía / Presentación</label>
+            <textarea id="user-bio-input" rows="3" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="Escribe algo sobre ti..."></textarea>
+          </div>
+
+          <div>
+            <label class="block font-semibold text-slate-400 mb-1">Intereses principales</label>
+            <input type="text" id="user-interests-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="Ej: Música, Deporte, Viajes, Cine">
+          </div>
+
+          <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-rose-500/20">
+            💾 Guardar Cambios
+          </button>
+        </form>
+        <div id="settings-status" class="hidden text-center text-xs font-semibold text-emerald-400 p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20"></div>
       </div>
 
       <!-- Panel de Chat -->
@@ -141,7 +178,7 @@
       </div>
     </section>
 
-    <!-- MODAL DE MATCH EN TIEMPO REAL -->
+    <!-- MODAL DE MATCH EN TIEMPO REAL (Bloque 2) -->
     <div id="match-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 hidden z-50 animate-fade-in">
       <div class="text-center space-y-4 max-w-xs">
         <span class="text-6xl animate-bounce inline-block">💖</span>
@@ -164,24 +201,7 @@
   </main>
 
   <script>
-    // ==========================================
-    // CONFIGURACIÓN DE CLAVES API Y SUPABASE
-    // ==========================================
-    const SUPABASE_URL = "https://tu-proyecto.supabase.co"; // Reemplaza cuando lo conectes
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // Reemplaza cuando lo conectes
-
-    let supabaseClient = null;
-
-    // Inicialización segura
-    if (typeof supabase !== 'undefined' && SUPABASE_URL.includes('supabase.co')) {
-      try {
-        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      } catch (err) {
-        console.warn("Supabase no configurado, utilizando almacenamiento local seguro.");
-      }
-    }
-
-    // Perfiles con múltiples fotos
+    // Perfiles con múltiples fotos (Bloque 2)
     const PROFILES = [
       {
         name: "María, 24",
@@ -304,6 +324,65 @@
       toggleChat(true);
     }
 
+    // LÓGICA DEL BLOQUE 3: AJUSTES Y PERFIL DE USUARIO
+    function toggleSettings(open) {
+      const profileCard = document.getElementById('profile-card');
+      const settingsCard = document.getElementById('settings-card');
+      const chatCard = document.getElementById('chat-card');
+
+      if (open) {
+        profileCard.classList.add('hidden');
+        chatCard.classList.add('hidden');
+        chatCard.classList.remove('flex');
+        settingsCard.classList.remove('hidden');
+        settingsCard.classList.add('flex');
+        loadUserSettingsToForm();
+      } else {
+        settingsCard.classList.add('hidden');
+        settingsCard.classList.remove('flex');
+        profileCard.classList.remove('hidden');
+      }
+    }
+
+    function updateAvatarPreview(url) {
+      if (url && url.startsWith('http')) {
+        document.getElementById('settings-avatar-preview').src = url;
+      }
+    }
+
+    function loadUserSettingsToForm() {
+      const savedProfile = JSON.parse(localStorage.getItem('app_user_profile') || '{}');
+      document.getElementById('user-name-input').value = savedProfile.name || 'Mi Nombre';
+      document.getElementById('user-age-input').value = savedProfile.age || '25';
+      document.getElementById('user-bio-input').value = savedProfile.bio || '¡Hola! Estoy usando la nueva PWA de citas.';
+      document.getElementById('user-interests-input').value = savedProfile.interests || 'Viajes, Cine, Fotografía';
+      const defaultPhoto = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80';
+      document.getElementById('user-photo-url').value = savedProfile.photoUrl || defaultPhoto;
+      updateAvatarPreview(savedProfile.photoUrl || defaultPhoto);
+    }
+
+    function saveUserSettings(e) {
+      e.preventDefault();
+      const profileData = {
+        name: document.getElementById('user-name-input').value,
+        age: document.getElementById('user-age-input').value,
+        bio: document.getElementById('user-bio-input').value,
+        interests: document.getElementById('user-interests-input').value,
+        photoUrl: document.getElementById('user-photo-url').value
+      };
+
+      localStorage.setItem('app_user_profile', JSON.stringify(profileData));
+
+      const status = document.getElementById('settings-status');
+      status.textContent = '✅ Perfil actualizado correctamente';
+      status.classList.remove('hidden');
+
+      setTimeout(() => {
+        status.classList.add('hidden');
+        toggleSettings(false);
+      }, 1000);
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
       const authSection = document.getElementById('auth-section');
       const appSection = document.getElementById('app-section');
@@ -340,13 +419,11 @@
         updateUI(savedUser);
       }
 
-      formRegister.onsubmit = async (e) => {
+      formRegister.onsubmit = (e) => {
         e.preventDefault();
         const email = document.getElementById('register-email').value;
 
         showStatus('⏳ Registrando usuario...', false);
-
-        // Fallback inmediato para garantizar el funcionamiento sin bloquear la app
         setTimeout(() => {
           localStorage.setItem('app_user_email', email);
           showStatus('✅ ¡Usuario registrado con éxito!', false);
@@ -356,7 +433,7 @@
         }, 300);
       };
 
-      formLogin.onsubmit = async (e) => {
+      formLogin.onsubmit = (e) => {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
 
@@ -376,8 +453,11 @@
     function toggleChat(open) {
       const profileCard = document.getElementById('profile-card');
       const chatCard = document.getElementById('chat-card');
+      const settingsCard = document.getElementById('settings-card');
+
       if (open) {
         profileCard.classList.add('hidden');
+        settingsCard.classList.add('hidden');
         chatCard.classList.remove('hidden');
         chatCard.classList.add('flex');
       } else {
