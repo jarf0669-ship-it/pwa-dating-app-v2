@@ -19,12 +19,12 @@
         <p class="text-sm text-slate-400 mt-1">Encuentra a tu pareja ideal</p>
       </div>
 
-      <!-- Selector de Pestañas (Botones integrados) -->
+      <!-- Selector de Pestañas con cambio directo mediante inline onclick -->
       <div class="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl mb-6">
-        <button id="tab-login" type="button" class="py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md">
+        <button id="tab-login" type="button" onclick="switchTab('login')" class="py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md">
           Iniciar Sesión
         </button>
-        <button id="tab-register" type="button" class="py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200">
+        <button id="tab-register" type="button" onclick="switchTab('register')" class="py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200">
           Registrarse
         </button>
       </div>
@@ -101,16 +101,40 @@
   </main>
 
   <script>
+    // Función global inmediata para alternar pestañas sin esperar eventos
+    function switchTab(mode) {
+      const tabLogin = document.getElementById('tab-login');
+      const tabRegister = document.getElementById('tab-register');
+      const formLogin = document.getElementById('form-login');
+      const formRegister = document.getElementById('form-register');
+      const authStatus = document.getElementById('auth-status');
+
+      if (mode === 'register') {
+        tabRegister.className = "py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md";
+        tabLogin.className = "py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
+        formRegister.classList.remove('hidden');
+        formLogin.classList.add('hidden');
+      } else {
+        tabLogin.className = "py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md";
+        tabRegister.className = "py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
+        formLogin.classList.remove('hidden');
+        formRegister.classList.add('hidden');
+      }
+      if (authStatus) authStatus.classList.add('hidden');
+    }
+
+    // Inicialización de Supabase con comprobación segura
     const SUPABASE_URL = 'https://stackblitzstartersm4ejeehz-mdto.supabase.co';
     const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...'; 
 
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let supabaseClient = null;
+    if (window.supabase && window.supabase.createClient) {
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       const authSection = document.getElementById('auth-section');
       const appSection = document.getElementById('app-section');
-      const tabLogin = document.getElementById('tab-login');
-      const tabRegister = document.getElementById('tab-register');
       const formLogin = document.getElementById('form-login');
       const formRegister = document.getElementById('form-register');
       const authStatus = document.getElementById('auth-status');
@@ -127,24 +151,8 @@
 
       let currentUser = null;
 
-      // Cambiar pestañas
-      tabLogin.onclick = () => {
-        tabLogin.className = "py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md";
-        tabRegister.className = "py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
-        formLogin.classList.remove('hidden');
-        formRegister.classList.add('hidden');
-        authStatus.classList.add('hidden');
-      };
-
-      tabRegister.onclick = () => {
-        tabRegister.className = "py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md";
-        tabLogin.className = "py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
-        formRegister.classList.remove('hidden');
-        formLogin.classList.add('hidden');
-        authStatus.classList.add('hidden');
-      };
-
       function showStatus(message, isError = true) {
+        if (!authStatus) return;
         authStatus.textContent = message;
         authStatus.classList.remove('hidden');
         authStatus.className = `mt-4 text-xs text-center p-2 rounded-lg ${isError ? 'bg-rose-500/20 text-rose-300' : 'bg-emerald-500/20 text-emerald-300'}`;
@@ -159,7 +167,12 @@
 
         showStatus('Creando cuenta...', false);
 
-        const { data, error } = await supabase.auth.signUp({
+        if (!supabaseClient) {
+          showStatus('Error: No se pudo conectar a Supabase. Revisa tu conexión.', true);
+          return;
+        }
+
+        const { data, error } = await supabaseClient.auth.signUp({
           email,
           password,
           options: { data: { display_name: name } }
@@ -168,7 +181,7 @@
         if (error) {
           showStatus(error.message, true);
         } else {
-          showStatus('¡Cuenta creada! Inicia sesión ahora.', false);
+          showStatus('¡Cuenta creada con éxito! Ahora puedes iniciar sesión.', false);
         }
       };
 
@@ -180,7 +193,12 @@
 
         showStatus('Iniciando sesión...', false);
 
-        const { data, error } = await supabase.auth.signInWithPassword({
+        if (!supabaseClient) {
+          showStatus('Error: No se pudo conectar a Supabase.', true);
+          return;
+        }
+
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
           email,
           password
         });
@@ -194,7 +212,7 @@
 
       // Logout
       btnLogout.onclick = async () => {
-        await supabase.auth.signOut();
+        if (supabaseClient) await supabaseClient.auth.signOut();
         updateUI(null);
       };
 
@@ -212,13 +230,15 @@
         }
       }
 
-      supabase.auth.onAuthStateChange((event, session) => {
-        if (session) {
-          updateUI(session.user);
-        } else {
-          updateUI(null);
-        }
-      });
+      if (supabaseClient) {
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+          if (session) {
+            updateUI(session.user);
+          } else {
+            updateUI(null);
+          }
+        });
+      }
 
       // Chat
       if (btnChat) {
@@ -238,7 +258,8 @@
       }
 
       async function loadMessages() {
-        const { data, error } = await supabase
+        if (!supabaseClient) return;
+        const { data, error } = await supabaseClient
           .from('messages')
           .select('*')
           .order('created_at', { ascending: true });
@@ -272,7 +293,7 @@
         chatForm.onsubmit = async (e) => {
           e.preventDefault();
           const text = chatInput.value.trim();
-          if (!text || !currentUser) return;
+          if (!text || !currentUser || !supabaseClient) return;
 
           chatInput.value = '';
 
@@ -282,17 +303,19 @@
             sender_id: currentUser.id
           };
 
-          await supabase.from('messages').insert([newMessage]);
+          await supabaseClient.from('messages').insert([newMessage]);
         };
       }
 
-      supabase
-        .channel('public:messages')
-        .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
-          appendMessage(payload.new);
-          if (messagesContainer) messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        })
-        .subscribe();
+      if (supabaseClient) {
+        supabaseClient
+          .channel('public:messages')
+          .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, payload => {
+            appendMessage(payload.new);
+            if (messagesContainer) messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          })
+          .subscribe();
+      }
     });
   </script>
 </body>
