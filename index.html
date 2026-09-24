@@ -89,6 +89,71 @@
       <div id="auth-status" class="mt-4 text-xs font-bold text-center hidden p-3 rounded-xl border"></div>
     </section>
 
+    <!-- CUESTIONARIO DE BIENVENIDA (ONBOARDING DE NUEVO USUARIO) -->
+    <section id="onboarding-section" class="p-6 hidden max-h-[550px] overflow-y-auto">
+      <div class="text-center mb-4">
+        <span class="text-3xl">✨</span>
+        <h2 class="text-lg font-bold text-rose-400 mt-1">¡Casi listo! Completa tu Perfil</h2>
+        <p class="text-xs text-slate-400">Cuéntanos más sobre ti para encontrar tus mejores coincidencias.</p>
+      </div>
+
+      <form id="onboarding-form" onsubmit="saveOnboarding(event)" class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">¿Qué estás buscando?</label>
+          <select id="onboard-intent" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+            <option value="Relación seria">❤️ Relación seria</option>
+            <option value="Ver qué surge">✨ Ver qué surge</option>
+            <option value="Hacer amistades">☕ Hacer amistades</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Profesión / Ocupación</label>
+            <input type="text" id="onboard-job" placeholder="Ej: Diseñador, Médico" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Altura (cm)</label>
+            <input type="number" id="onboard-height" placeholder="175" min="120" max="230" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Nivel de Educación</label>
+          <select id="onboard-education" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+            <option value="Universidad / Grado">Universidad / Grado</option>
+            <option value="Bachillerato / FP">Bachillerato / FP</option>
+            <option value="Postgrado / Máster">Postgrado / Máster</option>
+            <option value="Otros estudios">Otros estudios</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">Hobbies / Pasatiempos</label>
+            <input type="text" id="onboard-hobbies" placeholder="Ej: Gym, Viajes, Cine" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-300 mb-1">¿Fumas?</label>
+            <select id="onboard-smoke" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+              <option value="No fumo">🚭 No fumo</option>
+              <option value="Ocasionalmente">🚬 Ocasionalmente</option>
+              <option value="Sí fumo">🚬 Sí fumo</option>
+            </select>
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-300 mb-1">Foto de perfil (URL de imagen)</label>
+          <input type="url" id="onboard-photo" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="https://images.unsplash.com/..." value="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80">
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-rose-500/30 mt-2">
+          🚀 Comenza a Explorar Amora
+        </button>
+      </form>
+    </section>
+
     <!-- PANTALLA PRINCIPAL DE LA APP -->
     <section id="app-section" class="hidden">
       <!-- Encabezado con Botón de Instalación PWA y Ajustes -->
@@ -108,7 +173,7 @@
         </div>
       </header>
 
-      <!-- Tarjeta de Perfiles para Deslizar (Bloque 2) -->
+      <!-- Tarjeta de Perfiles para Deslizar -->
       <div id="profile-card" class="p-4 flex flex-col items-center">
         <div class="relative w-full h-80 rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900 group select-none">
           <img id="profile-img" src="" alt="Foto de perfil" class="w-full h-full object-cover transition-all duration-300">
@@ -117,6 +182,7 @@
 
           <div class="absolute bottom-3 left-4 right-4 text-left pointer-events-none">
             <h2 id="profile-title" class="text-2xl font-black text-white drop-shadow-md">Cargando...</h2>
+            <p id="profile-details" class="text-[11px] text-rose-300 font-semibold mt-0.5">...</p>
             <p id="profile-bio" class="text-xs text-slate-300 mt-1 line-clamp-2 drop-shadow">...</p>
           </div>
 
@@ -138,18 +204,18 @@
         </div>
       </div>
 
-      <!-- VISTA DE AJUSTES DEL PERFIL (Bloque 3) -->
+      <!-- VISTA DE AJUSTES DEL PERFIL CON DATOS DEL CUESTIONARIO -->
       <div id="settings-card" class="p-5 hidden flex-col space-y-4 max-h-[500px] overflow-y-auto">
         <div class="flex justify-between items-center pb-2 border-b border-slate-700">
-          <h3 class="text-sm font-bold text-rose-400 flex items-center gap-2">⚙️ Mi Perfil de Usuario</h3>
+          <h3 class="text-sm font-bold text-rose-400 flex items-center gap-2">⚙️ Mi Perfil en Amora</h3>
           <button onclick="toggleSettings(false)" class="text-xs text-slate-400 hover:text-slate-200">✕ Cerrar</button>
         </div>
 
-        <form id="settings-form" onsubmit="saveUserSettings(event)" class="space-y-4 text-xs">
+        <form id="settings-form" onsubmit="saveUserSettings(event)" class="space-y-3 text-xs">
           <div class="flex flex-col items-center gap-2">
             <img id="settings-avatar-preview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="Tu foto" class="w-20 h-20 rounded-full object-cover border-2 border-rose-500 shadow-md">
             <label class="block text-[11px] text-slate-400">URL de tu foto de perfil</label>
-            <input type="url" id="user-photo-url" oninput="updateAvatarPreview(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="https://..." required>
+            <input type="url" id="user-photo-url" oninput="updateAvatarPreview(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" required>
           </div>
 
           <div class="grid grid-cols-3 gap-2">
@@ -163,14 +229,39 @@
             </div>
           </div>
 
-          <div>
-            <label class="block font-semibold text-slate-400 mb-1">Biografía / Presentación</label>
-            <textarea id="user-bio-input" rows="3" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="Escribe algo sobre ti..."></textarea>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">¿Qué buscas?</label>
+              <select id="user-intent-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+                <option value="Relación seria">❤️ Relación seria</option>
+                <option value="Ver qué surge">✨ Ver qué surge</option>
+                <option value="Hacer amistades">☕ Hacer amistades</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Profesión</label>
+              <input type="text" id="user-job-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="block font-semibold text-slate-400 mb-1">Altura</label>
+              <input type="number" id="user-height-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+            </div>
+            <div class="col-span-2">
+              <label class="block font-semibold text-slate-400 mb-1">Fumas</label>
+              <select id="user-smoke-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+                <option value="No fumo">🚭 No fumo</option>
+                <option value="Ocasionalmente">🚬 Ocasionalmente</option>
+                <option value="Sí fumo">🚬 Sí fumo</option>
+              </select>
+            </div>
           </div>
 
           <div>
-            <label class="block font-semibold text-slate-400 mb-1">Intereses principales</label>
-            <input type="text" id="user-interests-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="Ej: Música, Deporte, Viajes, Cine">
+            <label class="block font-semibold text-slate-400 mb-1">Hobbies / Intereses</label>
+            <input type="text" id="user-interests-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
           </div>
 
           <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-rose-500/20">
@@ -189,7 +280,7 @@
 
         <div id="messages-container" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs">
           <div class="bg-slate-700/60 p-2 rounded-lg max-w-[80%]">
-            ¡Hola! ¿Cómo estás? Me alegra haber hecho match.
+            ¡Hola! ¿Cómo estás? Me alegra haber hecho match en Amora.
           </div>
         </div>
 
@@ -202,7 +293,7 @@
       </div>
     </section>
 
-    <!-- MODAL DE MATCH EN TIEMPO REAL (Bloque 2) -->
+    <!-- MODAL DE MATCH EN TIEMPO REAL -->
     <div id="match-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 hidden z-50 animate-fade-in">
       <div class="text-center space-y-4 max-w-xs">
         <span class="text-6xl animate-bounce inline-block">💖</span>
@@ -225,21 +316,6 @@
   </main>
 
   <script>
-    // ==========================================
-    // CONFIGURACIÓN DE CLAVES API Y SUPABASE
-    // ==========================================
-    const SUPABASE_URL = "https://iyazkymfqyaidupqkkg.supabase.co";
-    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // Clave Anon
-
-    let supabaseClient = null;
-    if (typeof supabase !== 'undefined' && SUPABASE_URL.includes('supabase.co')) {
-      try {
-        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-      } catch (err) {
-        console.warn("Supabase en espera. Operando en modo local seguro.");
-      }
-    }
-
     // REGISTRO DE SERVICE WORKER PARA PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
@@ -272,20 +348,21 @@
       }
     }
 
-    // PERFILES
+    // PERFILES EXTENDIDOS CON CUESTIONARIOS DETALLADOS
     const PROFILES = [
       {
         name: "María, 24",
-        bio: "Amante del café ☕, los viajes ✈️ y las fotos al atardecer 🌅.",
+        details: "📐 168 cm • 💼 Arquitecta • 🚭 No fumo",
+        bio: "Busco relación seria. Amante del café ☕, los viajes ✈️ y la fotografía 🌅.",
         photos: [
           "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
-          "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80",
-          "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80"
+          "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80"
         ]
       },
       {
         name: "Sofía, 26",
-        bio: "Diseñadora UX/UI 🎨, apasionada de la música indie 🎶 y la gastronomía.",
+        details: "📐 172 cm • 💼 Diseñadora UX • 🚬 Ocasional",
+        bio: "Me encanta ver qué surge. Apasionada de la música indie 🎶 y la gastronomía.",
         photos: [
           "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80",
           "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=80"
@@ -293,18 +370,10 @@
       },
       {
         name: "Carlos, 28",
-        bio: "Desarrollador web 💻, corredor de maratones 🏃‍♂️ y pet lover 🐶.",
+        details: "📐 181 cm • 💼 Ing. de Software • 🚭 No fumo",
+        bio: "Busco hacer amistades y conexiones reales. Corredor de maratones 🏃‍♂️.",
         photos: [
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80",
-          "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80"
-        ]
-      },
-      {
-        name: "Laura, 22",
-        bio: "Estudiante de fotografía 📸 y amante de la naturaleza 🌿.",
-        photos: [
-          "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=600&q=80",
-          "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=600&q=80"
+          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
         ]
       }
     ];
@@ -344,23 +413,10 @@
       if (authStatus) authStatus.classList.add('hidden');
     }
 
-    function handleForgotPassword(e) {
-      e.preventDefault();
-      const email = document.getElementById('forgot-email').value;
-      const authStatus = document.getElementById('auth-status');
-
-      authStatus.textContent = '⏳ Enviando enlace de recuperación...';
-      authStatus.classList.remove('hidden');
-      authStatus.className = 'mt-4 text-xs font-bold text-center p-3 rounded-xl border bg-emerald-500/20 text-emerald-300 border-emerald-500/30';
-
-      setTimeout(() => {
-        authStatus.textContent = `✅ Te hemos enviado un enlace de recuperación a ${email}. Revisa tu bandeja de entrada.`;
-      }, 600);
-    }
-
     function renderProfile() {
       const profile = PROFILES[currentProfileIndex];
       document.getElementById('profile-title').textContent = profile.name;
+      document.getElementById('profile-details').textContent = profile.details;
       document.getElementById('profile-bio').textContent = profile.bio;
       document.getElementById('profile-img').src = profile.photos[currentPhotoIndex];
 
@@ -420,6 +476,28 @@
       toggleChat(true);
     }
 
+    // ONBOARDING (CUESTIONARIO NUEVO USUARIO)
+    function saveOnboarding(e) {
+      e.preventDefault();
+      const userProfile = {
+        name: localStorage.getItem('temp_reg_name') || 'Nuevo Usuario',
+        age: 25,
+        intent: document.getElementById('onboard-intent').value,
+        job: document.getElementById('onboard-job').value,
+        height: document.getElementById('onboard-height').value,
+        education: document.getElementById('onboard-education').value,
+        interests: document.getElementById('onboard-hobbies').value,
+        smoke: document.getElementById('onboard-smoke').value,
+        photoUrl: document.getElementById('onboard-photo').value
+      };
+
+      localStorage.setItem('app_user_profile', JSON.stringify(userProfile));
+      document.getElementById('onboarding-section').classList.add('hidden');
+      document.getElementById('app-section').classList.remove('hidden');
+      document.getElementById('user-display').textContent = localStorage.getItem('app_user_email');
+      renderProfile();
+    }
+
     function toggleSettings(open) {
       const profileCard = document.getElementById('profile-card');
       const settingsCard = document.getElementById('settings-card');
@@ -449,8 +527,11 @@
       const savedProfile = JSON.parse(localStorage.getItem('app_user_profile') || '{}');
       document.getElementById('user-name-input').value = savedProfile.name || 'Mi Nombre';
       document.getElementById('user-age-input').value = savedProfile.age || '25';
-      document.getElementById('user-bio-input').value = savedProfile.bio || '¡Hola! Estoy usando Amora.';
-      document.getElementById('user-interests-input').value = savedProfile.interests || 'Viajes, Cine, Fotografía';
+      document.getElementById('user-intent-input').value = savedProfile.intent || 'Relación seria';
+      document.getElementById('user-job-input').value = savedProfile.job || 'Profesional';
+      document.getElementById('user-height-input').value = savedProfile.height || '175';
+      document.getElementById('user-smoke-input').value = savedProfile.smoke || 'No fumo';
+      document.getElementById('user-interests-input').value = savedProfile.interests || 'Viajes, Cine, Deporte';
       const defaultPhoto = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80';
       document.getElementById('user-photo-url').value = savedProfile.photoUrl || defaultPhoto;
       updateAvatarPreview(savedProfile.photoUrl || defaultPhoto);
@@ -461,7 +542,10 @@
       const profileData = {
         name: document.getElementById('user-name-input').value,
         age: document.getElementById('user-age-input').value,
-        bio: document.getElementById('user-bio-input').value,
+        intent: document.getElementById('user-intent-input').value,
+        job: document.getElementById('user-job-input').value,
+        height: document.getElementById('user-height-input').value,
+        smoke: document.getElementById('user-smoke-input').value,
         interests: document.getElementById('user-interests-input').value,
         photoUrl: document.getElementById('user-photo-url').value
       };
@@ -480,22 +564,13 @@
 
     window.addEventListener('DOMContentLoaded', () => {
       const authSection = document.getElementById('auth-section');
+      const onboardingSection = document.getElementById('onboarding-section');
       const appSection = document.getElementById('app-section');
       const formLogin = document.getElementById('form-login');
       const formRegister = document.getElementById('form-register');
       const authStatus = document.getElementById('auth-status');
       const userDisplay = document.getElementById('user-display');
       const btnLogout = document.getElementById('btn-logout');
-
-      function showStatus(message, isError = true) {
-        authStatus.textContent = message;
-        authStatus.classList.remove('hidden');
-        authStatus.className = `mt-4 text-xs font-bold text-center p-3 rounded-xl border ${
-          isError 
-            ? 'bg-rose-500/20 text-rose-300 border-rose-500/30' 
-            : 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
-        }`;
-      }
 
       function updateUI(userEmail) {
         if (userEmail) {
@@ -517,26 +592,20 @@
       formRegister.onsubmit = (e) => {
         e.preventDefault();
         const email = document.getElementById('register-email').value;
+        const name = document.getElementById('register-name').value;
 
-        showStatus('⏳ Registrando usuario...', false);
-        setTimeout(() => {
-          localStorage.setItem('app_user_email', email);
-          showStatus('✅ ¡Usuario registrado con éxito!', false);
-          setTimeout(() => {
-            updateUI(email);
-          }, 400);
-        }, 300);
+        localStorage.setItem('app_user_email', email);
+        localStorage.setItem('temp_reg_name', name);
+
+        authSection.classList.add('hidden');
+        onboardingSection.classList.remove('hidden');
       };
 
       formLogin.onsubmit = (e) => {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
-
-        showStatus('⏳ Entrando...', false);
-        setTimeout(() => {
-          localStorage.setItem('app_user_email', email);
-          updateUI(email);
-        }, 300);
+        localStorage.setItem('app_user_email', email);
+        updateUI(email);
       };
 
       btnLogout.onclick = () => {
