@@ -8,24 +8,30 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    /* Custom Scrollbar for clean UI */
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #f43f5e; border-radius: 10px; }
+  </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-2 sm:p-4">
+<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-2 sm:p-4 font-sans">
 
-  <main class="w-full max-w-md bg-slate-800 rounded-2xl shadow-2xl overflow-hidden border border-slate-700 relative">
+  <main class="w-full max-w-md bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-700/80 relative">
     
     <!-- PANTALLA DE AUTENTICACIÓN (Bloque 1) -->
     <section id="auth-section" class="p-6">
       <div class="text-center mb-6">
-        <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-500">Amora</h1>
-        <p class="text-sm text-slate-400 mt-1">Conecta con personas especiales</p>
+        <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400">Amora</h1>
+        <p class="text-xs text-slate-400 mt-1 font-medium">Conecta con personas especiales</p>
       </div>
 
       <!-- Pestañas -->
-      <div id="auth-tabs" class="grid grid-cols-2 gap-2 p-1 bg-slate-900 rounded-xl mb-6">
-        <button id="tab-login" type="button" onclick="switchTab('login')" class="py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200">
+      <div id="auth-tabs" class="grid grid-cols-2 gap-2 p-1 bg-slate-900/90 rounded-xl mb-6">
+        <button id="tab-login" type="button" onclick="switchTab('login')" class="py-2.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200">
           Iniciar Sesión
         </button>
-        <button id="tab-register" type="button" onclick="switchTab('register')" class="py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md">
+        <button id="tab-register" type="button" onclick="switchTab('register')" class="py-2.5 text-xs font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md shadow-rose-500/20">
           Registrarse
         </button>
       </div>
@@ -34,16 +40,16 @@
       <form id="form-login" class="space-y-4 hidden">
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Correo electrónico</label>
-          <input type="email" id="login-email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="tu@email.com">
+          <input type="email" id="login-email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="tu@email.com">
         </div>
         <div>
           <div class="flex justify-between items-center mb-1">
             <label class="block text-xs font-semibold text-slate-400">Contraseña</label>
             <button type="button" onclick="switchTab('forgot')" class="text-[11px] text-rose-400 hover:underline">¿Olvidaste tu contraseña?</button>
           </div>
-          <input type="password" id="login-password" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="••••••••">
+          <input type="password" id="login-password" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="••••••••">
         </div>
-        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2.5 rounded-lg transition-colors">
+        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-rose-500/30 text-xs">
           Entrar
         </button>
       </form>
@@ -52,17 +58,17 @@
       <form id="form-register" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre de usuario</label>
-          <input type="text" id="register-name" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="Tu Nombre">
+          <input type="text" id="register-name" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="Tu Nombre">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Correo electrónico</label>
-          <input type="email" id="register-email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="tu@email.com">
+          <input type="email" id="register-email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="tu@email.com">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Contraseña</label>
-          <input type="password" id="register-password" required minlength="6" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="Mínimo 6 caracteres">
+          <input type="password" id="register-password" required minlength="6" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="Mínimo 6 caracteres">
         </div>
-        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2.5 rounded-lg transition-colors">
+        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-rose-500/30 text-xs">
           Crear cuenta
         </button>
       </form>
@@ -75,9 +81,9 @@
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Correo registrado</label>
-          <input type="email" id="forgot-email" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="tu@email.com">
+          <input type="email" id="forgot-email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="tu@email.com">
         </div>
-        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-2.5 rounded-lg transition-colors">
+        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl transition-all text-xs">
           Enviar enlace de recuperación
         </button>
         <button type="button" onclick="switchTab('login')" class="w-full text-center text-xs text-slate-400 hover:text-slate-200 mt-2 block">
@@ -85,210 +91,255 @@
         </button>
       </form>
 
-      <!-- Estado -->
       <div id="auth-status" class="mt-4 text-xs font-bold text-center hidden p-3 rounded-xl border"></div>
     </section>
 
-    <!-- CUESTIONARIO COMPLETO TIPO TINDER / BADOO (ONBOARDING MULTISECCIÓN) -->
-    <section id="onboarding-section" class="p-5 hidden max-h-[580px] overflow-y-auto custom-scroll">
-      <div class="text-center mb-4">
-        <span class="text-3xl">✨</span>
-        <h2 class="text-lg font-extrabold text-rose-400 mt-1">Configuración Inicial de Amora</h2>
-        <p class="text-[11px] text-slate-400">Rellena tu perfil y define exactamente qué tipo de pareja buscas.</p>
+    <!-- CUESTIONARIO PROFESIONAL TIPO BADOO Y TINDER (ONBOARDING COMPLETO) -->
+    <section id="onboarding-section" class="p-5 hidden max-h-[600px] overflow-y-auto custom-scroll">
+      
+      <!-- BARRA DE PROGRESO INSPIRADA EN BADOO -->
+      <div class="mb-5 bg-slate-900/90 p-3 rounded-2xl border border-slate-700/60 shadow-sm">
+        <div class="flex justify-between items-center mb-1.5 text-xs font-bold">
+          <span class="text-rose-400 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span> Completa tu Perfil
+          </span>
+          <span id="progress-percent" class="text-slate-300 font-mono">85% completado</span>
+        </div>
+        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
+          <div id="progress-bar" class="bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 h-2 rounded-full transition-all duration-500" style="w-full"></div>
+        </div>
       </div>
 
       <form id="onboarding-form" onsubmit="saveOnboarding(event)" class="space-y-4 text-xs">
         
-        <!-- PARTE 1: DESCRIPCIÓN Y SOBRE TI -->
-        <div class="bg-slate-900/80 p-3.5 rounded-xl border border-rose-500/30 space-y-3">
-          <div class="flex items-center gap-2 border-b border-slate-700 pb-1.5">
-            <span class="text-base">👤</span>
-            <h3 class="font-extrabold text-rose-400 text-xs uppercase tracking-wider">Parte 1: Descríbete como Persona</h3>
+        <!-- SECCIÓN 1: MI INFORMACIÓN (ESTILO BADOO LIST) -->
+        <div class="bg-slate-900/80 rounded-2xl border border-slate-700/80 overflow-hidden shadow-lg">
+          <div class="p-3 bg-slate-900 border-b border-slate-700/80 flex items-center justify-between">
+            <h3 class="font-black text-rose-400 text-xs uppercase tracking-wider flex items-center gap-2">
+              <span>📋</span> Mi Información
+            </h3>
+            <span class="text-[10px] text-slate-400">Datos principales</span>
           </div>
 
-          <div>
-            <label class="block text-slate-300 font-semibold mb-1">Biografía / Presentación completa</label>
-            <textarea id="onboard-bio" rows="3" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2.5 text-slate-100 focus:outline-none focus:border-rose-500" placeholder="Descríbete como persona: tus gustos, estilo de vida, sentido del humor..."></textarea>
-          </div>
+          <div class="p-3 space-y-3">
+            <!-- Biografía y Lema -->
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1.5">
+                <span>✍️</span> Descríbete como persona (Biografía)
+              </label>
+              <textarea id="onboard-bio" rows="3" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="Háblanos sobre tu día a día, tus metas, tu sentido del humor..."></textarea>
+            </div>
 
-          <div>
-            <label class="block text-slate-300 font-semibold mb-1">Frase corta de perfil / Lema</label>
-            <input type="text" id="onboard-tagline" placeholder="Ej: Apasionado del café, los libros y las rutas por la playa" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-          </div>
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1.5">
+                <span>💬</span> Frase de presentación / Lema personal
+              </label>
+              <input type="text" id="onboard-tagline" placeholder="Ej: Fan del café especialidad, el cine y las escapadas a la montaña" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+            </div>
 
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">¿Qué buscas?</label>
-              <select id="onboard-intent" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="❤️ Relación seria">❤️ Relación seria</option>
-                <option value="💍 Pareja a largo plazo">💍 Pareja a largo plazo</option>
-                <option value="✨ Ver qué surge">✨ Ver qué surge</option>
-                <option value="☕ Hacer amistades">☕ Hacer amistades</option>
-                <option value="🥂 Citas casuales">🥂 Citas casuales</option>
-              </select>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>🖤</span> Relación
+                </label>
+                <select id="onboard-relationship" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+                  <option value="Soltero/a">Soltero/a</option>
+                  <option value="Divorciado/a">Divorciado/a</option>
+                  <option value="Complicado">Es complicado</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>⚧️</span> Orientación
+                </label>
+                <select id="onboard-orientation" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+                  <option value="Heterosexual">Heterosexual</option>
+                  <option value="Bisexual">Bisexual</option>
+                  <option value="Gay / Lesbiana">Gay / Lesbiana</option>
+                  <option value="Pansexual">Pansexual</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Cabello</label>
-              <select id="onboard-hair" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="Morena / Castana">Morena / Castaña</option>
-                <option value="Rubia">Rubia</option>
-                <option value="Pelirroja">Pelirroja</option>
-                <option value="Rizado / Afro">Rizado / Afro</option>
-                <option value="Rapada / Corto">Rapada / Corto</option>
-              </select>
-            </div>
-          </div>
 
-          <div class="grid grid-cols-3 gap-2">
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Edad</label>
-              <input type="number" id="onboard-age" min="18" max="99" value="25" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
+            <div class="grid grid-cols-3 gap-2">
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>📐</span> Estatura
+                </label>
+                <input type="number" id="onboard-height" placeholder="170 cm" min="120" max="230" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>🗣️</span> Idiomas
+                </label>
+                <input type="text" id="onboard-languages" placeholder="Español, Inglés" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>🍷</span> Alcohol
+                </label>
+                <select id="onboard-alcohol" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+                  <option value="En contextos sociales">En contextos sociales</option>
+                  <option value="Nunca bebo">Nunca bebo</option>
+                  <option value="Con frecuencia">Con frecuencia</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Altura (cm)</label>
-              <input type="number" id="onboard-height" placeholder="170" min="120" max="230" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-            </div>
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">¿Fumas?</label>
-              <select id="onboard-smoke" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="🚭 No fumo">🚭 No fumo</option>
-                <option value="🚬 Ocasional">🚬 Ocasional</option>
-                <option value="💨 Vapeo">💨 Vapeo</option>
-                <option value="🚬 Sí fumo">🚬 Sí fumo</option>
-              </select>
-            </div>
-          </div>
 
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Hijos</label>
-              <select id="onboard-kids" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="Sin hijos">Sin hijos</option>
-                <option value="Tengo hijos">Tengo hijos</option>
-                <option value="Quiero en el futuro">Quiero en el futuro</option>
-                <option value="No quiero tener">No quiero tener</option>
-              </select>
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>🚬</span> Tabaco
+                </label>
+                <select id="onboard-smoke" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+                  <option value="No fumador/a">No fumador/a</option>
+                  <option value="Fumador/a social">Fumador/a social</option>
+                  <option value="Vapeo">Vapeo</option>
+                  <option value="Fumador/a habitual">Fumador/a habitual</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>♈</span> Signo zodiacal
+                </label>
+                <select id="onboard-zodiac" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+                  <option value="Aries ♈">Aries ♈</option>
+                  <option value="Tauro ♉">Tauro ♉</option>
+                  <option value="Géminis ♊">Géminis ♊</option>
+                  <option value="Cáncer ♋">Cáncer ♋</option>
+                  <option value="Leo ♌">Leo ♌</option>
+                  <option value="Virgo ♍">Virgo ♍</option>
+                  <option value="Libra ♎">Libra ♎</option>
+                  <option value="Escorpio ♏">Escorpio ♏</option>
+                  <option value="Sagitario ♐">Sagitario ♐</option>
+                  <option value="Capricornio ♑">Capricornio ♑</option>
+                  <option value="Acuario ♒">Acuario ♒</option>
+                  <option value="Piscis ♓">Piscis ♓</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Mascotas</label>
-              <select id="onboard-pets" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="🐶 Perros">🐶 Tengo perros</option>
-                <option value="🐱 Gatos">🐱 Tengo gatos</option>
-                <option value="🐾 Amante de animales">🐾 Amante de animales</option>
-                <option value="❌ Sin mascotas">❌ Sin mascotas</option>
-              </select>
-            </div>
-          </div>
 
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Profesión</label>
-              <input type="text" id="onboard-job" placeholder="Ej: Médica, Arquitecto" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>🐾</span> Mascotas
+                </label>
+                <select id="onboard-pets" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+                  <option value="Tengo perro(s)">Tengo perro(s)</option>
+                  <option value="Tengo gato(s)">Tengo gato(s)</option>
+                  <option value="Amante de animales">Amante de animales</option>
+                  <option value="Sin mascotas">Sin mascotas</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>🗣️</span> Personalidad
+                </label>
+                <select id="onboard-personality" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+                  <option value="Extrovertido/a">Extrovertido/a</option>
+                  <option value="Introvertido/a">Introvertido/a</option>
+                  <option value="Ambivertido/a">Ambivertido/a</option>
+                </select>
+              </div>
             </div>
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Educación</label>
-              <select id="onboard-education" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="Universidad / Grado">Universidad / Grado</option>
-                <option value="Postgrado / Máster">Postgrado / Máster</option>
-                <option value="FP / Bachillerato">FP / Bachillerato</option>
-                <option value="Otros estudios">Otros estudios</option>
-              </select>
+
+            <div class="grid grid-cols-2 gap-2">
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>🎓</span> Nivel educativo
+                </label>
+                <select id="onboard-education" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+                  <option value="Universidad / Grado">Universidad / Grado</option>
+                  <option value="Postgrado / Máster">Postgrado / Máster</option>
+                  <option value="Secundaria / FP">Secundaria / FP</option>
+                  <option value="Otros">Otros</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                  <span>👶</span> Descendencia / Hijos
+                </label>
+                <select id="onboard-kids" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+                  <option value="Sin hijos">Sin hijos</option>
+                  <option value="Tengo hijos">Tengo hijos</option>
+                  <option value="Quiero en el futuro">Quiero en el futuro</option>
+                </select>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label class="block text-slate-300 font-semibold mb-1">Hobbies / Intereses (separados por coma)</label>
-            <input type="text" id="onboard-hobbies" placeholder="Ej: Cine, Gym, Viajes, Fotografía, Gastronomía" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-          </div>
-
-          <div>
-            <label class="block text-slate-300 font-semibold mb-1">Foto Principal (URL)</label>
-            <input type="url" id="onboard-photo1" required class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500" value="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=600&q=80">
+            <div>
+              <label class="block text-slate-300 font-semibold mb-1 flex items-center gap-1">
+                <span>🖼️</span> Foto Principal (URL de Imagen)
+              </label>
+              <input type="url" id="onboard-photo1" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" value="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=600&q=80">
+            </div>
           </div>
         </div>
 
-        <!-- PARTE 2: FILTROS Y PREFERENCIAS DE PAREJA (TINDER DISCOVERY SETTINGS) -->
-        <div class="bg-slate-900/80 p-3.5 rounded-xl border border-pink-500/30 space-y-3">
-          <div class="flex items-center gap-2 border-b border-slate-700 pb-1.5">
-            <span class="text-base">🎯</span>
-            <h3 class="font-extrabold text-pink-400 text-xs uppercase tracking-wider">Parte 2: ¿A quién estás buscando en Amora?</h3>
+        <!-- SECCIÓN 2: INTERESES Y HOBBIES (PÍLDORAS INTERACTIVAS ESTILO BADOO) -->
+        <div class="bg-slate-900/80 rounded-2xl border border-slate-700/80 p-3.5 space-y-2">
+          <h3 class="font-black text-rose-400 text-xs uppercase tracking-wider flex items-center gap-2">
+            <span>🏷️</span> Tus Intereses
+          </h3>
+          <p class="text-[11px] text-slate-400 mb-2">Selecciona las pílulas que mejor te definan:</p>
+          
+          <div id="interests-container" class="flex flex-wrap gap-1.5">
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">🍿 Amante del cine</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">☕ Café</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">🍽️ Comer fuera</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">🍴 Citas</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">💕 Abrazos y mimos</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">💃 Baile</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">✈️ Viajes</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">🏋️‍♂️ Gym</span>
           </div>
+        </div>
+
+        <!-- SECCIÓN 3: MI PAREJA IDEAL (TINDER DISCOVERY) -->
+        <div class="bg-slate-900/80 rounded-2xl border border-pink-500/30 p-3.5 space-y-3">
+          <h3 class="font-black text-pink-400 text-xs uppercase tracking-wider flex items-center gap-2">
+            <span>🎯</span> La Pareja que Buscas en Amora
+          </h3>
 
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block text-slate-300 font-semibold mb-1">Busco a</label>
-              <select id="target-gender" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
+              <select id="target-gender" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
                 <option value="Mujeres">👩 Mujeres</option>
                 <option value="Hombres">👨 Hombres</option>
                 <option value="Todos">🌈 Todos</option>
               </select>
             </div>
             <div>
-              <label class="block text-slate-300 font-semibold mb-1">Color de Cabello</label>
-              <select id="target-hair" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="Indiferente">Indiferente</option>
-                <option value="Rubia">Rubia / Rubio</option>
-                <option value="Morena / Castana">Morena / Castaña</option>
-                <option value="Pelirroja">Pelirroja / Pelirrojo</option>
-              </select>
+              <label class="block text-slate-300 font-semibold mb-1">Estatura mínima</label>
+              <input type="number" id="target-min-height" value="165" placeholder="170 cm" min="120" max="220" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
             </div>
           </div>
 
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block text-slate-300 font-semibold mb-1">Altura mínima (cm)</label>
-              <input type="number" id="target-min-height" value="165" placeholder="Ej: 170" min="120" max="220" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-            </div>
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Distancia máxima (km)</label>
-              <select id="target-distance" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
+              <label class="block text-slate-300 font-semibold mb-1">Distancia máxima</label>
+              <select id="target-distance" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
                 <option value="15 km">📍 Hasta 15 km</option>
                 <option value="50 km">📍 Hasta 50 km</option>
                 <option value="100 km">📍 Hasta 100 km</option>
                 <option value="Sin límite">🌍 Sin límite</option>
               </select>
             </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block text-slate-300 font-semibold mb-1">Educación mínima</label>
-              <select id="target-education" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
+              <label class="block text-slate-300 font-semibold mb-1">Color de Cabello</label>
+              <select id="target-hair" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
                 <option value="Indiferente">Indiferente</option>
-                <option value="Universidad / Grado">Mínimo Universidad</option>
-                <option value="Postgrado / Máster">Mínimo Postgrado</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Filtro de Hijos</label>
-              <select id="target-kids" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="Indiferente">Indiferente</option>
-                <option value="Obligatorio Sin hijos">Obligatorio Sin hijos</option>
-                <option value="Con hijos aceptado">Acepta con hijos</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Filtro Tabaco</label>
-              <select id="target-smoke" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="Indiferente">Indiferente</option>
-                <option value="Solo no fumadores">🚭 Solo no fumadores</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-slate-300 font-semibold mb-1">Filtro Mascotas</label>
-              <select id="target-pets" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="Indiferente">Indiferente</option>
-                <option value="Debe gustarle los animales">🐾 Que ame los animales</option>
+                <option value="Rubia/o">Rubia / Rubio</option>
+                <option value="Morena/o">Morena / Castaña</option>
+                <option value="Pelirroja/o">Pelirroja / Pelirrojo</option>
               </select>
             </div>
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-black py-3.5 rounded-xl transition-all shadow-lg shadow-rose-500/30 text-sm mt-2">
-          🚀 Guardar y Empezar en Amora
+        <button type="submit" class="w-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 hover:from-rose-600 hover:to-pink-600 text-white font-black py-3.5 rounded-2xl transition-all shadow-xl shadow-rose-500/30 text-xs tracking-wider">
+          🚀 GUARDAR Y EMPEZAR EN AMORA
         </button>
       </form>
     </section>
@@ -296,7 +347,7 @@
     <!-- PANTALLA PRINCIPAL DE LA APP -->
     <section id="app-section" class="hidden">
       <!-- Encabezado -->
-      <header class="p-3 bg-slate-900 border-b border-slate-700 flex justify-between items-center text-xs">
+      <header class="p-3 bg-slate-900 border-b border-slate-700/80 flex justify-between items-center text-xs">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
           <span id="user-display" class="text-slate-300 font-semibold truncate max-w-[120px]">Cargando...</span>
@@ -305,7 +356,7 @@
           <button id="btn-install" onclick="installPWA()" class="hidden bg-rose-500 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded-lg text-[11px] transition-all shadow">
             📲 Instalar
           </button>
-          <button onclick="toggleSettings(true)" class="text-slate-300 hover:text-white font-semibold flex items-center gap-1 bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors">
+          <button onclick="toggleSettings(true)" class="text-slate-300 hover:text-white font-semibold flex items-center gap-1 bg-slate-800 px-2.5 py-1 rounded-xl border border-slate-700 transition-colors">
             ⚙️ <span class="hidden sm:inline">Mi Perfil</span>
           </button>
           <button id="btn-logout" class="text-rose-400 hover:text-rose-300 font-semibold underline">Salir</button>
@@ -314,13 +365,13 @@
 
       <!-- Tarjeta de Perfiles para Deslizar -->
       <div id="profile-card" class="p-4 flex flex-col items-center">
-        <div class="relative w-full h-88 rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900 group select-none">
+        <div class="relative w-full h-88 rounded-3xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900 group select-none">
           <img id="profile-img" src="" alt="Foto de perfil" class="w-full h-full object-cover transition-all duration-300">
           <div id="gallery-bars" class="absolute top-2 left-2 right-2 flex gap-1 z-10"></div>
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/20 to-black/30 pointer-events-none"></div>
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-black/30 pointer-events-none"></div>
 
           <div class="absolute bottom-3 left-4 right-4 text-left pointer-events-none space-y-1">
-            <h2 id="profile-title" class="text-2xl font-black text-white drop-shadow-md">Cargando...</h2>
+            <h2 id="profile-title" class="text-2xl font-black text-white drop-shadow-md flex items-center gap-2">Cargando...</h2>
             <p id="profile-details" class="text-[11px] text-rose-300 font-bold drop-shadow">...</p>
             <p id="profile-tagline" class="text-xs text-slate-200 italic drop-shadow">...</p>
             <p id="profile-bio" class="text-xs text-slate-300 line-clamp-2 drop-shadow">...</p>
@@ -345,9 +396,9 @@
       </div>
 
       <!-- VISTA DE EDITAR PERFIL COMPLETO -->
-      <div id="settings-card" class="p-5 hidden flex-col space-y-4 max-h-[520px] overflow-y-auto">
+      <div id="settings-card" class="p-5 hidden flex-col space-y-4 max-h-[520px] overflow-y-auto custom-scroll">
         <div class="flex justify-between items-center pb-2 border-b border-slate-700">
-          <h3 class="text-sm font-bold text-rose-400 flex items-center gap-2">⚙️ Ajustes y Filtros de Amora</h3>
+          <h3 class="text-sm font-bold text-rose-400 flex items-center gap-2">⚙️ Editar Mi Perfil de Amora</h3>
           <button onclick="toggleSettings(false)" class="text-xs text-slate-400 hover:text-slate-200">✕ Cerrar</button>
         </div>
 
@@ -355,54 +406,30 @@
           <div class="flex flex-col items-center gap-2">
             <img id="settings-avatar-preview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="Tu foto" class="w-20 h-20 rounded-full object-cover border-2 border-rose-500 shadow-md">
             <label class="block text-[11px] text-slate-400">URL Foto Principal</label>
-            <input type="url" id="user-photo-url" oninput="updateAvatarPreview(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500" required>
+            <input type="url" id="user-photo-url" oninput="updateAvatarPreview(this.value)" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" required>
           </div>
 
           <div>
             <label class="block font-semibold text-slate-400 mb-1">Descríbete como persona (Biografía)</label>
-            <textarea id="user-bio-input" rows="3" required class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-slate-100 focus:outline-none focus:border-rose-500"></textarea>
+            <textarea id="user-bio-input" rows="3" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs"></textarea>
           </div>
 
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block font-semibold text-slate-400 mb-1">Nombre</label>
-              <input type="text" id="user-name-input" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+              <input type="text" id="user-name-input" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
             </div>
             <div>
-              <label class="block font-semibold text-slate-400 mb-1">Profesión</label>
-              <input type="text" id="user-job-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
+              <label class="block font-semibold text-slate-400 mb-1">Estatura (cm)</label>
+              <input type="number" id="user-height-input" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
             </div>
           </div>
 
-          <div class="grid grid-cols-3 gap-2">
-            <div>
-              <label class="block font-semibold text-slate-400 mb-1">Edad</label>
-              <input type="number" id="user-age-input" min="18" max="99" required class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-400 mb-1">Altura</label>
-              <input type="number" id="user-height-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-400 mb-1">Fumas</label>
-              <select id="user-smoke-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option value="🚭 No fumo">🚭 No fumo</option>
-                <option value="🚬 Ocasional">🚬 Ocasional</option>
-                <option value="🚬 Sí fumo">🚬 Sí fumo</option>
-              </select>
-            </div>
-          </div>
-
-          <div>
-            <label class="block font-semibold text-slate-400 mb-1">Hobbies / Intereses</label>
-            <input type="text" id="user-interests-input" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-slate-100 focus:outline-none focus:border-rose-500">
-          </div>
-
-          <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-rose-500/20">
+          <button type="submit" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white font-bold py-2.5 rounded-xl transition-all shadow-lg shadow-rose-500/20 text-xs">
             💾 Guardar Cambios
           </button>
         </form>
-        <div id="settings-status" class="hidden text-center text-xs font-semibold text-emerald-400 p-2 bg-emerald-500/10 rounded-lg border border-emerald-500/20"></div>
+        <div id="settings-status" class="hidden text-center text-xs font-semibold text-emerald-400 p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20"></div>
       </div>
 
       <!-- Panel de Chat -->
@@ -412,15 +439,15 @@
           <button onclick="toggleChat(false)" class="text-xs text-slate-400 hover:text-slate-200">✕ Cerrar</button>
         </div>
 
-        <div id="messages-container" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs">
-          <div class="bg-slate-700/60 p-2.5 rounded-xl max-w-[85%]">
-            ¡Hola! Me encantó tu perfil en Amora. ¿Qué tal va tu día?
+        <div id="messages-container" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs custom-scroll">
+          <div class="bg-slate-700/60 p-2.5 rounded-2xl max-w-[85%]">
+            ¡Hola! Me encantó leer tu perfil en Amora. ¿Qué tal va tu día?
           </div>
         </div>
 
         <form id="chat-form" onsubmit="sendMessage(event)" class="mt-3 flex gap-2">
-          <input type="text" id="chat-input" class="flex-1 bg-slate-900 border border-slate-700 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-rose-500" placeholder="Escribe un mensaje..." required>
-          <button type="submit" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold px-3 py-2 rounded-lg text-xs transition-colors">
+          <input type="text" id="chat-input" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500" placeholder="Escribe un mensaje..." required>
+          <button type="submit" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold px-3 py-2 rounded-xl text-xs transition-colors">
             Enviar
           </button>
         </form>
@@ -437,10 +464,10 @@
         <p id="match-text" class="text-xs text-slate-300">A ti y a esta persona os habéis gustado mutuamente en Amora.</p>
         
         <div class="flex flex-col gap-2 pt-4">
-          <button onclick="closeMatchAndChat()" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 font-bold py-3 rounded-xl text-xs shadow-lg shadow-rose-500/30 transition-all">
+          <button onclick="closeMatchAndChat()" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 font-bold py-3 rounded-2xl text-xs shadow-lg shadow-rose-500/30 transition-all">
             Enviar mensaje
           </button>
-          <button onclick="closeMatchModal()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-semibold py-2.5 rounded-xl text-xs transition-colors">
+          <button onclick="closeMatchModal()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 font-semibold py-2.5 rounded-2xl text-xs transition-colors">
             Seguir explorando
           </button>
         </div>
@@ -459,7 +486,7 @@
       });
     }
 
-    // BOTÓN Y PROMPT DE INSTALACIÓN
+    // PROMPT DE INSTALACIÓN
     let deferredPrompt;
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
@@ -482,35 +509,37 @@
       }
     }
 
-    // PERFILES DE PRUEBA REALISTAS
+    // CHIPS SELECCIONABLES (PÍLDORAS)
+    function toggleChip(el) {
+      if (el.classList.contains('bg-rose-500')) {
+        el.classList.remove('bg-rose-500', 'text-white', 'border-rose-400');
+        el.classList.add('bg-slate-950', 'text-slate-300', 'border-slate-700');
+      } else {
+        el.classList.remove('bg-slate-950', 'text-slate-300', 'border-slate-700');
+        el.classList.add('bg-rose-500', 'text-white', 'border-rose-400');
+      }
+    }
+
+    // PERFILES DE MUESTRA REALISTAS
     const PROFILES = [
       {
-        name: "María, 24",
-        details: "📍 Madrid (5 km) • 📐 170 cm • Rubia • 💼 Arquitecta",
-        tagline: "✨ Busco relación seria • Fan de la fotografía y el café",
-        bio: "Me considero una persona creativa, curiosa y alegre. Trabajo en diseño arquitectónico y en mis fines de semana me verás explorando exposiciones de arte, probando nuevos restaurantes o de escapada a la montaña.",
+        name: "María, 24 ✔️",
+        details: "📍 Madrid (5 km) • 📐 170 cm • 🍿 Amante del cine • ☕ Café",
+        tagline: "✨ Busco relación seria • Fan de la fotografía y el arte",
+        bio: "Me considero extrovertida, curiosa y alegre. Trabajo en arquitectura y los fines de semana exploro exposiciones de arte y restaurantes únicos.",
         photos: [
           "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80",
           "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80"
         ]
       },
       {
-        name: "Sofía, 26",
-        details: "📍 Barcelona (12 km) • 📐 172 cm • Morena • 💼 UX Designer",
+        name: "Sofía, 26 ✔️",
+        details: "📍 Barcelona (12 km) • 📐 172 cm • 💃 Baile • 🍽️ Comer fuera",
         tagline: "✨ Ver qué surge • Apasionada de la música indie 🎶",
-        bio: "Extrovertida y amante del buen diseño. Me encanta viajar sin itinerario fijo, escuchar música indie en vinilos y hacer picnics en el parque. ¿Cuál es tu canción favorita?",
+        bio: "Diseñadora UX/UI. Me encanta viajar sin itinerario fijo, escuchar música indie en vinilos y hacer picnics en el parque.",
         photos: [
           "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80",
           "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=600&q=80"
-        ]
-      },
-      {
-        name: "Carlos, 28",
-        details: "📍 Valencia (8 km) • 📐 181 cm • Castano • 💼 Software Dev",
-        tagline: "☕ Conexiones reales • Corredor de maratones 🏃‍♂️",
-        bio: "Disciplina durante la semana y relajación los fines de semana. Me gusta correr maratones, los perros y cocinar pasta casera. Busco a alguien genuino con quien compartir risas.",
-        photos: [
-          "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80"
         ]
       }
     ];
@@ -529,15 +558,15 @@
 
       if (mode === 'register') {
         authTabs.classList.remove('hidden');
-        tabRegister.className = "py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md";
-        tabLogin.className = "py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
+        tabRegister.className = "py-2.5 text-xs font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md shadow-rose-500/20";
+        tabLogin.className = "py-2.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
         formRegister.classList.remove('hidden');
         formLogin.classList.add('hidden');
         formForgot.classList.add('hidden');
       } else if (mode === 'login') {
         authTabs.classList.remove('hidden');
-        tabLogin.className = "py-2.5 text-sm font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md";
-        tabRegister.className = "py-2.5 text-sm font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
+        tabLogin.className = "py-2.5 text-xs font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md shadow-rose-500/20";
+        tabRegister.className = "py-2.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200";
         formLogin.classList.remove('hidden');
         formRegister.classList.add('hidden');
         formForgot.classList.add('hidden');
@@ -614,35 +643,31 @@
       toggleChat(true);
     }
 
-    // GUARDAR AMBAS PARTES DEL ONBOARDING
     function saveOnboarding(e) {
       e.preventDefault();
+      const selectedChips = Array.from(document.querySelectorAll('#interests-container .bg-rose-500')).map(c => c.textContent.trim());
+
       const userProfile = {
-        // Parte 1: Perfil Propio
         name: localStorage.getItem('temp_reg_name') || 'Nuevo Usuario',
-        age: document.getElementById('onboard-age').value,
         bio: document.getElementById('onboard-bio').value,
         tagline: document.getElementById('onboard-tagline').value,
-        intent: document.getElementById('onboard-intent').value,
-        hair: document.getElementById('onboard-hair').value,
+        relationship: document.getElementById('onboard-relationship').value,
+        orientation: document.getElementById('onboard-orientation').value,
         height: document.getElementById('onboard-height').value,
+        languages: document.getElementById('onboard-languages').value,
+        alcohol: document.getElementById('onboard-alcohol').value,
         smoke: document.getElementById('onboard-smoke').value,
-        kids: document.getElementById('onboard-kids').value,
+        zodiac: document.getElementById('onboard-zodiac').value,
         pets: document.getElementById('onboard-pets').value,
-        job: document.getElementById('onboard-job').value,
+        personality: document.getElementById('onboard-personality').value,
         education: document.getElementById('onboard-education').value,
-        interests: document.getElementById('onboard-hobbies').value,
+        kids: document.getElementById('onboard-kids').value,
         photoUrl: document.getElementById('onboard-photo1').value,
-
-        // Parte 2: Filtros de Pareja deseada (Target Preferences)
+        interests: selectedChips,
         targetGender: document.getElementById('target-gender').value,
-        targetHair: document.getElementById('target-hair').value,
         targetMinHeight: document.getElementById('target-min-height').value,
         targetDistance: document.getElementById('target-distance').value,
-        targetEducation: document.getElementById('target-education').value,
-        targetKids: document.getElementById('target-kids').value,
-        targetSmoke: document.getElementById('target-smoke').value,
-        targetPets: document.getElementById('target-pets').value
+        targetHair: document.getElementById('target-hair').value
       };
 
       localStorage.setItem('app_user_profile', JSON.stringify(userProfile));
@@ -680,12 +705,8 @@
     function loadUserSettingsToForm() {
       const savedProfile = JSON.parse(localStorage.getItem('app_user_profile') || '{}');
       document.getElementById('user-name-input').value = savedProfile.name || 'Mi Nombre';
-      document.getElementById('user-age-input').value = savedProfile.age || '25';
       document.getElementById('user-bio-input').value = savedProfile.bio || '¡Hola! Soy nuevo en Amora.';
-      document.getElementById('user-job-input').value = savedProfile.job || 'Profesional';
       document.getElementById('user-height-input').value = savedProfile.height || '170';
-      document.getElementById('user-smoke-input').value = savedProfile.smoke || '🚭 No fumo';
-      document.getElementById('user-interests-input').value = savedProfile.interests || 'Viajes, Cine, Fotografía';
       const defaultPhoto = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80';
       document.getElementById('user-photo-url').value = savedProfile.photoUrl || defaultPhoto;
       updateAvatarPreview(savedProfile.photoUrl || defaultPhoto);
@@ -697,12 +718,8 @@
       const profileData = {
         ...current,
         name: document.getElementById('user-name-input').value,
-        age: document.getElementById('user-age-input').value,
         bio: document.getElementById('user-bio-input').value,
-        job: document.getElementById('user-job-input').value,
         height: document.getElementById('user-height-input').value,
-        smoke: document.getElementById('user-smoke-input').value,
-        interests: document.getElementById('user-interests-input').value,
         photoUrl: document.getElementById('user-photo-url').value
       };
 
@@ -793,7 +810,7 @@
       if (!input.value.trim()) return;
 
       const userMsg = document.createElement('div');
-      userMsg.className = 'bg-rose-500/80 text-white p-2.5 rounded-xl max-w-[85%] ml-auto text-right';
+      userMsg.className = 'bg-rose-500/80 text-white p-2.5 rounded-2xl max-w-[85%] ml-auto text-right';
       userMsg.textContent = input.value;
       container.appendChild(userMsg);
 
