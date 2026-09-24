@@ -7,19 +7,18 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-950 text-white font-sans antialiased selection:bg-pink-500 selection:text-white">
+<body class="bg-slate-950 text-white font-sans antialiased">
 
   <div id="app" class="max-w-md mx-auto min-h-screen flex flex-col justify-between border-x border-slate-800 relative bg-slate-950">
     
     <!-- HEADER -->
     <header class="p-3 border-b border-slate-800 flex flex-col gap-2 bg-slate-900/90 backdrop-blur-md sticky top-0 z-30">
       <div class="flex justify-between items-center">
-        <!-- Selector Amora / Amora Club -->
         <div class="flex items-center space-x-1 bg-slate-800 p-1 rounded-full border border-slate-700">
           <button id="btn-mode-amora" onclick="setAppMode('amora')" class="px-3 py-1 rounded-full text-xs font-bold bg-pink-600 text-white transition">
             ❤️ Amora
           </button>
-          <button id="btn-mode-club" onclick="triggerClubSwitch()" class="px-3 py-1 rounded-full text-xs font-bold text-gray-400 hover:text-white transition">
+          <button id="btn-mode-club" onclick="setAppMode('club')" class="px-3 py-1 rounded-full text-xs font-bold text-gray-400 hover:text-white transition">
             🔒 Amora Club
           </button>
         </div>
@@ -30,7 +29,6 @@
         </div>
       </div>
 
-      <!-- Presencia Online/Offline -->
       <div class="flex justify-between items-center bg-slate-900 px-3 py-1 rounded-xl text-xs border border-slate-800">
         <div class="flex items-center space-x-2">
           <span id="status-dot" class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
@@ -40,7 +38,7 @@
       </div>
     </header>
 
-    <!-- PESTAÑA 1: INICIO (NOVEDADES + MOSAICO) -->
+    <!-- PESTAÑA 1: INICIO -->
     <main id="tab-inicio" class="flex-1 overflow-y-auto p-3 space-y-4">
       <div class="space-y-2">
         <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1">
@@ -57,7 +55,7 @@
               <p class="text-[10px] text-gray-400">Hace unos minutos</p>
             </div>
           </div>
-          <button id="btn-unlock-perfil" onclick="startAd()" class="text-[11px] bg-pink-600 hover:bg-pink-700 px-3 py-1.5 rounded-xl font-bold shadow-md">
+          <button onclick="startAd()" class="text-[11px] bg-pink-600 hover:bg-pink-700 px-3 py-1.5 rounded-xl font-bold shadow-md">
             🎥 Ver video (30s)
           </button>
         </div>
@@ -98,105 +96,114 @@
       <div id="chat-list" class="space-y-2"></div>
     </main>
 
-    <!-- PESTAÑA 4: MI PERFIL -->
-    <main id="tab-perfil" class="flex-1 p-4 space-y-4 overflow-y-auto hidden">
-      <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 text-center space-y-3">
+    <!-- PESTAÑA 4: MI PERFIL Y EDICIÓN -->
+    <main id="tab-perfil" class="flex-1 p-3 space-y-4 overflow-y-auto hidden">
+      
+      <!-- TARJETA CABECERA DE USUARIO -->
+      <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 text-center space-y-2">
         <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-pink-500">
           <img id="my-avatar" src="https://picsum.photos/200" class="w-full h-full object-cover">
         </div>
         <div>
-          <h3 id="my-username" class="font-bold text-base">Usuario Principal</h3>
-          <p id="my-user-status" class="text-xs text-green-400">Sesión Activa</p>
-          <p id="my-user-bio" class="text-xs text-gray-400 mt-1 italic">Sin biografía</p>
+          <h3 id="my-username" class="font-bold text-base">Antonio, 56</h3>
+          <p id="my-user-location" class="text-xs text-gray-400">Hombre, Valencia</p>
         </div>
       </div>
 
-      <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
-        <h4 class="font-bold text-gray-400 uppercase text-[10px]">Ajustes de Cuenta</h4>
-        <button onclick="startBadooQuiz()" class="w-full text-left py-2.5 px-3 bg-pink-600/20 text-pink-400 hover:bg-pink-600/30 rounded-xl flex justify-between items-center border border-pink-500/30">
-          <span>✨ Crear Perfil Completo (Estilo Badoo)</span>
-          <i data-lucide="sparkles" class="w-4 h-4"></i>
-        </button>
-        <button onclick="logout()" class="w-full text-left py-2 px-3 bg-red-950/40 text-red-400 hover:bg-red-900/30 rounded-xl flex justify-between items-center border border-red-900/30">
-          <span>Cerrar Sesión</span>
-          <i data-lucide="log-out" class="w-4 h-4"></i>
-        </button>
+      <!-- VISTA FORMULARIO AMORA (TIPO BADOO) -->
+      <div id="form-amora-view" class="bg-white text-slate-900 rounded-2xl p-4 space-y-4 text-xs shadow-lg">
+        <div class="border-b pb-2 flex justify-between items-center">
+          <span class="font-bold text-sm">Perfil Amora</span>
+          <span class="text-[10px] bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full font-bold">60% completado</span>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="font-bold block text-slate-700 mb-1">Profesión</label>
+            <input type="text" id="amora-job" value="Añadir tu trabajo" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-800">
+          </div>
+          <div>
+            <label class="font-bold block text-slate-700 mb-1">Estudios</label>
+            <input type="text" id="amora-studies" value="Secundaria" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-800">
+          </div>
+          <div>
+            <label class="font-bold block text-slate-700 mb-1">Aquí busco...</label>
+            <input type="text" id="amora-seeking" value="Quedar y ver qué surge" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-800">
+          </div>
+          <div>
+            <label class="font-bold block text-slate-700 mb-1">Biografía</label>
+            <textarea id="amora-bio" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 h-16 resize-none">Añade tu biografía para presentarte</textarea>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 space-y-2">
+          <p class="font-bold text-slate-800">Mi información</p>
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Estatura:</strong> <input id="amora-height" value="170 cm" class="w-full bg-transparent"></div>
+            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Alcohol:</strong> <input id="amora-alcohol" value="En contextos sociales" class="w-full bg-transparent"></div>
+            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Relación:</strong> <input id="amora-rel" value="Soltero" class="w-full bg-transparent"></div>
+            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Orientación:</strong> <input id="amora-orient" value="Heterosexual" class="w-full bg-transparent"></div>
+            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Tabaco:</strong> <input id="amora-smoke" value="No fumador" class="w-full bg-transparent"></div>
+            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Personalidad:</strong> <input id="amora-personality" value="Extrovertido" class="w-full bg-transparent"></div>
+          </div>
+        </div>
+
+        <div class="pt-2 border-t border-slate-100 space-y-2">
+          <p class="font-bold text-slate-800">Intereses</p>
+          <div class="flex flex-wrap gap-1 text-[10px]">
+            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">🍿 Amante del cine</span>
+            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">☕ Café</span>
+            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">🍽️ Comer fuera</span>
+            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">💕 Abrazos y mimos</span>
+            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">💃 Baile</span>
+          </div>
+        </div>
       </div>
+
+      <!-- VISTA FORMULARIO AMORA CLUB (TIPO GRINDR / MODO OSCURO) -->
+      <div id="form-club-view" class="bg-slate-900 border border-purple-500/30 rounded-2xl p-4 space-y-4 text-xs shadow-xl hidden">
+        <div class="border-b border-slate-800 pb-2 flex justify-between items-center">
+          <span class="font-bold text-sm text-purple-400">Editar Perfil Amora Club 🔒</span>
+        </div>
+
+        <div class="space-y-3 text-gray-200">
+          <div>
+            <label class="block text-gray-400 mb-1">Nombre de pantalla</label>
+            <input type="text" id="club-display-name" value="Antonio VIP" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
+          </div>
+          <div class="grid grid-cols-2 gap-2">
+            <div>
+              <label class="block text-gray-400 mb-1">Edad</label>
+              <input type="text" id="club-age" value="56" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
+            </div>
+            <div>
+              <label class="block text-gray-400 mb-1">Peso</label>
+              <input type="text" id="club-weight" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-gray-400 mb-1">Etnia</label>
+            <input type="text" id="club-ethnicity" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
+          </div>
+          <div>
+            <label class="block text-gray-400 mb-1">Tipo de cuerpo</label>
+            <input type="text" id="club-body" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
+          </div>
+          <div>
+            <label class="block text-gray-400 mb-1">Rol</label>
+            <input type="text" id="club-role" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
+          </div>
+          <div>
+            <label class="block text-gray-400 mb-1">Estado de la relación</label>
+            <input type="text" id="club-rel-status" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
+          </div>
+        </div>
+      </div>
+
     </main>
 
-    <!-- MODAL MULTI-PASO: CUESTIONARIO BADOO PARA REGISTRO/CREAR PERFIL -->
-    <div id="modal-badoo-quiz" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-sm border border-slate-800 space-y-4">
-        <div class="flex justify-between items-center">
-          <span id="quiz-step-indicator" class="text-[10px] font-bold text-pink-500 uppercase tracking-widest">Paso 1 de 4</span>
-          <button onclick="closeBadooQuiz()" class="text-gray-400 hover:text-white">✕</button>
-        </div>
-
-        <!-- Paso 1: Nombre y Edad -->
-        <div id="quiz-step-1" class="quiz-step space-y-3">
-          <h3 class="text-base font-bold">¿Cómo te llamas y qué edad tienes?</h3>
-          <input id="quiz-name" type="text" placeholder="Tu nombre..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white">
-          <input id="quiz-age" type="number" placeholder="Tu edad..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white">
-        </div>
-
-        <!-- Paso 2: Busco -->
-        <div id="quiz-step-2" class="quiz-step space-y-3 hidden">
-          <h3 class="text-base font-bold">¿Qué estás buscando hoy?</h3>
-          <div class="space-y-2 text-xs">
-            <button onclick="selectQuizOption('intent', 'Relación seria')" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-pink-600 text-left border border-slate-700">💍 Relación seria</button>
-            <button onclick="selectQuizOption('intent', 'Algo casual')" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-pink-600 text-left border border-slate-700">🔥 Citas / Algo casual</button>
-            <button onclick="selectQuizOption('intent', 'Nuevos amigos')" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-pink-600 text-left border border-slate-700">☕ Nuevos amigos</button>
-          </div>
-        </div>
-
-        <!-- Paso 3: Intereses -->
-        <div id="quiz-step-3" class="quiz-step space-y-3 hidden">
-          <h3 class="text-base font-bold">Elige tus intereses</h3>
-          <div class="grid grid-cols-2 gap-2 text-xs">
-            <button onclick="toggleInterest(this, 'Música')" class="py-2 px-2 rounded-xl bg-slate-800 border border-slate-700 text-center">🎵 Música</button>
-            <button onclick="toggleInterest(this, 'Deportes')" class="py-2 px-2 rounded-xl bg-slate-800 border border-slate-700 text-center">⚽ Deportes</button>
-            <button onclick="toggleInterest(this, 'Viajes')" class="py-2 px-2 rounded-xl bg-slate-800 border border-slate-700 text-center">✈️ Viajes</button>
-            <button onclick="toggleInterest(this, 'Gimnasio')" class="py-2 px-2 rounded-xl bg-slate-800 border border-slate-700 text-center">🏋️ Gimnasio</button>
-          </div>
-        </div>
-
-        <!-- Paso 4: Biografía -->
-        <div id="quiz-step-4" class="quiz-step space-y-3 hidden">
-          <h3 class="text-base font-bold">Añade una breve biografía</h3>
-          <textarea id="quiz-bio" placeholder="Escribe un poco sobre ti..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white h-20 resize-none"></textarea>
-        </div>
-
-        <div class="flex justify-between items-center pt-2">
-          <button id="btn-quiz-prev" onclick="prevQuizStep()" class="text-xs text-gray-400 hidden">Anterior</button>
-          <button id="btn-quiz-next" onclick="nextQuizStep()" class="ml-auto bg-pink-600 px-4 py-2 rounded-xl text-xs font-bold">Siguiente</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MODAL ACCESO A AMORA CLUB (CUESTIONARIO EXCLUSIVO) -->
-    <div id="modal-club-access" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-sm border border-purple-500/40 space-y-4">
-        <div class="text-center space-y-1">
-          <span class="text-2xl">🔒</span>
-          <h3 class="text-base font-bold text-purple-400">Acceso a Amora Club</h3>
-          <p class="text-[11px] text-gray-400">Para ingresar al club exclusivo debes responder esta verificación:</p>
-        </div>
-        <div class="space-y-2 text-xs">
-          <label class="block text-gray-300">¿Cuál es tu vibe principal?</label>
-          <select id="club-vibe" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white">
-            <option value="Fiestas VIP & Eventos">Fiestas VIP & Eventos</option>
-            <option value="Citas Privadas & Discretas">Citas Privadas & Discretas</option>
-            <option value="Contactos de Alto Nivel">Contactos de Alto Nivel</option>
-          </select>
-        </div>
-        <div class="flex gap-2">
-          <button onclick="confirmClubAccess()" class="flex-1 bg-purple-600 py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-purple-600/30">Entrar a Amora Club</button>
-          <button onclick="closeClubModal()" class="flex-1 bg-slate-800 py-2.5 rounded-xl text-xs">Cancelar</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- MODAL DETALLE DE PERFIL -->
+    <!-- MODALES VARIOS -->
     <div id="modal-profile-detail" class="fixed inset-0 bg-black/90 z-50 hidden overflow-y-auto p-4">
       <div class="max-w-md mx-auto bg-slate-900 rounded-3xl overflow-hidden border border-slate-800">
         <div class="relative h-72">
@@ -214,7 +221,6 @@
       </div>
     </div>
 
-    <!-- MODAL FILTROS DE PREFERENCIAS -->
     <div id="modal-filters" class="fixed inset-0 bg-black/80 z-50 hidden flex flex-col justify-end">
       <div class="p-5 rounded-t-3xl w-full max-w-md mx-auto bg-slate-900 border-t border-slate-800 space-y-3">
         <div class="flex justify-between items-center">
@@ -226,18 +232,16 @@
           <div class="flex flex-wrap gap-2">
             <button class="px-3 py-1 rounded-full bg-pink-600 text-white">Citas casuales</button>
             <button class="px-3 py-1 rounded-full bg-slate-800 text-gray-300">Relación seria</button>
-            <button class="px-3 py-1 rounded-full bg-slate-800 text-gray-300">Amistad</button>
           </div>
         </div>
         <button onclick="toggleFilters(false)" class="w-full py-2.5 bg-pink-600 rounded-xl font-bold text-xs">Guardar Filtros</button>
       </div>
     </div>
 
-    <!-- MODAL ENVIAR MENSAJE -->
     <div id="modal-message" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
       <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-xs border border-slate-800 space-y-3">
         <h3 class="text-sm font-bold">Enviar Mensaje</h3>
-        <textarea id="input-chat-msg" placeholder="Escribe algo simpático..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white h-20 resize-none"></textarea>
+        <textarea id="input-chat-msg" placeholder="Escribe algo..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white h-20 resize-none"></textarea>
         <div class="flex gap-2">
           <button onclick="sendChatMessage()" class="flex-1 bg-pink-600 py-2 rounded-xl text-xs font-bold">Enviar</button>
           <button onclick="closeMessageModal()" class="flex-1 bg-slate-800 py-2 rounded-xl text-xs">Cancelar</button>

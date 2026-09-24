@@ -1,8 +1,6 @@
 let currentMode = 'amora';
 let isOnline = true;
 let currentProfileIndex = 0;
-let quizStep = 1;
-let quizData = { name: '', age: '', intent: '', interests: [], bio: '' };
 
 const profiles = [
   { name: "Sofia, 23", bio: "Fotógrafa y amante de los viajes 📸", img: "https://picsum.photos/400/600?random=1" },
@@ -17,24 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderChats();
 });
 
-// 1. CAMBIO DE MODO Y CUESTIONARIO AMORA CLUB
-function triggerClubSwitch() {
-  if (currentMode === 'amora') {
-    document.getElementById('modal-club-access').classList.remove('hidden');
-  } else {
-    setAppMode('amora');
-  }
-}
-
-function confirmClubAccess() {
-  closeClubModal();
-  setAppMode('club');
-}
-
-function closeClubModal() {
-  document.getElementById('modal-club-access').classList.add('hidden');
-}
-
+// ALTERNAR ENTRE MODO AMORA Y AMORA CLUB
 function setAppMode(mode) {
   currentMode = mode;
   const btnAmora = document.getElementById('btn-mode-amora');
@@ -42,21 +23,33 @@ function setAppMode(mode) {
   const zap = document.getElementById('header-zap');
   const label = document.getElementById('mode-label');
 
+  const formAmora = document.getElementById('form-amora-view');
+  const formClub = document.getElementById('form-club-view');
+
   if (mode === 'amora') {
     btnAmora.className = "px-3 py-1 rounded-full text-xs font-bold bg-pink-600 text-white transition";
     btnClub.className = "px-3 py-1 rounded-full text-xs font-bold text-gray-400 hover:text-white transition";
     zap.className = "w-5 h-5 text-pink-500";
-    if (label) label.innerText = "Modo Amora Estándar";
+    if (label) label.innerText = "Modo Amora";
+
+    if (formAmora && formClub) {
+      formAmora.classList.remove('hidden');
+      formClub.classList.add('hidden');
+    }
   } else {
     btnClub.className = "px-3 py-1 rounded-full text-xs font-bold bg-purple-600 text-white transition";
     btnAmora.className = "px-3 py-1 rounded-full text-xs font-bold text-gray-400 hover:text-white transition";
     zap.className = "w-5 h-5 text-purple-400";
     if (label) label.innerText = "Modo Amora Club Privado 🔒";
+
+    if (formAmora && formClub) {
+      formAmora.classList.add('hidden');
+      formClub.classList.remove('hidden');
+    }
   }
   renderGrid();
 }
 
-// 2. NAVEGACIÓN TAB
 function switchTab(tab) {
   ['inicio', 'encuentros', 'chats', 'perfil'].forEach(t => {
     document.getElementById(`tab-${t}`).classList.add('hidden');
@@ -67,7 +60,6 @@ function switchTab(tab) {
   document.getElementById(`nav-${tab}`).className = "flex flex-col items-center text-pink-500 font-bold";
 }
 
-// 3. MOSAICO Y DETALLES
 function renderGrid() {
   const container = document.getElementById('grid-perfiles');
   if (!container) return;
@@ -97,64 +89,6 @@ function closeProfileDetail() {
   document.getElementById('modal-profile-detail').classList.add('hidden');
 }
 
-// 4. CUESTIONARIO PASO A PASO ESTILO BADOO
-function startBadooQuiz() {
-  quizStep = 1;
-  showQuizStep(quizStep);
-  document.getElementById('modal-badoo-quiz').classList.remove('hidden');
-}
-
-function closeBadooQuiz() {
-  document.getElementById('modal-badoo-quiz').classList.add('hidden');
-}
-
-function showQuizStep(step) {
-  document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden'));
-  document.getElementById(`quiz-step-${step}`).classList.remove('hidden');
-  document.getElementById('quiz-step-indicator').innerText = `Paso ${step} de 4`;
-
-  document.getElementById('btn-quiz-prev').classList.toggle('hidden', step === 1);
-  document.getElementById('btn-quiz-next').innerText = step === 4 ? "Finalizar Perfil" : "Siguiente";
-}
-
-function nextQuizStep() {
-  if (quizStep === 1) {
-    quizData.name = document.getElementById('quiz-name').value || "Carlos";
-    quizData.age = document.getElementById('quiz-age').value || "24";
-  } else if (quizStep === 4) {
-    quizData.bio = document.getElementById('quiz-bio').value || "Buscando buenas experiencias.";
-    saveUserProfile();
-    closeBadooQuiz();
-    return;
-  }
-  quizStep++;
-  showQuizStep(quizStep);
-}
-
-function prevQuizStep() {
-  if (quizStep > 1) {
-    quizStep--;
-    showQuizStep(quizStep);
-  }
-}
-
-function selectQuizOption(key, val) {
-  quizData[key] = val;
-}
-
-function toggleInterest(btn, val) {
-  btn.classList.toggle('bg-pink-600');
-  btn.classList.toggle('bg-slate-800');
-  if (!quizData.interests.includes(val)) quizData.interests.push(val);
-}
-
-function saveUserProfile() {
-  document.getElementById('my-username').innerText = `${quizData.name}, ${quizData.age}`;
-  document.getElementById('my-user-status').innerText = "Perfil Verificado ✨";
-  document.getElementById('my-user-bio').innerText = quizData.bio;
-}
-
-// 5. MENSAJES Y CHATS
 function openMessageModal() { document.getElementById('modal-message').classList.remove('hidden'); }
 function closeMessageModal() { document.getElementById('modal-message').classList.add('hidden'); }
 
@@ -179,9 +113,7 @@ function nextCard() {
   updateCarrusel();
 }
 
-function likeCard() {
-  nextCard();
-}
+function likeCard() { nextCard(); }
 
 function renderChats() {
   const container = document.getElementById('chat-list');
@@ -209,9 +141,4 @@ function toggleFilters(show) {
 
 function startAd() {
   document.getElementById('avatar-preview').classList.remove('blur-md');
-}
-
-function logout() {
-  document.getElementById('my-username').innerText = "Sin Sesión";
-  document.getElementById('my-user-status').innerText = "Inicia sesión";
 }
