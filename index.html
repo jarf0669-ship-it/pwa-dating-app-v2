@@ -3,9 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dating App PWA</title>
+  <title>Amora PWA</title>
   <link rel="manifest" href="/manifest.json" />
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-4">
 
@@ -14,8 +16,8 @@
     <!-- PANTALLA DE AUTENTICACIÓN (Bloque 1) -->
     <section id="auth-section" class="p-6">
       <div class="text-center mb-6">
-        <h1 class="text-2xl font-bold text-rose-500">DatingApp</h1>
-        <p class="text-sm text-slate-400 mt-1">Encuentra a tu pareja ideal</p>
+        <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-500 to-pink-500">Amora</h1>
+        <p class="text-sm text-slate-400 mt-1">Conecta con personas especiales</p>
       </div>
 
       <!-- Pestañas -->
@@ -28,7 +30,7 @@
         </button>
       </div>
 
-      <!-- Formulario Login (Punto 1.1) -->
+      <!-- Formulario Login -->
       <form id="form-login" class="space-y-4 hidden">
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Correo electrónico</label>
@@ -46,7 +48,7 @@
         </button>
       </form>
 
-      <!-- Formulario Registro (Punto 1.2) -->
+      <!-- Formulario Registro -->
       <form id="form-register" class="space-y-4">
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre de usuario</label>
@@ -65,7 +67,7 @@
         </button>
       </form>
 
-      <!-- Formulario Recuperación de Contraseña (Punto 1.3) -->
+      <!-- Formulario Recuperación -->
       <form id="form-forgot" class="space-y-4 hidden" onsubmit="handleForgotPassword(event)">
         <div class="text-center mb-2">
           <h2 class="text-sm font-bold text-slate-200">Recuperar Contraseña</h2>
@@ -89,14 +91,17 @@
 
     <!-- PANTALLA PRINCIPAL DE LA APP -->
     <section id="app-section" class="hidden">
-      <!-- Encabezado con Botón de Ajustes (Bloque 3) -->
+      <!-- Encabezado con Botón de Instalación PWA y Ajustes -->
       <header class="p-3 bg-slate-900 border-b border-slate-700 flex justify-between items-center text-xs">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span id="user-display" class="text-slate-300 font-medium truncate max-w-[140px]">Cargando...</span>
+          <span id="user-display" class="text-slate-300 font-medium truncate max-w-[120px]">Cargando...</span>
         </div>
-        <div class="flex items-center gap-3">
-          <button onclick="toggleSettings(true)" class="text-slate-300 hover:text-white font-semibold flex items-center gap-1 bg-slate-800 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors">
+        <div class="flex items-center gap-2">
+          <button id="btn-install" onclick="installPWA()" class="hidden bg-rose-500 hover:bg-rose-600 text-white font-bold px-2.5 py-1 rounded-lg text-[11px] transition-all shadow">
+            📲 Instalar
+          </button>
+          <button onclick="toggleSettings(true)" class="text-slate-300 hover:text-white font-semibold flex items-center gap-1 bg-slate-800 px-2 py-1 rounded-lg border border-slate-700 transition-colors">
             ⚙️ <span class="hidden sm:inline">Ajustes</span>
           </button>
           <button id="btn-logout" class="text-rose-400 hover:text-rose-300 font-semibold underline">Salir</button>
@@ -105,7 +110,6 @@
 
       <!-- Tarjeta de Perfiles para Deslizar (Bloque 2) -->
       <div id="profile-card" class="p-4 flex flex-col items-center">
-        <!-- Contenedor de la Imagen y Galería -->
         <div class="relative w-full h-80 rounded-2xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900 group select-none">
           <img id="profile-img" src="" alt="Foto de perfil" class="w-full h-full object-cover transition-all duration-300">
           <div id="gallery-bars" class="absolute top-2 left-2 right-2 flex gap-1 z-10"></div>
@@ -142,7 +146,6 @@
         </div>
 
         <form id="settings-form" onsubmit="saveUserSettings(event)" class="space-y-4 text-xs">
-          <!-- Vista previa de foto personal -->
           <div class="flex flex-col items-center gap-2">
             <img id="settings-avatar-preview" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80" alt="Tu foto" class="w-20 h-20 rounded-full object-cover border-2 border-rose-500 shadow-md">
             <label class="block text-[11px] text-slate-400">URL de tu foto de perfil</label>
@@ -222,7 +225,54 @@
   </main>
 
   <script>
-    // Perfiles con múltiples fotos (Bloque 2)
+    // ==========================================
+    // CONFIGURACIÓN DE CLAVES API Y SUPABASE
+    // ==========================================
+    const SUPABASE_URL = "https://iyazkymfqyaidupqkkg.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."; // Clave Anon
+
+    let supabaseClient = null;
+    if (typeof supabase !== 'undefined' && SUPABASE_URL.includes('supabase.co')) {
+      try {
+        supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      } catch (err) {
+        console.warn("Supabase en espera. Operando en modo local seguro.");
+      }
+    }
+
+    // REGISTRO DE SERVICE WORKER PARA PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then((reg) => console.log('Service Worker registrado:', reg.scope))
+          .catch((err) => console.warn('PWA Service Worker deshabilitado en desarrollo local'));
+      });
+    }
+
+    // BOTÓN Y PROMPT DE INSTALACIÓN
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('btn-install');
+      if (installBtn) installBtn.classList.remove('hidden');
+    });
+
+    function installPWA() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choice) => {
+          if (choice.outcome === 'accepted') {
+            console.log('Amora PWA instalada');
+          }
+          deferredPrompt = null;
+          const installBtn = document.getElementById('btn-install');
+          if (installBtn) installBtn.classList.add('hidden');
+        });
+      }
+    }
+
+    // PERFILES
     const PROFILES = [
       {
         name: "María, 24",
@@ -370,7 +420,6 @@
       toggleChat(true);
     }
 
-    // LÓGICA DEL BLOQUE 3: AJUSTES Y PERFIL DE USUARIO
     function toggleSettings(open) {
       const profileCard = document.getElementById('profile-card');
       const settingsCard = document.getElementById('settings-card');
@@ -400,7 +449,7 @@
       const savedProfile = JSON.parse(localStorage.getItem('app_user_profile') || '{}');
       document.getElementById('user-name-input').value = savedProfile.name || 'Mi Nombre';
       document.getElementById('user-age-input').value = savedProfile.age || '25';
-      document.getElementById('user-bio-input').value = savedProfile.bio || '¡Hola! Estoy usando la nueva PWA de citas.';
+      document.getElementById('user-bio-input').value = savedProfile.bio || '¡Hola! Estoy usando Amora.';
       document.getElementById('user-interests-input').value = savedProfile.interests || 'Viajes, Cine, Fotografía';
       const defaultPhoto = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80';
       document.getElementById('user-photo-url').value = savedProfile.photoUrl || defaultPhoto;
