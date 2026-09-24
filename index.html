@@ -7,11 +7,11 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-950 text-white font-sans antialiased">
+<body class="bg-slate-950 text-white font-sans antialiased selection:bg-pink-500 selection:text-white">
 
   <div id="app" class="max-w-md mx-auto min-h-screen flex flex-col justify-between border-x border-slate-800 relative bg-slate-950">
     
-    <!-- BARRA SUPERIOR (HEADER) -->
+    <!-- HEADER -->
     <header class="p-3 border-b border-slate-800 flex flex-col gap-2 bg-slate-900/90 backdrop-blur-md sticky top-0 z-30">
       <div class="flex justify-between items-center">
         <!-- Selector Amora / Amora Club -->
@@ -19,7 +19,7 @@
           <button id="btn-mode-amora" onclick="setAppMode('amora')" class="px-3 py-1 rounded-full text-xs font-bold bg-pink-600 text-white transition">
             ❤️ Amora
           </button>
-          <button id="btn-mode-club" onclick="setAppMode('club')" class="px-3 py-1 rounded-full text-xs font-bold text-gray-400 hover:text-white transition">
+          <button id="btn-mode-club" onclick="triggerClubSwitch()" class="px-3 py-1 rounded-full text-xs font-bold text-gray-400 hover:text-white transition">
             🔒 Amora Club
           </button>
         </div>
@@ -42,8 +42,6 @@
 
     <!-- PESTAÑA 1: INICIO (NOVEDADES + MOSAICO) -->
     <main id="tab-inicio" class="flex-1 overflow-y-auto p-3 space-y-4">
-      
-      <!-- Novedades & Videos -->
       <div class="space-y-2">
         <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1">
           <i data-lucide="sparkles" class="w-3.5 h-3.5 text-yellow-400"></i> Novedades
@@ -51,8 +49,8 @@
 
         <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
           <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center border border-slate-700">
-              <img id="avatar-preview" src="https://picsum.photos/100" class="w-full h-full object-cover filter blur-md rounded-full">
+            <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center border border-slate-700 overflow-hidden">
+              <img id="avatar-preview" src="https://picsum.photos/100" class="w-full h-full object-cover filter blur-md">
             </div>
             <div>
               <p class="font-semibold text-xs">Alguien vio tu perfil</p>
@@ -65,7 +63,6 @@
         </div>
       </div>
 
-      <!-- Mosaico Descubre Perfiles -->
       <div>
         <h2 class="text-sm font-bold mb-2 flex justify-between items-center">
           <span>Descubre perfiles</span>
@@ -75,7 +72,7 @@
       </div>
     </main>
 
-    <!-- PESTAÑA 2: ENCUENTROS (CARRUSEL SWIPE LIKE/DISLIKE) -->
+    <!-- PESTAÑA 2: ENCUENTROS -->
     <main id="tab-encuentros" class="flex-1 flex flex-col justify-between p-3 hidden">
       <div class="relative rounded-3xl overflow-hidden aspect-[3/4] bg-slate-900 border border-slate-800 shadow-2xl">
         <img id="carrusel-img" src="https://picsum.photos/400/600?random=1" class="w-full h-full object-cover">
@@ -90,7 +87,7 @@
 
       <div class="flex justify-around items-center my-3">
         <button onclick="nextCard()" class="w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-red-500 font-bold hover:scale-105">✕</button>
-        <button onclick="sendMessagePrompt()" class="w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-400 hover:scale-105"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
+        <button onclick="openMessageModal()" class="w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-400 hover:scale-105"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
         <button onclick="likeCard()" class="w-14 h-14 rounded-full bg-pink-600 flex items-center justify-center text-white hover:scale-105"><i data-lucide="heart" class="w-7 h-7"></i></button>
       </div>
     </main>
@@ -101,24 +98,24 @@
       <div id="chat-list" class="space-y-2"></div>
     </main>
 
-    <!-- PESTAÑA 4: MI PERFIL Y AJUSTES -->
+    <!-- PESTAÑA 4: MI PERFIL -->
     <main id="tab-perfil" class="flex-1 p-4 space-y-4 overflow-y-auto hidden">
       <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 text-center space-y-3">
         <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-pink-500">
-          <img src="https://picsum.photos/200" class="w-full h-full object-cover">
+          <img id="my-avatar" src="https://picsum.photos/200" class="w-full h-full object-cover">
         </div>
         <div>
           <h3 id="my-username" class="font-bold text-base">Usuario Principal</h3>
           <p id="my-user-status" class="text-xs text-green-400">Sesión Activa</p>
+          <p id="my-user-bio" class="text-xs text-gray-400 mt-1 italic">Sin biografía</p>
         </div>
-        <button onclick="editBio()" class="text-xs bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700">Editar Biografía</button>
       </div>
 
       <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-2 text-xs">
         <h4 class="font-bold text-gray-400 uppercase text-[10px]">Ajustes de Cuenta</h4>
-        <button onclick="openAuthModal()" class="w-full text-left py-2 px-3 bg-slate-800 hover:bg-slate-700 rounded-xl flex justify-between items-center">
-          <span>Crear / Cambiar Usuario</span>
-          <i data-lucide="user-plus" class="w-4 h-4"></i>
+        <button onclick="startBadooQuiz()" class="w-full text-left py-2.5 px-3 bg-pink-600/20 text-pink-400 hover:bg-pink-600/30 rounded-xl flex justify-between items-center border border-pink-500/30">
+          <span>✨ Crear Perfil Completo (Estilo Badoo)</span>
+          <i data-lucide="sparkles" class="w-4 h-4"></i>
         </button>
         <button onclick="logout()" class="w-full text-left py-2 px-3 bg-red-950/40 text-red-400 hover:bg-red-900/30 rounded-xl flex justify-between items-center border border-red-900/30">
           <span>Cerrar Sesión</span>
@@ -126,6 +123,78 @@
         </button>
       </div>
     </main>
+
+    <!-- MODAL MULTI-PASO: CUESTIONARIO BADOO PARA REGISTRO/CREAR PERFIL -->
+    <div id="modal-badoo-quiz" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-sm border border-slate-800 space-y-4">
+        <div class="flex justify-between items-center">
+          <span id="quiz-step-indicator" class="text-[10px] font-bold text-pink-500 uppercase tracking-widest">Paso 1 de 4</span>
+          <button onclick="closeBadooQuiz()" class="text-gray-400 hover:text-white">✕</button>
+        </div>
+
+        <!-- Paso 1: Nombre y Edad -->
+        <div id="quiz-step-1" class="quiz-step space-y-3">
+          <h3 class="text-base font-bold">¿Cómo te llamas y qué edad tienes?</h3>
+          <input id="quiz-name" type="text" placeholder="Tu nombre..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white">
+          <input id="quiz-age" type="number" placeholder="Tu edad..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white">
+        </div>
+
+        <!-- Paso 2: Busco -->
+        <div id="quiz-step-2" class="quiz-step space-y-3 hidden">
+          <h3 class="text-base font-bold">¿Qué estás buscando hoy?</h3>
+          <div class="space-y-2 text-xs">
+            <button onclick="selectQuizOption('intent', 'Relación seria')" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-pink-600 text-left border border-slate-700">💍 Relación seria</button>
+            <button onclick="selectQuizOption('intent', 'Algo casual')" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-pink-600 text-left border border-slate-700">🔥 Citas / Algo casual</button>
+            <button onclick="selectQuizOption('intent', 'Nuevos amigos')" class="w-full py-2 px-3 rounded-xl bg-slate-800 hover:bg-pink-600 text-left border border-slate-700">☕ Nuevos amigos</button>
+          </div>
+        </div>
+
+        <!-- Paso 3: Intereses -->
+        <div id="quiz-step-3" class="quiz-step space-y-3 hidden">
+          <h3 class="text-base font-bold">Elige tus intereses</h3>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <button onclick="toggleInterest(this, 'Música')" class="py-2 px-2 rounded-xl bg-slate-800 border border-slate-700 text-center">🎵 Música</button>
+            <button onclick="toggleInterest(this, 'Deportes')" class="py-2 px-2 rounded-xl bg-slate-800 border border-slate-700 text-center">⚽ Deportes</button>
+            <button onclick="toggleInterest(this, 'Viajes')" class="py-2 px-2 rounded-xl bg-slate-800 border border-slate-700 text-center">✈️ Viajes</button>
+            <button onclick="toggleInterest(this, 'Gimnasio')" class="py-2 px-2 rounded-xl bg-slate-800 border border-slate-700 text-center">🏋️ Gimnasio</button>
+          </div>
+        </div>
+
+        <!-- Paso 4: Biografía -->
+        <div id="quiz-step-4" class="quiz-step space-y-3 hidden">
+          <h3 class="text-base font-bold">Añade una breve biografía</h3>
+          <textarea id="quiz-bio" placeholder="Escribe un poco sobre ti..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white h-20 resize-none"></textarea>
+        </div>
+
+        <div class="flex justify-between items-center pt-2">
+          <button id="btn-quiz-prev" onclick="prevQuizStep()" class="text-xs text-gray-400 hidden">Anterior</button>
+          <button id="btn-quiz-next" onclick="nextQuizStep()" class="ml-auto bg-pink-600 px-4 py-2 rounded-xl text-xs font-bold">Siguiente</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL ACCESO A AMORA CLUB (CUESTIONARIO EXCLUSIVO) -->
+    <div id="modal-club-access" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-sm border border-purple-500/40 space-y-4">
+        <div class="text-center space-y-1">
+          <span class="text-2xl">🔒</span>
+          <h3 class="text-base font-bold text-purple-400">Acceso a Amora Club</h3>
+          <p class="text-[11px] text-gray-400">Para ingresar al club exclusivo debes responder esta verificación:</p>
+        </div>
+        <div class="space-y-2 text-xs">
+          <label class="block text-gray-300">¿Cuál es tu vibe principal?</label>
+          <select id="club-vibe" class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white">
+            <option value="Fiestas VIP & Eventos">Fiestas VIP & Eventos</option>
+            <option value="Citas Privadas & Discretas">Citas Privadas & Discretas</option>
+            <option value="Contactos de Alto Nivel">Contactos de Alto Nivel</option>
+          </select>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="confirmClubAccess()" class="flex-1 bg-purple-600 py-2.5 rounded-xl text-xs font-bold shadow-lg shadow-purple-600/30">Entrar a Amora Club</button>
+          <button onclick="closeClubModal()" class="flex-1 bg-slate-800 py-2.5 rounded-xl text-xs">Cancelar</button>
+        </div>
+      </div>
+    </div>
 
     <!-- MODAL DETALLE DE PERFIL -->
     <div id="modal-profile-detail" class="fixed inset-0 bg-black/90 z-50 hidden overflow-y-auto p-4">
@@ -138,18 +207,18 @@
           <h2 id="detail-name" class="text-xl font-bold"></h2>
           <p id="detail-bio" class="text-xs text-gray-300"></p>
           <div class="flex gap-2">
-            <button onclick="sendMessagePrompt(); closeProfileDetail();" class="flex-1 py-2 bg-pink-600 rounded-xl font-bold text-xs">Enviar Mensaje</button>
+            <button onclick="openMessageModal(); closeProfileDetail();" class="flex-1 py-2 bg-pink-600 rounded-xl font-bold text-xs">Enviar Mensaje</button>
             <button onclick="likeCard(); closeProfileDetail();" class="flex-1 py-2 bg-purple-600 rounded-xl font-bold text-xs">Dar Me Gusta</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- MODAL CUESTIONARIO Y FILTROS -->
+    <!-- MODAL FILTROS DE PREFERENCIAS -->
     <div id="modal-filters" class="fixed inset-0 bg-black/80 z-50 hidden flex flex-col justify-end">
       <div class="p-5 rounded-t-3xl w-full max-w-md mx-auto bg-slate-900 border-t border-slate-800 space-y-3">
         <div class="flex justify-between items-center">
-          <h3 class="text-sm font-bold">Cuestionario de Preferencias</h3>
+          <h3 class="text-sm font-bold">Filtros de Búsqueda</h3>
           <button onclick="toggleFilters(false)">✕</button>
         </div>
         <div class="space-y-2 text-xs">
@@ -164,19 +233,19 @@
       </div>
     </div>
 
-    <!-- MODAL INICIAR SESIÓN / CREAR USUARIO -->
-    <div id="modal-auth" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-xs border border-slate-800 space-y-4">
-        <h3 class="text-sm font-bold text-center">Registrar Nuevo Usuario</h3>
-        <input id="input-username" type="text" placeholder="Ingresa tu nombre..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white focus:outline-none">
+    <!-- MODAL ENVIAR MENSAJE -->
+    <div id="modal-message" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-xs border border-slate-800 space-y-3">
+        <h3 class="text-sm font-bold">Enviar Mensaje</h3>
+        <textarea id="input-chat-msg" placeholder="Escribe algo simpático..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white h-20 resize-none"></textarea>
         <div class="flex gap-2">
-          <button onclick="saveUser()" class="flex-1 bg-pink-600 py-2 rounded-xl text-xs font-bold">Guardar</button>
-          <button onclick="closeAuthModal()" class="flex-1 bg-slate-800 py-2 rounded-xl text-xs">Cancelar</button>
+          <button onclick="sendChatMessage()" class="flex-1 bg-pink-600 py-2 rounded-xl text-xs font-bold">Enviar</button>
+          <button onclick="closeMessageModal()" class="flex-1 bg-slate-800 py-2 rounded-xl text-xs">Cancelar</button>
         </div>
       </div>
     </div>
 
-    <!-- NAVEGACIÓN INFERIOR DE 4 BOTONES -->
+    <!-- NAVEGACIÓN INFERIOR -->
     <nav class="flex justify-around items-center py-2.5 border-t border-slate-800 bg-slate-900 text-[10px]">
       <button onclick="switchTab('inicio')" id="nav-inicio" class="flex flex-col items-center text-pink-500 font-bold">
         <i data-lucide="user" class="w-4 h-4 mb-0.5"></i>

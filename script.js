@@ -1,6 +1,8 @@
 let currentMode = 'amora';
 let isOnline = true;
 let currentProfileIndex = 0;
+let quizStep = 1;
+let quizData = { name: '', age: '', intent: '', interests: [], bio: '' };
 
 const profiles = [
   { name: "Sofia, 23", bio: "Fotógrafa y amante de los viajes 📸", img: "https://picsum.photos/400/600?random=1" },
@@ -15,7 +17,24 @@ document.addEventListener('DOMContentLoaded', () => {
   renderChats();
 });
 
-// 1. CAMBIO DE AMORA A AMORA CLUB
+// 1. CAMBIO DE MODO Y CUESTIONARIO AMORA CLUB
+function triggerClubSwitch() {
+  if (currentMode === 'amora') {
+    document.getElementById('modal-club-access').classList.remove('hidden');
+  } else {
+    setAppMode('amora');
+  }
+}
+
+function confirmClubAccess() {
+  closeClubModal();
+  setAppMode('club');
+}
+
+function closeClubModal() {
+  document.getElementById('modal-club-access').classList.add('hidden');
+}
+
 function setAppMode(mode) {
   currentMode = mode;
   const btnAmora = document.getElementById('btn-mode-amora');
@@ -37,7 +56,7 @@ function setAppMode(mode) {
   renderGrid();
 }
 
-// 2. NAVEGACIÓN ENTRE LAS 4 PESTAÑAS
+// 2. NAVEGACIÓN TAB
 function switchTab(tab) {
   ['inicio', 'encuentros', 'chats', 'perfil'].forEach(t => {
     document.getElementById(`tab-${t}`).classList.add('hidden');
@@ -48,7 +67,7 @@ function switchTab(tab) {
   document.getElementById(`nav-${tab}`).className = "flex flex-col items-center text-pink-500 font-bold";
 }
 
-// 3. MOSAICO Y ABRIR DETALLE DE PERFIL
+// 3. MOSAICO Y DETALLES
 function renderGrid() {
   const container = document.getElementById('grid-perfiles');
   if (!container) return;
@@ -78,7 +97,76 @@ function closeProfileDetail() {
   document.getElementById('modal-profile-detail').classList.add('hidden');
 }
 
-// 4. CARRUSEL Y MATCHES
+// 4. CUESTIONARIO PASO A PASO ESTILO BADOO
+function startBadooQuiz() {
+  quizStep = 1;
+  showQuizStep(quizStep);
+  document.getElementById('modal-badoo-quiz').classList.remove('hidden');
+}
+
+function closeBadooQuiz() {
+  document.getElementById('modal-badoo-quiz').classList.add('hidden');
+}
+
+function showQuizStep(step) {
+  document.querySelectorAll('.quiz-step').forEach(el => el.classList.add('hidden'));
+  document.getElementById(`quiz-step-${step}`).classList.remove('hidden');
+  document.getElementById('quiz-step-indicator').innerText = `Paso ${step} de 4`;
+
+  document.getElementById('btn-quiz-prev').classList.toggle('hidden', step === 1);
+  document.getElementById('btn-quiz-next').innerText = step === 4 ? "Finalizar Perfil" : "Siguiente";
+}
+
+function nextQuizStep() {
+  if (quizStep === 1) {
+    quizData.name = document.getElementById('quiz-name').value || "Carlos";
+    quizData.age = document.getElementById('quiz-age').value || "24";
+  } else if (quizStep === 4) {
+    quizData.bio = document.getElementById('quiz-bio').value || "Buscando buenas experiencias.";
+    saveUserProfile();
+    closeBadooQuiz();
+    return;
+  }
+  quizStep++;
+  showQuizStep(quizStep);
+}
+
+function prevQuizStep() {
+  if (quizStep > 1) {
+    quizStep--;
+    showQuizStep(quizStep);
+  }
+}
+
+function selectQuizOption(key, val) {
+  quizData[key] = val;
+}
+
+function toggleInterest(btn, val) {
+  btn.classList.toggle('bg-pink-600');
+  btn.classList.toggle('bg-slate-800');
+  if (!quizData.interests.includes(val)) quizData.interests.push(val);
+}
+
+function saveUserProfile() {
+  document.getElementById('my-username').innerText = `${quizData.name}, ${quizData.age}`;
+  document.getElementById('my-user-status').innerText = "Perfil Verificado ✨";
+  document.getElementById('my-user-bio').innerText = quizData.bio;
+}
+
+// 5. MENSAJES Y CHATS
+function openMessageModal() { document.getElementById('modal-message').classList.remove('hidden'); }
+function closeMessageModal() { document.getElementById('modal-message').classList.add('hidden'); }
+
+function sendChatMessage() {
+  const txt = document.getElementById('input-chat-msg').value;
+  if (txt.trim() !== '') {
+    closeMessageModal();
+    document.getElementById('input-chat-msg').value = '';
+    switchTab('chats');
+  }
+}
+
 function updateCarrusel() {
   const p = profiles[currentProfileIndex];
   document.getElementById('carrusel-img').src = p.img;
@@ -92,20 +180,14 @@ function nextCard() {
 }
 
 function likeCard() {
-  alert("¡Es un Match! 🎉 Guardado en tus chats.");
   nextCard();
-}
-
-function sendMessagePrompt() {
-  const msg = prompt("Escribe tu mensaje:");
-  if (msg) alert("Mensaje enviado con éxito 💬");
 }
 
 function renderChats() {
   const container = document.getElementById('chat-list');
   if (!container) return;
   container.innerHTML = profiles.map(p => `
-    <div onclick="sendMessagePrompt()" class="flex items-center space-x-3 bg-slate-900 p-2.5 rounded-xl cursor-pointer border border-slate-800">
+    <div onclick="openMessageModal()" class="flex items-center space-x-3 bg-slate-900 p-2.5 rounded-xl cursor-pointer border border-slate-800">
       <img src="${p.img}" class="w-10 h-10 rounded-full object-cover">
       <div>
         <p class="text-xs font-bold">${p.name}</p>
@@ -113,33 +195,6 @@ function renderChats() {
       </div>
     </div>
   `).join('');
-}
-
-// 5. USUARIO, SESIÓN Y CUESTIONARIO
-function openAuthModal() { document.getElementById('modal-auth').classList.remove('hidden'); }
-function closeAuthModal() { document.getElementById('modal-auth').classList.add('hidden'); }
-
-function saveUser() {
-  const name = document.getElementById('input-username').value;
-  if (name.trim() !== '') {
-    document.getElementById('my-username').innerText = name;
-    document.getElementById('my-user-status').innerText = "Sesión Activa";
-    closeAuthModal();
-    alert(`Usuario ${name} registrado correctamente.`);
-  }
-}
-
-function logout() {
-  if (confirm("¿Deseas cerrar sesión?")) {
-    document.getElementById('my-username').innerText = "Sin Sesión";
-    document.getElementById('my-user-status').innerText = "Inicia sesión";
-    alert("Sesión cerrada.");
-  }
-}
-
-function editBio() {
-  const bio = prompt("Ingresa tu nueva biografía:");
-  if (bio) alert("Biografía guardada.");
 }
 
 function togglePresence() {
@@ -153,6 +208,10 @@ function toggleFilters(show) {
 }
 
 function startAd() {
-  alert("Reproduciendo video de 30s... ¡Perfil revelado!");
   document.getElementById('avatar-preview').classList.remove('blur-md');
+}
+
+function logout() {
+  document.getElementById('my-username').innerText = "Sin Sesión";
+  document.getElementById('my-user-status').innerText = "Inicia sesión";
 }
