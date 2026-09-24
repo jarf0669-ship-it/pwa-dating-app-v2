@@ -1,122 +1,110 @@
-// ESTADOS GLOBALES DE LA APLICACIÓN
-let currentMode = 'amora'; // 'amora' o 'club'
-let isOnline = true; // true (verde) o false (gris)
-let adTimerInterval = null;
-let secondsLeft = 30;
+let currentMode = 'amora';
+let isOnline = true;
+let currentProfileIndex = 0;
 
-// Inicializa iconos de Lucide al cargar la página
+const profiles = [
+  { name: "Sofia, 23", bio: "Fotógrafa y amante de los viajes 📸", img: "https://picsum.photos/400/600?random=1" },
+  { name: "Lucía, 26", bio: "Gimnasio, vida sana y buen café ☕", img: "https://picsum.photos/400/600?random=2" },
+  { name: "Elena, 24", bio: "Desarrolladora web y música 🎶", img: "https://picsum.photos/400/600?random=3" }
+];
+
 document.addEventListener('DOMContentLoaded', () => {
   lucide.createIcons();
-  renderPerfiles();
+  updateCarrusel();
+  renderGrid();
+  renderChats();
 });
 
-// 1. CAMBIO DE MODO: AMORA (ROSA) VS AMORA CLUB (PÚRPURA)
-function setMode(mode) {
-  currentMode = mode;
-  const btnAmora = document.getElementById('btn-amora');
-  const btnClub = document.getElementById('btn-club');
-  const headerZap = document.getElementById('header-zap');
-  const quizTags = document.getElementById('quiz-tags');
+// NAVEGACIÓN ENTRE SECCIONES
+function switchTab(tab) {
+  document.getElementById('view-encuentros').classList.add('hidden');
+  document.getElementById('view-descubre').classList.add('hidden');
+  document.getElementById('view-chats').classList.add('hidden');
 
-  if (mode === 'amora') {
-    btnAmora.className = "px-3 py-1 rounded-full text-xs font-bold transition-all bg-pink-600 text-white shadow-lg shadow-pink-600/30";
-    btnClub.className = "px-3 py-1 rounded-full text-xs font-bold transition-all text-gray-400 hover:text-white";
-    headerZap.className = "w-5 h-5 text-pink-500";
-    
-    quizTags.innerHTML = `
-      <span class="px-2.5 py-1 rounded-full text-[11px] bg-pink-600 text-white font-medium cursor-pointer">Citas casuales</span>
-      <span class="px-2.5 py-1 rounded-full text-[11px] bg-slate-800 border border-slate-700 text-gray-300 cursor-pointer">Relación seria</span>
-      <span class="px-2.5 py-1 rounded-full text-[11px] bg-slate-800 border border-slate-700 text-gray-300 cursor-pointer">Amistad</span>
-    `;
-  } else {
-    btnClub.className = "px-3 py-1 rounded-full text-xs font-bold transition-all bg-purple-600 text-white shadow-lg shadow-purple-600/50";
-    btnAmora.className = "px-3 py-1 rounded-full text-xs font-bold transition-all text-gray-400 hover:text-white";
-    headerZap.className = "w-5 h-5 text-purple-400";
-    
-    quizTags.innerHTML = `
-      <span class="px-2.5 py-1 rounded-full text-[11px] bg-purple-600 text-white font-medium cursor-pointer">Experiencias Club</span>
-      <span class="px-2.5 py-1 rounded-full text-[11px] bg-slate-800 border border-slate-700 text-gray-300 cursor-pointer">Discreción total</span>
-      <span class="px-2.5 py-1 rounded-full text-[11px] bg-slate-800 border border-slate-700 text-gray-300 cursor-pointer">Eventos Privados</span>
-    `;
-  }
+  document.getElementById('nav-encuentros').className = "flex flex-col items-center text-gray-400";
+  document.getElementById('nav-descubre').className = "flex flex-col items-center text-gray-400";
+  document.getElementById('nav-chats').className = "flex flex-col items-center text-gray-400";
 
-  renderPerfiles();
+  document.getElementById(`view-${tab}`).classList.remove('hidden');
+  document.getElementById(`nav-${tab}`).className = "flex flex-col items-center text-pink-500 font-bold";
 }
 
-// 2. CAMBIO DE ESTADO DE CONEXIÓN (VERDE Y GRIS)
-function togglePresence() {
-  isOnline = !isOnline;
-  const dot = document.getElementById('status-dot');
-  const text = document.getElementById('status-text');
-
-  if (isOnline) {
-    dot.className = "w-2.5 h-2.5 rounded-full bg-green-500 shadow-md shadow-green-500/50";
-    text.innerText = "Conectado (Recibiendo mensajes)";
-  } else {
-    dot.className = "w-2.5 h-2.5 rounded-full bg-gray-500";
-    text.innerText = "Desconectado (Modo Invisible)";
-  }
+// LOGICA DEL CARRUSEL DE ENCUENTROS
+function updateCarrusel() {
+  const p = profiles[currentProfileIndex];
+  document.getElementById('carrusel-img').src = p.img;
+  document.getElementById('carrusel-name').innerText = p.name;
+  document.getElementById('carrusel-bio').innerText = p.bio;
 }
 
-// 3. RENDERIZAR MOSAICO DE PERFILES (3 COLUMNAS)
-function renderPerfiles() {
+function nextCard() {
+  currentProfileIndex = (currentProfileIndex + 1) % profiles.length;
+  updateCarrusel();
+}
+
+function likeCard() {
+  alert("¡Es un Match! 🎉 Se ha añadido a tus conversaciones.");
+  nextCard();
+}
+
+function sendMessagePrompt() {
+  const msg = prompt("Escribe tu mensaje:");
+  if (msg) alert("Mensaje enviado con éxito 💬");
+}
+
+// ABRIR DETALLE DE PERFIL DESDE EL MOSAICO
+function openProfileDetail(index) {
+  const p = profiles[index % profiles.length];
+  document.getElementById('detail-img').src = p.img;
+  document.getElementById('detail-name').innerText = p.name;
+  document.getElementById('detail-bio').innerText = p.bio;
+  document.getElementById('modal-profile').classList.remove('hidden');
+}
+
+function closeProfileDetail() {
+  document.getElementById('modal-profile').classList.add('hidden');
+}
+
+// RENDERIZAR MOSAICO Y CHATS
+function renderGrid() {
   const container = document.getElementById('grid-perfiles');
   container.innerHTML = '';
-
-  for (let i = 1; i <= 9; i++) {
-    const seed = currentMode === 'amora' ? i : i + 20;
+  for (let i = 0; i < 9; i++) {
     const card = document.createElement('div');
-    card.className = "relative rounded-2xl overflow-hidden aspect-[3/4] bg-slate-800 border border-slate-800/80 group cursor-pointer hover:border-slate-600 transition";
-    
+    card.className = "relative rounded-xl overflow-hidden aspect-[3/4] bg-slate-800 cursor-pointer";
+    card.onclick = () => openProfileDetail(i);
     card.innerHTML = `
-      <img src="https://picsum.photos/200/300?random=${seed}" class="w-full h-full object-cover">
-      <div class="absolute bottom-0 inset-x-0 p-1.5 bg-gradient-to-t from-black/90 via-black/40 to-transparent text-white">
-        <p class="text-[11px] font-semibold truncate flex items-center gap-1">
-          Usuario ${seed}, ${20 + i}
-          <span class="w-1.5 h-1.5 rounded-full ${i % 2 === 0 ? 'bg-green-500' : 'bg-gray-400'} inline-block"></span>
-        </p>
-      </div>
+      <img src="https://picsum.photos/200/300?random=${i + 10}" class="w-full h-full object-cover">
+      <div class="absolute bottom-0 inset-x-0 p-1 bg-black/60 text-[10px] font-bold">Usuario ${i + 1}</div>
     `;
     container.appendChild(card);
   }
 }
 
-// 4. CONTROL DE MODALES (FILTROS)
-function toggleFilters(show) {
-  const modal = document.getElementById('modal-filters');
-  if (show) {
-    modal.classList.remove('hidden');
-  } else {
-    modal.classList.add('hidden');
-  }
+function renderChats() {
+  const container = document.getElementById('chat-list');
+  container.innerHTML = profiles.map(p => `
+    <div onclick="sendMessagePrompt()" class="flex items-center space-x-3 bg-slate-900 p-2.5 rounded-xl cursor-pointer border border-slate-800">
+      <img src="${p.img}" class="w-10 h-10 rounded-full object-cover">
+      <div>
+        <p class="text-xs font-bold">${p.name}</p>
+        <p class="text-[10px] text-gray-400">Haz clic para chatear...</p>
+      </div>
+    </div>
+  `).join('');
 }
 
-// 5. TEMPORIZADOR DEL ANUNCIO DE VIDEO (30 SEGUNDOS)
-function startAd() {
-  const modalAd = document.getElementById('modal-ad');
-  const timerText = document.getElementById('ad-timer');
-  
-  modalAd.classList.remove('hidden');
-  secondsLeft = 30;
-  timerText.innerText = `00:${secondsLeft}`;
+function setMode(mode) {
+  currentMode = mode;
+  alert(`Cambiado a Modo ${mode === 'amora' ? 'Amora Estándar' : 'Amora Club Privado'}`);
+}
 
-  adTimerInterval = setInterval(() => {
-    secondsLeft--;
-    timerText.innerText = `00:${secondsLeft < 10 ? '0' + secondsLeft : secondsLeft}`;
+function togglePresence() {
+  isOnline = !isOnline;
+  document.getElementById('status-dot').className = `w-2.5 h-2.5 rounded-full ${isOnline ? 'bg-green-500' : 'bg-gray-500'}`;
+  document.getElementById('status-text').innerText = isOnline ? "Conectado (Recibiendo mensajes)" : "Desconectado (Modo Invisible)";
+}
 
-    if (secondsLeft <= 0) {
-      clearInterval(adTimerInterval);
-      modalAd.classList.add('hidden');
-      
-      // Revelar perfil desenfocado
-      const preview = document.getElementById('avatar-preview');
-      const btnUnlock = document.getElementById('btn-unlock-perfil');
-      if (preview) preview.classList.remove('blur-md');
-      if (btnUnlock) {
-        btnUnlock.innerText = "Revelado ✓";
-        btnUnlock.className = "text-[10px] bg-green-500/20 text-green-400 px-2.5 py-1 rounded-full border border-green-500/30 font-bold";
-        btnUnlock.onclick = null;
-      }
-    }
-  }, 1000);
+function toggleFilters(show) {
+  document.getElementById('modal-filters').classList.toggle('hidden', !show);
 }

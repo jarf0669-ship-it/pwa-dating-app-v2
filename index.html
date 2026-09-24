@@ -4,189 +4,115 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Amora Dating App</title>
-  <!-- Tailwind CSS por CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Iconos Lucide -->
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-slate-950 text-white font-sans antialiased selection:bg-pink-500 selection:text-white">
+<body class="bg-slate-950 text-white font-sans antialiased">
 
-  <div id="app" class="max-w-md mx-auto min-h-screen flex flex-col justify-between border-x border-slate-800 relative bg-slate-950 transition-colors duration-300">
+  <div id="app" class="max-w-md mx-auto min-h-screen flex flex-col justify-between border-x border-slate-800 relative bg-slate-950">
     
-    <!-- BARRA SUPERIOR: CONMUTADOR AMORA / CLUB Y ESTADO -->
-    <header class="p-3 border-b border-slate-800 flex flex-col gap-2 bg-slate-900/50 backdrop-blur-md sticky top-0 z-40">
+    <!-- HEADER -->
+    <header class="p-3 border-b border-slate-800 flex flex-col gap-2 bg-slate-900/80 backdrop-blur-md sticky top-0 z-40">
       <div class="flex justify-between items-center">
-        <!-- Alternador Amora vs Club -->
-        <div class="flex items-center space-x-1 bg-slate-800/80 p-1 rounded-full border border-slate-700/50">
-          <button id="btn-amora" onclick="setMode('amora')" class="px-3 py-1 rounded-full text-xs font-bold transition-all bg-pink-600 text-white shadow-lg shadow-pink-600/30">
+        <div class="flex items-center space-x-1 bg-slate-800 p-1 rounded-full border border-slate-700">
+          <button id="btn-amora" onclick="setMode('amora')" class="px-3 py-1 rounded-full text-xs font-bold bg-pink-600 text-white">
             ❤️ Amora
           </button>
-          <button id="btn-club" onclick="setMode('club')" class="px-3 py-1 rounded-full text-xs font-bold transition-all text-gray-400 hover:text-white">
+          <button id="btn-club" onclick="setMode('club')" class="px-3 py-1 rounded-full text-xs font-bold text-gray-400">
             🔒 Amora Club
           </button>
         </div>
 
         <div class="flex items-center space-x-3">
           <i data-lucide="zap" id="header-zap" class="w-5 h-5 text-pink-500"></i>
-          <button onclick="toggleFilters(true)" class="hover:opacity-80 transition">
-            <i data-lucide="sliders-horizontal" class="w-5 h-5 text-gray-300"></i>
-          </button>
+          <button onclick="toggleFilters(true)"><i data-lucide="sliders-horizontal" class="w-5 h-5 text-gray-300"></i></button>
         </div>
       </div>
 
-      <!-- Presencia: Conectado (Luz Verde) vs Invisible (Luz Gris) -->
-      <div class="flex justify-between items-center bg-slate-900/90 px-3 py-1.5 rounded-xl text-xs border border-slate-800">
+      <div class="flex justify-between items-center bg-slate-900 px-3 py-1 rounded-xl text-xs border border-slate-800">
         <div class="flex items-center space-x-2">
-          <span id="status-dot" class="w-2.5 h-2.5 rounded-full bg-green-500 shadow-md shadow-green-500/50"></span>
-          <span id="status-text" class="font-medium text-gray-300">Conectado (Recibiendo mensajes)</span>
+          <span id="status-dot" class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+          <span id="status-text" class="text-gray-300">Conectado (Recibiendo mensajes)</span>
         </div>
-        <button onclick="togglePresence()" class="text-[10px] bg-slate-800 hover:bg-slate-700 px-2.5 py-1 rounded text-gray-300 border border-slate-700 transition">
-          Cambiar
-        </button>
+        <button onclick="togglePresence()" class="text-[10px] bg-slate-800 px-2 py-0.5 rounded text-gray-300">Cambiar</button>
       </div>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="flex-1 overflow-y-auto p-3 space-y-4">
-      
-      <!-- SECCIÓN DE ACTIVIDAD Y RECOMPENSAS POR VIDEO AD -->
-      <div class="space-y-2">
-        <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-yellow-400"></i> Novedades
-        </h3>
-
-        <!-- Tarjeta: Vieron tu perfil -->
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
-          <div class="flex items-center space-x-3">
-            <div class="relative w-10 h-10 rounded-full overflow-hidden bg-gray-800 flex items-center justify-center border border-slate-700">
-              <img id="avatar-preview" src="https://picsum.photos/100" class="w-full h-full object-cover filter blur-md">
-            </div>
-            <div>
-              <p class="font-semibold text-xs">Alguien vio tu perfil</p>
-              <p class="text-[10px] text-gray-400">Hace unos minutos</p>
-            </div>
+    <!-- VISTA 1: ENCUENTROS (CARRUSEL SWIPE) -->
+    <main id="view-encuentros" class="flex-1 flex flex-col justify-between p-3">
+      <div id="card-carrusel" class="relative rounded-3xl overflow-hidden aspect-[3/4] bg-slate-900 border border-slate-800 shadow-2xl">
+        <img id="carrusel-img" src="https://picsum.photos/400/600?random=1" class="w-full h-full object-cover">
+        
+        <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black via-black/50 to-transparent text-white space-y-1">
+          <div class="flex items-center gap-2">
+            <h2 id="carrusel-name" class="text-xl font-bold">Camila, 25</h2>
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
           </div>
-          <button id="btn-unlock-perfil" onclick="startAd()" class="flex items-center gap-1 text-[11px] bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 px-3 py-1.5 rounded-xl font-bold shadow-md shadow-purple-900/30">
-            <i data-lucide="video" class="w-3.5 h-3.5"></i> Ver video (30s)
-          </button>
-        </div>
-
-        <!-- Tarjeta: Te dieron un toque -->
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-full bg-pink-500/10 flex items-center justify-center text-pink-500 border border-pink-500/20">
-              <i data-lucide="hand" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <p class="font-semibold text-xs">¡Te dieron un toque!</p>
-              <p class="text-[10px] text-gray-400">Demuestra interés</p>
-            </div>
-          </div>
-          <button onclick="startAd()" class="flex items-center gap-1 text-[11px] bg-gradient-to-r from-pink-600 to-purple-600 hover:opacity-90 px-3 py-1.5 rounded-xl font-bold shadow-md shadow-pink-900/30">
-            <i data-lucide="video" class="w-3.5 h-3.5"></i> Ver quién fue
-          </button>
+          <p id="carrusel-bio" class="text-xs text-gray-300">Amante del arte, café y viajes. Buscando conexiones reales ✨</p>
         </div>
       </div>
 
-      <!-- MOSAICO "DESCUBRE PERFILES" (3 COLUMNAS) -->
-      <div>
-        <h2 id="discover-title" class="text-sm font-bold mb-2 flex items-center justify-between">
-          <span>Descubre perfiles</span>
-          <span class="text-[10px] text-gray-400 font-normal">Todo el mundo</span>
-        </h2>
-        <div id="grid-perfiles" class="grid grid-cols-3 gap-2">
-          <!-- Se genera con JavaScript -->
-        </div>
+      <!-- BOTONES DE INTERACCIÓN DEL CARRUSEL -->
+      <div class="flex justify-around items-center my-3">
+        <button onclick="nextCard()" class="w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-red-500 shadow-lg text-lg font-bold">✕</button>
+        <button onclick="sendMessagePrompt()" class="w-12 h-12 rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-blue-400 shadow-lg"><i data-lucide="message-circle" class="w-5 h-5"></i></button>
+        <button onclick="likeCard()" class="w-14 h-14 rounded-full bg-gradient-to-r from-pink-600 to-purple-600 flex items-center justify-center text-white shadow-xl shadow-pink-600/30"><i data-lucide="heart" class="w-7 h-7"></i></button>
       </div>
-
-      <!-- TRADUCTOR GRATIS EN CHAT -->
-      <div class="bg-slate-900/80 p-3 rounded-2xl border border-slate-800">
-        <div class="flex items-center justify-between mb-1">
-          <span class="text-[11px] font-bold text-green-400 flex items-center gap-1">
-            <i data-lucide="globe" class="w-3.5 h-3.5"></i> Traducción Automática Gratis
-          </span>
-          <span class="text-[9px] bg-green-500/10 text-green-400 px-1.5 py-0.5 rounded border border-green-500/20">Ilimitado</span>
-        </div>
-        <p class="text-[11px] text-gray-300 italic bg-slate-950/50 p-2 rounded-lg border border-slate-800">
-          "Hello! I want to know you better" <br>
-          <span class="text-white font-medium non-italic">➔ "¡Hola! Quiero conocerte mejor"</span>
-        </p>
-      </div>
-
-      <!-- BANNER DE SUSCRIPCIÓN -->
-      <div class="bg-gradient-to-r from-purple-900/40 via-slate-900 to-pink-900/40 p-3 rounded-2xl border border-purple-500/30 text-center">
-        <p class="text-[10px] font-bold text-purple-300">¿CANSADO DE VER VIDEOS?</p>
-        <p class="text-xs font-black mb-2">Desbloquea Amora Premium</p>
-        <div class="flex justify-center gap-1.5 text-[10px]">
-          <button class="bg-slate-900 px-2.5 py-1 rounded border border-slate-700 hover:border-purple-500">Diario</button>
-          <button class="bg-slate-900 px-2.5 py-1 rounded border border-slate-700 hover:border-purple-500">Semanal</button>
-          <button class="bg-gradient-to-r from-pink-600 to-purple-600 px-2.5 py-1 rounded font-bold shadow-lg">Mensual</button>
-        </div>
-      </div>
-
     </main>
 
-    <!-- MODAL: CUESTIONARIO Y FILTROS -->
+    <!-- VISTA 2: DESCUBRE (MOSAICO) -->
+    <main id="view-descubre" class="flex-1 overflow-y-auto p-3 space-y-4 hidden">
+      <h2 class="text-sm font-bold">Descubre perfiles</h2>
+      <div id="grid-perfiles" class="grid grid-cols-3 gap-2"></div>
+    </main>
+
+    <!-- VISTA 3: CHATS -->
+    <main id="view-chats" class="flex-1 p-3 space-y-3 hidden">
+      <h2 class="text-sm font-bold mb-2">Tus Mensajes y Matches</h2>
+      <div id="chat-list" class="space-y-2"></div>
+    </main>
+
+    <!-- MODAL DETALLE DEL PERFIL -->
+    <div id="modal-profile" class="fixed inset-0 bg-black/90 z-50 hidden overflow-y-auto p-4">
+      <div class="max-w-md mx-auto bg-slate-900 rounded-3xl overflow-hidden border border-slate-800">
+        <div class="relative h-80">
+          <img id="detail-img" src="" class="w-full h-full object-cover">
+          <button onclick="closeProfileDetail()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white font-bold flex items-center justify-center">✕</button>
+        </div>
+        <div class="p-4 space-y-3">
+          <h2 id="detail-name" class="text-xl font-bold"></h2>
+          <p id="detail-bio" class="text-xs text-gray-300"></p>
+          <div class="flex gap-2">
+            <button onclick="sendMessagePrompt(); closeProfileDetail();" class="flex-1 py-2 bg-pink-600 rounded-xl font-bold text-xs">Enviar Mensaje</button>
+            <button onclick="likeCard(); closeProfileDetail();" class="flex-1 py-2 bg-purple-600 rounded-xl font-bold text-xs">Dar Me Gusta</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL FILTROS / CUESTIONARIO -->
     <div id="modal-filters" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex flex-col justify-end">
-      <div id="modal-content" class="p-5 rounded-t-3xl w-full max-w-md mx-auto bg-slate-900 text-white border-t border-slate-800">
-        <div class="flex justify-between items-center mb-4">
-          <h3 class="text-sm font-bold">¿Qué tipo de persona buscas?</h3>
-          <button onclick="toggleFilters(false)" class="text-lg font-bold text-gray-400 hover:text-white">✕</button>
+      <div class="p-5 rounded-t-3xl w-full max-w-md mx-auto bg-slate-900 border-t border-slate-800">
+        <div class="flex justify-between items-center mb-3">
+          <h3 class="text-sm font-bold">Cuestionario de Preferencias</h3>
+          <button onclick="toggleFilters(false)">✕</button>
         </div>
-
-        <div class="space-y-3 text-xs max-h-[50vh] overflow-y-auto pr-1">
-          <div class="flex justify-between items-center border-b pb-2 border-slate-800">
-            <span>Mostrar</span>
-            <span class="font-semibold text-gray-400">Mujeres &gt;</span>
-          </div>
-
-          <div class="flex justify-between items-center border-b pb-2 border-slate-800">
-            <span>Rango de edad</span>
-            <span class="font-semibold text-gray-400">20 - 35 &gt;</span>
-          </div>
-
-          <div>
-            <p class="font-semibold mb-2">Busco alguien para...</p>
-            <div id="quiz-tags" class="flex flex-wrap gap-1.5">
-              <span class="px-2.5 py-1 rounded-full text-[11px] bg-pink-600 text-white font-medium cursor-pointer">Citas casuales</span>
-              <span class="px-2.5 py-1 rounded-full text-[11px] bg-slate-800 border border-slate-700 text-gray-300 cursor-pointer">Relación seria</span>
-              <span class="px-2.5 py-1 rounded-full text-[11px] bg-slate-800 border border-slate-700 text-gray-300 cursor-pointer">Amistad</span>
-            </div>
-          </div>
-        </div>
-
-        <button onclick="toggleFilters(false)" id="btn-apply-filters" class="w-full py-2.5 mt-4 rounded-xl font-bold bg-pink-600 text-white text-xs hover:bg-pink-700 transition">
-          Aplicar filtros
-        </button>
+        <p class="text-xs text-gray-400 mb-2">Ajusta el tipo de persona que buscas en Amora.</p>
+        <button onclick="toggleFilters(false)" class="w-full py-2 bg-pink-600 rounded-xl font-bold text-xs mt-4">Guardar Filtros</button>
       </div>
     </div>
 
-    <!-- MODAL: VIDEO AD DE 30 SEGUNDOS -->
-    <div id="modal-ad" class="fixed inset-0 bg-black/95 z-50 hidden flex flex-col items-center justify-center p-6 text-center">
-      <div class="bg-slate-900 border border-slate-800 p-5 rounded-3xl w-full max-w-xs space-y-3">
-        <div class="w-12 h-12 bg-purple-600/20 rounded-full flex items-center justify-center mx-auto text-purple-400">
-          <i data-lucide="video" class="w-6 h-6 animate-pulse"></i>
-        </div>
-        <h4 class="font-bold text-sm">Reproduciendo anuncio...</h4>
-        <p class="text-[11px] text-gray-400">Mira los 30 segundos para desbloquear quién interactuó contigo.</p>
-        
-        <div id="ad-timer" class="text-3xl font-black text-purple-400 my-2">00:30</div>
-
-        <p class="text-[9px] text-gray-500">Pasa a Amora Premium para eliminar anuncios.</p>
-      </div>
-    </div>
-
-    <!-- BARRA DE NAVEGACIÓN INFERIOR -->
-    <nav class="flex justify-around items-center py-2.5 border-t border-slate-800 bg-slate-900/80 backdrop-blur-md text-[10px]">
-      <button class="flex flex-col items-center text-pink-500 font-bold">
+    <!-- BARRA INFERIOR DE NAVEGACIÓN -->
+    <nav class="flex justify-around items-center py-2.5 border-t border-slate-800 bg-slate-900 text-[10px]">
+      <button onclick="switchTab('encuentros')" id="nav-encuentros" class="flex flex-col items-center text-pink-500 font-bold">
+        <i data-lucide="sparkles" class="w-4 h-4 mb-0.5"></i>
+        <span>Encuentros</span>
+      </button>
+      <button onclick="switchTab('descubre')" id="nav-descubre" class="flex flex-col items-center text-gray-400">
         <i data-lucide="user" class="w-4 h-4 mb-0.5"></i>
         <span>Descubre</span>
       </button>
-      <button class="flex flex-col items-center text-gray-400 hover:text-white">
-        <i data-lucide="heart" class="w-4 h-4 mb-0.5"></i>
-        <span>Encuentros</span>
-      </button>
-      <button class="flex flex-col items-center text-gray-400 hover:text-white">
+      <button onclick="switchTab('chats')" id="nav-chats" class="flex flex-col items-center text-gray-400">
         <i data-lucide="message-circle" class="w-4 h-4 mb-0.5"></i>
         <span>Chats</span>
       </button>
