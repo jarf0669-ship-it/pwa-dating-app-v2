@@ -6,7 +6,6 @@
   <title>Amora PWA</title>
   <link rel="manifest" href="/manifest.json" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Supabase CDN -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .custom-scroll::-webkit-scrollbar { width: 4px; }
@@ -18,7 +17,7 @@
 
   <main class="w-full max-w-md bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-700/80 relative">
     
-    <!-- AUTENTICACIÓN -->
+    <!-- PANTALLA DE AUTENTICACIÓN -->
     <section id="auth-section" class="p-6">
       <div class="text-center mb-6">
         <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400">Amora</h1>
@@ -65,206 +64,130 @@
           Crear cuenta
         </button>
       </form>
-
-      <div id="auth-status" class="mt-4 text-xs font-bold text-center hidden p-3 rounded-xl border"></div>
     </section>
 
     <!-- PANTALLA PRINCIPAL DE AMORA -->
     <section id="app-section" class="hidden">
-      <!-- HEADER CON BOTÓN DE FILTROS AVANZADOS -->
+      <!-- HEADER CON ACCESO A AMORA CLUB Y AJUSTES -->
       <header class="p-3 bg-slate-900 border-b border-slate-700/80 flex justify-between items-center text-xs">
         <div class="flex items-center gap-2">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span id="user-display" class="text-slate-300 font-semibold truncate max-w-[110px]">Cargando...</span>
+          <span id="status-indicator" class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="user-display" class="text-slate-300 font-semibold truncate max-w-[100px]">Cargando...</span>
         </div>
         <div class="flex items-center gap-1.5">
-          <button onclick="toggleFilters(true)" class="bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-600 hover:to-rose-600 text-white font-bold px-2.5 py-1 rounded-xl text-[11px] transition-all shadow flex items-center gap-1">
-            🎬 <span>Filtros PRO</span>
+          <button onclick="alert('👑 Bienvenido a Amora Club (Espacio Privado)')" class="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-black px-2.5 py-1 rounded-xl text-[11px] transition-all shadow flex items-center gap-1 border border-purple-400/30">
+            🔒 <span>Amora Club</span>
           </button>
-          <button id="btn-install" onclick="installPWA()" class="hidden bg-rose-500 hover:bg-rose-600 text-white font-bold px-2 py-1 rounded-xl text-[11px] transition-all">
-            📲 Instalar
+          <button onclick="toggleSettings(true)" class="text-slate-300 hover:text-white font-semibold flex items-center gap-1 bg-slate-800 px-2 py-1 rounded-xl border border-slate-700 transition-colors text-[11px]">
+            ⚙️ <span>Ajustes</span>
           </button>
-          <button id="btn-logout" class="text-rose-400 hover:text-rose-300 font-semibold underline text-[11px] ml-1">Salir</button>
+          <button id="btn-logout" class="text-rose-400 hover:text-rose-300 font-semibold underline text-[11px]">Salir</button>
         </div>
       </header>
 
-      <!-- TARJETA DE PERFIL (EXPLORAR) -->
+      <!-- TARJETA EXPLORAR -->
       <div id="profile-card" class="p-4 flex flex-col items-center">
         <div class="relative w-full h-88 rounded-3xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900 group select-none">
-          <img id="profile-img" src="" alt="Foto de perfil" class="w-full h-full object-cover transition-all duration-300">
-          <div id="gallery-bars" class="absolute top-2 left-2 right-2 flex gap-1 z-10"></div>
+          <img id="profile-img" src="" alt="Foto de perfil" class="w-full h-full object-cover">
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/30 to-black/30 pointer-events-none"></div>
 
           <div class="absolute bottom-3 left-4 right-4 text-left pointer-events-none space-y-1">
-            <h2 id="profile-title" class="text-2xl font-black text-white drop-shadow-md flex items-center gap-2">Cargando...</h2>
-            <p id="profile-details" class="text-[11px] text-rose-300 font-bold drop-shadow">...</p>
-            <p id="profile-tagline" class="text-xs text-slate-200 italic drop-shadow">...</p>
-            <p id="profile-bio" class="text-xs text-slate-300 line-clamp-2 drop-shadow">...</p>
+            <h2 id="profile-title" class="text-2xl font-black text-white drop-shadow-md">Cargando...</h2>
+            <p id="profile-details" class="text-[11px] text-rose-300 font-bold">...</p>
+            <p id="profile-bio" class="text-xs text-slate-300 line-clamp-2">...</p>
           </div>
-
-          <div onclick="prevPhoto()" class="absolute left-0 top-0 bottom-0 w-1/2 cursor-pointer z-0"></div>
-          <div onclick="nextPhoto()" class="absolute right-0 top-0 bottom-0 w-1/2 cursor-pointer z-0"></div>
         </div>
 
         <div class="flex items-center justify-center gap-4 w-full mt-4">
-          <button onclick="nextProfile()" class="w-14 h-14 bg-slate-700/80 hover:bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center text-xl shadow-lg hover:scale-105 active:scale-95 transition-all">
-            ❌
-          </button>
-          <button onclick="likeProfile()" class="w-16 h-16 bg-gradient-to-r from-rose-500 to-pink-500 hover:from-rose-600 hover:to-pink-600 text-white rounded-full flex items-center justify-center text-2xl shadow-lg shadow-rose-500/30 hover:scale-110 active:scale-95 transition-all">
-            ❤️
-          </button>
-          <button onclick="toggleChat(true)" class="w-14 h-14 bg-slate-700/80 hover:bg-slate-700 border border-slate-600 rounded-full flex items-center justify-center text-xl shadow-lg hover:scale-105 active:scale-95 transition-all">
-            💬
-          </button>
+          <button onclick="nextProfile()" class="w-14 h-14 bg-slate-700/80 rounded-full flex items-center justify-center text-xl shadow-lg">❌</button>
+          <button onclick="likeProfile()" class="w-16 h-16 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full flex items-center justify-center text-2xl shadow-lg">❤️</button>
         </div>
       </div>
 
-      <!-- PANEL DE FILTROS AVANZADOS (INSPIRADO EN BADOO) -->
-      <div id="filters-card" class="p-5 hidden flex-col space-y-4 max-h-[520px] overflow-y-auto custom-scroll">
+      <!-- PANEL DE AJUSTES CON GESTIÓN SEPARADA E INDEPENDIENTE -->
+      <div id="settings-card" class="p-5 hidden flex-col space-y-4 max-h-[520px] overflow-y-auto custom-scroll">
         <div class="flex justify-between items-center pb-2 border-b border-slate-700">
-          <div>
-            <h3 class="text-sm font-bold text-rose-400 flex items-center gap-1.5">
-              <span>🎯</span> Filtros de Búsqueda Avanzados
-            </h3>
-            <p class="text-[10px] text-amber-400 font-medium">✨ Desbloquea todos los filtros viendo 1 video patrocinado</p>
-          </div>
-          <button onclick="toggleFilters(false)" class="text-xs text-slate-400 hover:text-slate-200">✕ Cerrar</button>
+          <h3 class="text-sm font-bold text-rose-400 flex items-center gap-1.5">⚙️ Gestión de Perfiles y Cuentas</h3>
+          <button onclick="toggleSettings(false)" class="text-xs text-slate-400 hover:text-slate-200">✕ Cerrar</button>
         </div>
 
-        <form id="filters-form" onsubmit="requestVideoAd(event)" class="space-y-3 text-xs">
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-semibold text-slate-300 mb-1 flex items-center gap-1">
-                <span>👩👨</span> Mostrar
-              </label>
-              <select class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option>Mujeres</option>
-                <option>Hombres</option>
-                <option>Todos</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-300 mb-1 flex items-center gap-1">
-                <span>📍</span> Ubicación / Distancia
-              </label>
-              <select class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option>Hasta 15 km</option>
-                <option>Hasta 50 km</option>
-                <option>Sin límite</option>
-              </select>
-            </div>
+        <!-- SECCIÓN 1: GESTIÓN DE AMORA CLUB (INDEPENDIENTE) -->
+        <div class="bg-purple-950/30 p-3.5 rounded-2xl border border-purple-500/30 space-y-2">
+          <div class="flex justify-between items-center border-b border-purple-500/20 pb-2">
+            <h4 class="text-xs font-black text-purple-300 flex items-center gap-1">🔒 PERFIL DE AMORA CLUB (Espacio Privado)</h4>
+            <span id="club-status-badge" class="text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">ACTIVO</span>
           </div>
 
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-semibold text-slate-300 mb-1 flex items-center gap-1">
-                <span>📐</span> Estatura Mínima
-              </label>
-              <input type="number" placeholder="Ej: 170 cm" value="168" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-300 mb-1 flex items-center gap-1">
-                <span>🚬</span> Tabaco
-              </label>
-              <select class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option>Solo No fumadores</option>
-                <option>Indiferente</option>
-              </select>
-            </div>
-          </div>
+          <p class="text-[10px] text-slate-300">Gestiona tu presencia privada sin alterar tu cuenta principal de citas.</p>
 
-          <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block font-semibold text-slate-300 mb-1 flex items-center gap-1">
-                <span>🐾</span> Mascotas
-              </label>
-              <select class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option>Con mascotas</option>
-                <option>Indiferente</option>
-              </select>
-            </div>
-            <div>
-              <label class="block font-semibold text-slate-300 mb-1 flex items-center gap-1">
-                <span>🎓</span> Estudios
-              </label>
-              <select class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500">
-                <option>Mínimo Universidad</option>
-                <option>Indiferente</option>
-              </select>
-            </div>
-          </div>
-
-          <button type="submit" class="w-full bg-gradient-to-r from-amber-500 via-rose-500 to-pink-500 hover:from-amber-600 hover:to-pink-600 text-white font-black py-3 rounded-2xl transition-all shadow-xl shadow-rose-500/30 text-xs tracking-wider flex items-center justify-center gap-2">
-            <span>🎬</span> VER VIDEO AD (30s) Y APLICAR FILTROS
-          </button>
-        </form>
-      </div>
-
-      <!-- CHAT -->
-      <div id="chat-card" class="p-4 hidden flex-col h-[480px]">
-        <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-700">
-          <h3 id="chat-header-title" class="text-xs font-bold text-rose-400">Chat con Match</h3>
-          <button onclick="toggleChat(false)" class="text-xs text-slate-400 hover:text-slate-200">✕ Cerrar</button>
-        </div>
-
-        <div id="messages-container" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs custom-scroll">
-          <div class="bg-slate-700/60 p-2.5 rounded-2xl max-w-[85%]">
-            ¡Hola! Me encantó ver tus preferencias en Amora. ¿Cómo estás?
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="initiateAction('pause_club')" class="bg-purple-900/60 hover:bg-purple-800/80 border border-purple-500/40 text-purple-200 font-bold py-2 rounded-xl text-[11px] transition-all">
+              ⏸️ Pausar Amora Club
+            </button>
+            <button onclick="initiateAction('delete_club')" class="bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/40 text-rose-300 font-bold py-2 rounded-xl text-[11px] transition-all">
+              🗑️ Salir de Amora Club
+            </button>
           </div>
         </div>
 
-        <form id="chat-form" onsubmit="sendMessage(event)" class="mt-3 flex gap-2">
-          <input type="text" id="chat-input" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500" placeholder="Escribe un mensaje..." required>
-          <button type="submit" class="bg-rose-500 hover:bg-rose-600 text-white font-semibold px-3 py-2 rounded-xl text-xs transition-colors">
-            Enviar
-          </button>
-        </form>
+        <!-- SECCIÓN 2: GESTIÓN DE AMORA PRINCIPAL (INDEPENDIENTE) -->
+        <div class="bg-slate-900/90 p-3.5 rounded-2xl border border-slate-700/80 space-y-2">
+          <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+            <h4 class="text-xs font-black text-rose-400 flex items-center gap-1">❤️ PERFIL PRINCIPAL DE AMORA</h4>
+            <span id="main-status-badge" class="text-[9px] bg-emerald-500/20 text-emerald-300 font-bold px-2 py-0.5 rounded-full border border-emerald-500/30">ACTIVO</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button onclick="initiateAction('pause_main')" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold py-2 rounded-xl text-[11px] transition-all">
+              ⏸️ Pausar Amora
+            </button>
+            <button onclick="initiateAction('delete_main')" class="bg-rose-950/40 hover:bg-rose-900/60 border border-rose-600/40 text-rose-300 font-bold py-2 rounded-xl text-[11px] transition-all">
+              ❌ Eliminar Todo
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- MODAL DE REPRODUCTOR DE VIDEO COMERCIAL (REWARDED AD 30 SEGUNDOS) -->
-    <div id="video-ad-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-xl flex flex-col items-center justify-center p-6 hidden z-50">
-      <div class="w-full max-w-xs bg-slate-900 border border-slate-700 rounded-3xl p-5 text-center shadow-2xl relative space-y-4">
+    <!-- MODAL DE ADVERTENCIA + REPRODUCTOR DE VIDEO COMERCIAL (MONETIZACIÓN DE 30s) -->
+    <div id="action-ad-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 hidden z-50">
+      <div class="w-full max-w-xs bg-slate-900 border border-slate-700 rounded-3xl p-5 text-center shadow-2xl space-y-3 custom-scroll max-h-[90vh] overflow-y-auto">
         
-        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-          <span class="text-[10px] font-bold text-amber-400 uppercase tracking-widest bg-amber-500/10 px-2 py-0.5 rounded-full border border-amber-500/20">Anuncio Patrocinado</span>
-          <span id="ad-timer" class="text-xs font-mono font-bold text-rose-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700">30s</span>
+        <div class="border-b border-slate-800 pb-2">
+          <span class="text-3xl inline-block mb-1" id="action-icon">⚠️</span>
+          <h3 class="text-sm font-black text-rose-400" id="action-title">Confirmar Acción</h3>
+          <p class="text-[11px] text-slate-300 mt-1" id="action-warning">Mensaje de advertencia...</p>
         </div>
 
-        <!-- REPRODUCTOR DE VIDEO SIMULADO CON ANIMACIÓN -->
-        <div class="relative w-full h-44 bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 flex items-center justify-center">
-          <div class="absolute inset-0 bg-gradient-to-tr from-rose-600/30 via-amber-500/20 to-purple-600/30 animate-pulse"></div>
-          <div class="relative z-10 text-center p-4">
-            <span class="text-4xl inline-block animate-bounce mb-2">🎁</span>
-            <h4 class="text-xs font-bold text-white">Desbloqueando Filtros PRO de Amora</h4>
-            <p class="text-[10px] text-slate-400 mt-1">Gracias por apoyar Amora sin pagar suscripciones.</p>
-          </div>
-          <!-- Barra de progreso del Video -->
-          <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-slate-800">
-            <div id="ad-progress-bar" class="h-full bg-gradient-to-r from-amber-500 to-rose-500 transition-all duration-1000" style="width: 0%"></div>
-          </div>
+        <!-- ENCUESTA RÁPIDA DE SALIDA DE AMORA CLUB -->
+        <div id="club-survey" class="hidden text-left space-y-1 bg-purple-950/30 p-2.5 rounded-xl border border-purple-500/20 text-xs">
+          <label class="block font-bold text-purple-300 text-[10px]">¿Por qué decides salir de Amora Club?</label>
+          <select id="survey-reason" class="w-full bg-slate-950 border border-slate-700 rounded-lg p-1.5 text-slate-200 text-[11px]">
+            <option>Prefiero solo usar Amora Principal</option>
+            <option>Encontré lo que buscaba</option>
+            <option>Preocupación de privacidad</option>
+            <option>Otro motivo</option>
+          </select>
         </div>
 
-        <button id="btn-claim-ad" disabled onclick="completeVideoAd()" class="w-full bg-slate-800 text-slate-500 font-bold py-3 rounded-xl text-xs transition-all cursor-not-allowed">
-          ⏳ Espera a que termine el video...
-        </button>
-      </div>
-    </div>
+        <!-- REPRODUCTOR DE ANUNCIO DE 30 SEGUNDOS -->
+        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-2">
+          <div class="flex justify-between items-center text-[10px] font-bold">
+            <span class="text-amber-400 uppercase tracking-widest">Anuncio de Confirmación</span>
+            <span id="ad-timer" class="text-rose-400 font-mono">30s</span>
+          </div>
+          <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+            <div id="ad-progress-bar" class="bg-gradient-to-r from-amber-500 to-rose-500 h-full transition-all duration-1000" style="width: 0%"></div>
+          </div>
+          <p class="text-[9.5px] text-slate-400">Debes ver este anuncio patrocinado de 30s para procesar la acción.</p>
+        </div>
 
-    <!-- MODAL MATCH -->
-    <div id="match-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 hidden z-50">
-      <div class="text-center space-y-4 max-w-xs">
-        <span class="text-6xl animate-bounce inline-block">💖</span>
-        <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-rose-400 to-pink-500">
-          ¡Es un Match!
-        </h2>
-        <p id="match-text" class="text-xs text-slate-300">Conexión encontrada en Amora.</p>
-        <div class="flex flex-col gap-2 pt-4">
-          <button onclick="closeMatchAndChat()" class="w-full bg-gradient-to-r from-rose-500 to-pink-500 font-bold py-3 rounded-2xl text-xs shadow-lg shadow-rose-500/30">
-            Enviar mensaje
+        <div class="flex flex-col gap-2 pt-1">
+          <button id="btn-confirm-action" disabled onclick="executePendingAction()" class="w-full bg-slate-800 text-slate-500 font-black py-3 rounded-xl text-xs transition-all cursor-not-allowed">
+            ⏳ Espera 30 segundos...
           </button>
-          <button onclick="closeMatchModal()" class="w-full bg-slate-800 text-slate-300 font-semibold py-2.5 rounded-2xl text-xs">
-            Seguir explorando
+          <button type="button" onclick="closeActionModal()" class="w-full text-center text-xs text-slate-400 hover:text-slate-200 py-1">
+            Cancelar y Volver
           </button>
         </div>
       </div>
@@ -273,44 +196,25 @@
   </main>
 
   <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      });
-    }
-
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      document.getElementById('btn-install')?.classList.remove('hidden');
-    });
-
-    function installPWA() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt = null;
-      }
-    }
+    let currentPendingAction = null;
+    let adInterval = null;
 
     const PROFILES = [
       {
         name: "María, 24 ✔️",
-        details: "📍 Madrid (5 km) • 📐 170 cm • 🍿 Cine • ☕ Café",
-        tagline: "✨ Busco relación seria • Fan de la fotografía y el arte",
-        bio: "Me considero extrovertida y creativa. Trabajo en arquitectura y los fines de semana exploro exposiciones de arte y restaurantes únicos.",
+        details: "📍 Madrid (5 km) • 📐 170 cm • 🍿 Cine",
+        bio: "Me considero extrovertida y creativa. Trabajo en arquitectura y me encanta el arte.",
         photos: ["https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80"]
-      },
-      {
-        name: "Sofía, 26 ✔️",
-        details: "📍 Barcelona (12 km) • 📐 172 cm • 💃 Baile",
-        tagline: "✨ Ver qué surge • Apasionada de la música indie 🎶",
-        bio: "Diseñadora UX/UI. Me encanta viajar sin itinerario fijo, escuchar música indie en vinilos y hacer picnics en el parque.",
-        photos: ["https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=600&q=80"]
       }
     ];
 
-    let currentProfileIndex = 0;
+    function renderProfile() {
+      const profile = PROFILES[0];
+      document.getElementById('profile-title').textContent = profile.name;
+      document.getElementById('profile-details').textContent = profile.details;
+      document.getElementById('profile-bio').textContent = profile.bio;
+      document.getElementById('profile-img').src = profile.photos[0];
+    }
 
     function switchTab(mode) {
       const tabLogin = document.getElementById('tab-login');
@@ -331,55 +235,57 @@
       }
     }
 
-    function renderProfile() {
-      const profile = PROFILES[currentProfileIndex];
-      document.getElementById('profile-title').textContent = profile.name;
-      document.getElementById('profile-details').textContent = profile.details;
-      document.getElementById('profile-tagline').textContent = profile.tagline;
-      document.getElementById('profile-bio').textContent = profile.bio;
-      document.getElementById('profile-img').src = profile.photos[0];
-    }
-
-    function nextProfile() {
-      currentProfileIndex = (currentProfileIndex + 1) % PROFILES.length;
-      renderProfile();
-    }
-
-    function likeProfile() {
-      document.getElementById('match-modal').classList.remove('hidden');
-    }
-
-    function closeMatchModal() {
-      document.getElementById('match-modal').classList.add('hidden');
-      nextProfile();
-    }
-
-    function closeMatchAndChat() {
-      document.getElementById('match-modal').classList.add('hidden');
-      toggleChat(true);
-    }
-
-    function toggleFilters(open) {
+    function toggleSettings(open) {
       document.getElementById('profile-card').classList.toggle('hidden', open);
-      document.getElementById('filters-card').classList.toggle('hidden', !open);
-      document.getElementById('filters-card').classList.toggle('flex', open);
+      document.getElementById('settings-card').classList.toggle('hidden', !open);
+      document.getElementById('settings-card').classList.toggle('flex', open);
     }
 
-    // SISTEMA DE VIDEO MONETIZADO (30 SEGUNDOS)
-    let adInterval;
-    function requestVideoAd(e) {
-      e.preventDefault();
-      document.getElementById('video-ad-modal').classList.remove('hidden');
-      
+    // INICIAR ACCIÓN DE PAUSA O ELIMINACIÓN CON VIDEO DE 30s
+    function initiateAction(actionType) {
+      currentPendingAction = actionType;
+      const modal = document.getElementById('action-ad-modal');
+      const title = document.getElementById('action-title');
+      const warning = document.getElementById('action-warning');
+      const survey = document.getElementById('club-survey');
+      const icon = document.getElementById('action-icon');
+
+      survey.classList.add('hidden');
+
+      if (actionType === 'pause_club') {
+        icon.textContent = "⏸️";
+        title.textContent = "Pausar Perfil de Amora Club";
+        warning.textContent = "Tu perfil privado del Club se ocultará. Tu perfil principal de Amora continuará activo y visible normalmente.";
+      } else if (actionType === 'delete_club') {
+        icon.textContent = "🗑️";
+        title.textContent = "Salir de Amora Club";
+        warning.textContent = "Se borrarán de forma permanente tu alias, fotos privadas y chats del Club. Tu perfil principal de Amora NO se verá afectado.";
+        survey.classList.remove('hidden');
+      } else if (actionType === 'pause_main') {
+        icon.textContent = "⏸️";
+        title.textContent = "Pausar Perfil Principal de Amora";
+        warning.textContent = "Tu perfil principal se ocultará del carrusel de citas. Tu perfil de Amora Club mantendrá su estado independiente.";
+      } else if (actionType === 'delete_main') {
+        icon.textContent = "⚠️";
+        title.textContent = "Eliminar Cuenta Completa";
+        warning.textContent = "Esta acción eliminará permanentemente tus dos cuentas (Amora y Amora Club) sin posibilidad de recuperación.";
+      }
+
+      modal.classList.remove('hidden');
+      startAdTimer();
+    }
+
+    function startAdTimer() {
       let timeLeft = 30;
       const timerEl = document.getElementById('ad-timer');
       const progressBar = document.getElementById('ad-progress-bar');
-      const claimBtn = document.getElementById('btn-claim-ad');
+      const btn = document.getElementById('btn-confirm-action');
 
-      claimBtn.disabled = true;
-      claimBtn.className = "w-full bg-slate-800 text-slate-500 font-bold py-3 rounded-xl text-xs cursor-not-allowed";
-      claimBtn.textContent = "⏳ Espera a que termine el video...";
+      btn.disabled = true;
+      btn.className = "w-full bg-slate-800 text-slate-500 font-bold py-3 rounded-xl text-xs cursor-not-allowed";
+      btn.textContent = "⏳ Espera 30 segundos...";
 
+      clearInterval(adInterval);
       adInterval = setInterval(() => {
         timeLeft--;
         timerEl.textContent = `${timeLeft}s`;
@@ -387,17 +293,41 @@
 
         if (timeLeft <= 0) {
           clearInterval(adInterval);
-          claimBtn.disabled = false;
-          claimBtn.className = "w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-black py-3 rounded-xl text-xs shadow-lg shadow-emerald-500/30 animate-pulse";
-          claimBtn.textContent = "✅ APLICAR FILTROS AHORA";
+          btn.disabled = false;
+          btn.className = "w-full bg-rose-600 hover:bg-rose-500 text-white font-black py-3 rounded-xl text-xs shadow-lg shadow-rose-500/30 animate-pulse";
+          btn.textContent = "✅ CONFIRMAR ACCIÓN AHORA";
         }
       }, 1000);
     }
 
-    function completeVideoAd() {
-      document.getElementById('video-ad-modal').classList.add('hidden');
-      toggleFilters(false);
-      alert('🎉 ¡Filtros avanzados aplicados con éxito!');
+    function executePendingAction() {
+      closeActionModal();
+
+      if (currentPendingAction === 'pause_club') {
+        localStorage.setItem('club_paused', 'true');
+        document.getElementById('club-status-badge').textContent = 'PAUSADO';
+        document.getElementById('club-status-badge').className = 'text-[9px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded-full border border-amber-500/30';
+        alert('⏸️ Tu perfil de Amora Club ha sido pausado. Tu cuenta principal de Amora sigue totalmente activa.');
+      } else if (currentPendingAction === 'delete_club') {
+        localStorage.removeItem('club_profile_data');
+        document.getElementById('club-status-badge').textContent = 'SIN CONFIGURAR';
+        document.getElementById('club-status-badge').className = 'text-[9px] bg-slate-700 text-slate-400 font-bold px-2 py-0.5 rounded-full';
+        alert('🗑️ Has salido de Amora Club y tus datos privados fueron eliminados. Tu perfil principal en Amora se mantiene intacto.');
+      } else if (currentPendingAction === 'pause_main') {
+        localStorage.setItem('main_paused', 'true');
+        document.getElementById('main-status-badge').textContent = 'PAUSADO';
+        document.getElementById('main-status-badge').className = 'text-[9px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded-full border border-amber-500/30';
+        alert('⏸️ Tu perfil principal de Amora está pausado.');
+      } else if (currentPendingAction === 'delete_main') {
+        localStorage.clear();
+        alert('🗑️ Tu cuenta completa ha sido eliminada permanentemente.');
+        location.reload();
+      }
+    }
+
+    function closeActionModal() {
+      clearInterval(adInterval);
+      document.getElementById('action-ad-modal').classList.add('hidden');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
@@ -406,6 +336,12 @@
         document.getElementById('auth-section').classList.add('hidden');
         document.getElementById('app-section').classList.remove('hidden');
         document.getElementById('user-display').textContent = savedUser;
+
+        if (localStorage.getItem('club_paused') === 'true') {
+          document.getElementById('club-status-badge').textContent = 'PAUSADO';
+          document.getElementById('club-status-badge').className = 'text-[9px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded-full border border-amber-500/30';
+        }
+
         renderProfile();
       }
 
@@ -413,47 +349,21 @@
         e.preventDefault();
         const email = document.getElementById('register-email').value;
         localStorage.setItem('app_user_email', email);
-        document.getElementById('auth-section').classList.add('hidden');
-        document.getElementById('app-section').classList.remove('hidden');
-        document.getElementById('user-display').textContent = email;
-        renderProfile();
+        location.reload();
       };
 
       document.getElementById('form-login').onsubmit = (e) => {
         e.preventDefault();
         const email = document.getElementById('login-email').value;
         localStorage.setItem('app_user_email', email);
-        document.getElementById('auth-section').classList.add('hidden');
-        document.getElementById('app-section').classList.remove('hidden');
-        document.getElementById('user-display').textContent = email;
-        renderProfile();
+        location.reload();
       };
 
       document.getElementById('btn-logout').onclick = () => {
-        localStorage.removeItem('app_user_email');
+        localStorage.clear();
         location.reload();
       };
     });
-
-    function toggleChat(open) {
-      document.getElementById('profile-card').classList.toggle('hidden', open);
-      document.getElementById('chat-card').classList.toggle('hidden', !open);
-      document.getElementById('chat-card').classList.toggle('flex', open);
-    }
-
-    function sendMessage(e) {
-      e.preventDefault();
-      const input = document.getElementById('chat-input');
-      const container = document.getElementById('messages-container');
-      if (!input.value.trim()) return;
-
-      const userMsg = document.createElement('div');
-      userMsg.className = 'bg-rose-500 text-white p-2.5 rounded-2xl max-w-[85%] ml-auto text-right';
-      userMsg.textContent = input.value;
-      container.appendChild(userMsg);
-      input.value = '';
-      container.scrollTop = container.scrollHeight;
-    }
   </script>
 </body>
 </html>
