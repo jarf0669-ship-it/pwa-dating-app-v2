@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Amora Dating App</title>
+  <title>Amora Dating App - Definitiva</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -40,24 +40,31 @@
 
     <!-- PESTAÑA 1: INICIO -->
     <main id="tab-inicio" class="flex-1 overflow-y-auto p-3 space-y-4">
+      
+      <!-- ADVERTENCIA USO APP -->
+      <div class="bg-amber-950/40 border border-amber-600/40 p-2.5 rounded-xl text-[11px] text-amber-200 flex items-start gap-2">
+        <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i>
+        <p><strong>Aviso legal:</strong> Debes ser mayor de 18 años para usar esta plataforma. Respeta a los demás usuarios.</p>
+      </div>
+
       <div class="space-y-2">
         <h3 class="text-[11px] font-bold uppercase tracking-wider text-gray-400 flex items-center gap-1">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-yellow-400"></i> Novedades
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-yellow-400"></i> Novedades y Avisos
         </h3>
 
-        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 flex items-center justify-between">
-          <div class="flex items-center space-x-3">
-            <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center border border-slate-700 overflow-hidden">
-              <img id="avatar-preview" src="https://picsum.photos/100" class="w-full h-full object-cover filter blur-md">
+        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 space-y-2">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center border border-slate-700 overflow-hidden">
+                <img id="avatar-preview" src="https://picsum.photos/100" class="w-full h-full object-cover">
+              </div>
+              <div>
+                <p class="font-semibold text-xs" id="toque-notif">¡Alguien te dio un toque! ⚡</p>
+                <p class="text-[10px] text-gray-400">Hace unos momentos</p>
+              </div>
             </div>
-            <div>
-              <p class="font-semibold text-xs">Alguien vio tu perfil</p>
-              <p class="text-[10px] text-gray-400">Hace unos minutos</p>
-            </div>
+            <span class="text-[10px] bg-pink-600/20 text-pink-400 px-2 py-1 rounded-lg font-bold">Match Activo</span>
           </div>
-          <button onclick="startAd()" class="text-[11px] bg-pink-600 hover:bg-pink-700 px-3 py-1.5 rounded-xl font-bold shadow-md">
-            🎥 Ver video (30s)
-          </button>
         </div>
       </div>
 
@@ -90,161 +97,143 @@
       </div>
     </main>
 
-    <!-- PESTAÑA 3: CHATS -->
+    <!-- PESTAÑA 3: CHATS Y MATCHES -->
     <main id="tab-chats" class="flex-1 p-3 space-y-3 hidden">
-      <h2 class="text-sm font-bold mb-2">Tus Mensajes y Matches</h2>
+      <h2 class="text-sm font-bold mb-2">Tus Matches y Mensajes</h2>
       <div id="chat-list" class="space-y-2"></div>
     </main>
 
-    <!-- PESTAÑA 4: MI PERFIL Y EDICIÓN -->
+    <!-- PESTAÑA 4: MI PERFIL, ACCESOS Y FORMULARIOS -->
     <main id="tab-perfil" class="flex-1 p-3 space-y-4 overflow-y-auto hidden">
       
-      <!-- TARJETA CABECERA DE USUARIO -->
-      <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 text-center space-y-2">
-        <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-2 border-pink-500">
-          <img id="my-avatar" src="https://picsum.photos/200" class="w-full h-full object-cover">
+      <!-- SECCIÓN DE AUTENTICACIÓN (Sign in, Crear, Recuperar) -->
+      <div class="bg-slate-900 p-4 rounded-2xl border border-slate-800 space-y-3">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <h3 class="font-bold text-xs text-pink-400">Acceso de Cuenta</h3>
+          <span class="text-[10px] text-gray-400">Sesión actual</span>
         </div>
-        <div>
-          <h3 id="my-username" class="font-bold text-base">Antonio, 56</h3>
-          <p id="my-user-location" class="text-xs text-gray-400">Hombre, Valencia</p>
+        <div class="grid grid-cols-3 gap-2 text-[11px]">
+          <button onclick="openAuthModal('signin')" class="py-2 bg-slate-800 hover:bg-slate-700 rounded-xl font-semibold text-center border border-slate-700">Sign In</button>
+          <button onclick="openAuthModal('signup')" class="py-2 bg-pink-600 hover:bg-pink-500 rounded-xl font-semibold text-center text-white">Crear Perfil</button>
+          <button onclick="openAuthModal('recovery')" class="py-2 bg-slate-800 hover:bg-slate-700 rounded-xl font-semibold text-center border border-slate-700">Recuperar</button>
         </div>
       </div>
 
-      <!-- VISTA FORMULARIO AMORA (TIPO BADOO) -->
+      <!-- ADVERTENCIA AMORA CLUB (SI ESTÁ ACTIVO) -->
+      <div id="club-warning-box" class="bg-purple-950/50 border border-purple-500/50 p-3 rounded-2xl text-xs space-y-1 hidden">
+        <p class="font-bold text-purple-300 flex items-center gap-1">
+          <i data-lucide="shield-alert" class="w-4 h-4"></i> Advertencia Exclusiva - Amora Club
+        </p>
+        <p class="text-[11px] text-purple-200">Esta sección contiene contenido explícito y para adultos. Discreción absoluta requerida.</p>
+      </div>
+
+      <!-- FORMULARIO AMORA -->
       <div id="form-amora-view" class="bg-white text-slate-900 rounded-2xl p-4 space-y-4 text-xs shadow-lg">
         <div class="border-b pb-2 flex justify-between items-center">
           <span class="font-bold text-sm">Perfil Amora</span>
           <span class="text-[10px] bg-pink-100 text-pink-700 px-2 py-0.5 rounded-full font-bold">60% completado</span>
         </div>
-
         <div class="space-y-3">
-          <div>
-            <label class="font-bold block text-slate-700 mb-1">Profesión</label>
-            <input type="text" id="amora-job" value="Añadir tu trabajo" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-800">
-          </div>
-          <div>
-            <label class="font-bold block text-slate-700 mb-1">Estudios</label>
-            <input type="text" id="amora-studies" value="Secundaria" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-800">
-          </div>
-          <div>
-            <label class="font-bold block text-slate-700 mb-1">Aquí busco...</label>
-            <input type="text" id="amora-seeking" value="Quedar y ver qué surge" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-800">
-          </div>
-          <div>
-            <label class="font-bold block text-slate-700 mb-1">Biografía</label>
-            <textarea id="amora-bio" class="w-full p-2 border border-slate-200 rounded-xl bg-slate-50 text-slate-800 h-16 resize-none">Añade tu biografía para presentarte</textarea>
-          </div>
-        </div>
-
-        <div class="pt-2 border-t border-slate-100 space-y-2">
-          <p class="font-bold text-slate-800">Mi información</p>
-          <div class="grid grid-cols-2 gap-2 text-[11px]">
-            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Estatura:</strong> <input id="amora-height" value="170 cm" class="w-full bg-transparent"></div>
-            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Alcohol:</strong> <input id="amora-alcohol" value="En contextos sociales" class="w-full bg-transparent"></div>
-            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Relación:</strong> <input id="amora-rel" value="Soltero" class="w-full bg-transparent"></div>
-            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Orientación:</strong> <input id="amora-orient" value="Heterosexual" class="w-full bg-transparent"></div>
-            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Tabaco:</strong> <input id="amora-smoke" value="No fumador" class="w-full bg-transparent"></div>
-            <div class="bg-slate-50 p-2 rounded-lg border"><strong>Personalidad:</strong> <input id="amora-personality" value="Extrovertido" class="w-full bg-transparent"></div>
-          </div>
-        </div>
-
-        <div class="pt-2 border-t border-slate-100 space-y-2">
-          <p class="font-bold text-slate-800">Intereses</p>
-          <div class="flex flex-wrap gap-1 text-[10px]">
-            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">🍿 Amante del cine</span>
-            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">☕ Café</span>
-            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">🍽️ Comer fuera</span>
-            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">💕 Abrazos y mimos</span>
-            <span class="bg-slate-100 border text-slate-700 px-2 py-1 rounded-full">💃 Baile</span>
-          </div>
+          <div><label class="font-bold block text-slate-700 mb-1">Profesión</label><input type="text" value="Añadir tu trabajo" class="w-full p-2 border rounded-xl bg-slate-50"></div>
+          <div><label class="font-bold block text-slate-700 mb-1">Estudios</label><input type="text" value="Secundaria" class="w-full p-2 border rounded-xl bg-slate-50"></div>
+          <div><label class="font-bold block text-slate-700 mb-1">Aquí busco...</label><input type="text" value="Quedar y ver qué surge" class="w-full p-2 border rounded-xl bg-slate-50"></div>
         </div>
       </div>
 
-      <!-- VISTA FORMULARIO AMORA CLUB (TIPO GRINDR / MODO OSCURO) -->
+      <!-- FORMULARIO AMORA CLUB -->
       <div id="form-club-view" class="bg-slate-900 border border-purple-500/30 rounded-2xl p-4 space-y-4 text-xs shadow-xl hidden">
         <div class="border-b border-slate-800 pb-2 flex justify-between items-center">
-          <span class="font-bold text-sm text-purple-400">Editar Perfil Amora Club 🔒</span>
+          <span class="font-bold text-sm text-purple-400">Perfil Amora Club Privado 🔒</span>
         </div>
-
         <div class="space-y-3 text-gray-200">
-          <div>
-            <label class="block text-gray-400 mb-1">Nombre de pantalla</label>
-            <input type="text" id="club-display-name" value="Antonio VIP" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
-          </div>
+          <div><label class="block text-gray-400 mb-1">Nombre de pantalla VIP</label><input type="text" value="Antonio VIP" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white"></div>
           <div class="grid grid-cols-2 gap-2">
-            <div>
-              <label class="block text-gray-400 mb-1">Edad</label>
-              <input type="text" id="club-age" value="56" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
-            </div>
-            <div>
-              <label class="block text-gray-400 mb-1">Peso</label>
-              <input type="text" id="club-weight" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-gray-400 mb-1">Etnia</label>
-            <input type="text" id="club-ethnicity" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
-          </div>
-          <div>
-            <label class="block text-gray-400 mb-1">Tipo de cuerpo</label>
-            <input type="text" id="club-body" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
-          </div>
-          <div>
-            <label class="block text-gray-400 mb-1">Rol</label>
-            <input type="text" id="club-role" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
-          </div>
-          <div>
-            <label class="block text-gray-400 mb-1">Estado de la relación</label>
-            <input type="text" id="club-rel-status" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
+            <div><label class="block text-gray-400 mb-1">Edad</label><input type="text" value="56" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white"></div>
+            <div><label class="block text-gray-400 mb-1">Peso</label><input type="text" placeholder="Sin respuesta" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white"></div>
           </div>
         </div>
       </div>
-
     </main>
 
-    <!-- MODALES VARIOS -->
-    <div id="modal-profile-detail" class="fixed inset-0 bg-black/90 z-50 hidden overflow-y-auto p-4">
-      <div class="max-w-md mx-auto bg-slate-900 rounded-3xl overflow-hidden border border-slate-800">
-        <div class="relative h-72">
-          <img id="detail-img" src="" class="w-full h-full object-cover">
-          <button onclick="closeProfileDetail()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white font-bold">✕</button>
-        </div>
-        <div class="p-4 space-y-3">
-          <h2 id="detail-name" class="text-xl font-bold"></h2>
-          <p id="detail-bio" class="text-xs text-gray-300"></p>
-          <div class="flex gap-2">
-            <button onclick="openMessageModal(); closeProfileDetail();" class="flex-1 py-2 bg-pink-600 rounded-xl font-bold text-xs">Enviar Mensaje</button>
-            <button onclick="likeCard(); closeProfileDetail();" class="flex-1 py-2 bg-purple-600 rounded-xl font-bold text-xs">Dar Me Gusta</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <!-- MODAL DE FILTROS AVANZADOS (COMPLETO) -->
     <div id="modal-filters" class="fixed inset-0 bg-black/80 z-50 hidden flex flex-col justify-end">
-      <div class="p-5 rounded-t-3xl w-full max-w-md mx-auto bg-slate-900 border-t border-slate-800 space-y-3">
-        <div class="flex justify-between items-center">
-          <h3 class="text-sm font-bold">Filtros de Búsqueda</h3>
+      <div class="p-5 rounded-t-3xl w-full max-w-md mx-auto bg-slate-900 border-t border-slate-800 space-y-4 text-xs">
+        <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+          <h3 class="text-sm font-bold text-pink-400">Filtros de Búsqueda Avanzados</h3>
           <button onclick="toggleFilters(false)">✕</button>
         </div>
-        <div class="space-y-2 text-xs">
-          <p class="font-semibold">Busco personas para:</p>
-          <div class="flex flex-wrap gap-2">
-            <button class="px-3 py-1 rounded-full bg-pink-600 text-white">Citas casuales</button>
-            <button class="px-3 py-1 rounded-full bg-slate-800 text-gray-300">Relación seria</button>
+
+        <div class="space-y-3">
+          <!-- Distancia -->
+          <div>
+            <div class="flex justify-between text-gray-300 mb-1">
+              <span>Distancia máxima:</span>
+              <span id="dist-val" class="font-bold text-pink-400">25 km</span>
+            </div>
+            <input type="range" min="1" max="150" value="25" class="w-full accent-pink-600" oninput="document.getElementById('dist-val').innerText = this.value + ' km'">
+          </div>
+
+          <!-- Mostrar Sexo -->
+          <div>
+            <label class="block text-gray-300 mb-1 font-semibold">Mostrar personas:</label>
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <button onclick="selectFilterSex(this)" class="p-2 rounded-xl bg-pink-600 font-bold text-white sex-btn">Mujeres</button>
+              <button onclick="selectFilterSex(this)" class="p-2 rounded-xl bg-slate-800 text-gray-300 sex-btn">Hombres</button>
+              <button onclick="selectFilterSex(this)" class="p-2 rounded-xl bg-slate-800 text-gray-300 sex-btn">Todo el mundo</button>
+            </div>
+          </div>
+
+          <!-- Rango de Edad -->
+          <div>
+            <div class="flex justify-between text-gray-300 mb-1">
+              <span>Rango de edad:</span>
+              <span class="font-bold text-pink-400">18 - 65+</span>
+            </div>
+            <div class="flex gap-2 items-center">
+              <input type="number" value="18" class="w-16 p-1.5 bg-slate-950 border border-slate-800 rounded-lg text-center">
+              <span class="text-gray-500">hasta</span>
+              <input type="number" value="65" class="w-16 p-1.5 bg-slate-950 border border-slate-800 rounded-lg text-center">
+            </div>
+          </div>
+
+          <!-- Estado En línea / Conectado -->
+          <div>
+            <label class="block text-gray-300 mb-1 font-semibold">Estado de actividad:</label>
+            <select class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white">
+              <option>Recientes y En línea ahora</option>
+              <option>Conectados hoy</option>
+              <option>Cualquiera</option>
+            </select>
           </div>
         </div>
-        <button onclick="toggleFilters(false)" class="w-full py-2.5 bg-pink-600 rounded-xl font-bold text-xs">Guardar Filtros</button>
+
+        <button onclick="toggleFilters(false)" class="w-full py-2.5 bg-pink-600 hover:bg-pink-500 rounded-xl font-bold text-white">Aplicar Filtros</button>
       </div>
     </div>
 
+    <!-- MODAL DE AUTENTICACIÓN (Sign in, Crear, Recuperar) -->
+    <div id="modal-auth" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
+      <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-xs border border-slate-800 space-y-4 text-xs">
+        <h3 id="auth-title" class="text-sm font-bold text-pink-400">Iniciar Sesión</h3>
+        <div class="space-y-3">
+          <div><label class="block text-gray-400 mb-1">Correo electrónico</label><input type="email" placeholder="tucorreo@email.com" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white"></div>
+          <div id="auth-pass-box"><label class="block text-gray-400 mb-1">Contraseña</label><input type="password" placeholder="••••••••" class="w-full p-2 bg-slate-950 border border-slate-800 rounded-xl text-white"></div>
+        </div>
+        <div class="flex gap-2 pt-2">
+          <button onclick="closeAuthModal()" class="flex-1 bg-pink-600 py-2 rounded-xl font-bold text-white">Aceptar</button>
+          <button onclick="closeAuthModal()" class="flex-1 bg-slate-800 py-2 rounded-xl text-gray-300">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL MENSAJES -->
     <div id="modal-message" class="fixed inset-0 bg-black/90 z-50 hidden flex items-center justify-center p-4">
-      <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-xs border border-slate-800 space-y-3">
-        <h3 class="text-sm font-bold">Enviar Mensaje</h3>
-        <textarea id="input-chat-msg" placeholder="Escribe algo..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-xs text-white h-20 resize-none"></textarea>
+      <div class="bg-slate-900 p-5 rounded-3xl w-full max-w-xs border border-slate-800 space-y-3 text-xs">
+        <h3 class="font-bold text-pink-400">Enviar Mensaje / Toke</h3>
+        <textarea id="input-chat-msg" placeholder="Escribe un mensaje o saluda..." class="w-full bg-slate-950 border border-slate-800 p-2.5 rounded-xl text-white h-20 resize-none"></textarea>
         <div class="flex gap-2">
-          <button onclick="sendChatMessage()" class="flex-1 bg-pink-600 py-2 rounded-xl text-xs font-bold">Enviar</button>
-          <button onclick="closeMessageModal()" class="flex-1 bg-slate-800 py-2 rounded-xl text-xs">Cancelar</button>
+          <button onclick="sendChatMessage()" class="flex-1 bg-pink-600 py-2 rounded-xl font-bold text-white">Enviar</button>
+          <button onclick="closeMessageModal()" class="flex-1 bg-slate-800 py-2 rounded-xl">Cancelar</button>
         </div>
       </div>
     </div>
@@ -252,25 +241,19 @@
     <!-- NAVEGACIÓN INFERIOR -->
     <nav class="flex justify-around items-center py-2.5 border-t border-slate-800 bg-slate-900 text-[10px]">
       <button onclick="switchTab('inicio')" id="nav-inicio" class="flex flex-col items-center text-pink-500 font-bold">
-        <i data-lucide="user" class="w-4 h-4 mb-0.5"></i>
-        <span>Descubre</span>
+        <i data-lucide="user" class="w-4 h-4 mb-0.5"></i><span>Descubre</span>
       </button>
       <button onclick="switchTab('encuentros')" id="nav-encuentros" class="flex flex-col items-center text-gray-400">
-        <i data-lucide="sparkles" class="w-4 h-4 mb-0.5"></i>
-        <span>Encuentros</span>
+        <i data-lucide="sparkles" class="w-4 h-4 mb-0.5"></i><span>Encuentros</span>
       </button>
       <button onclick="switchTab('chats')" id="nav-chats" class="flex flex-col items-center text-gray-400">
-        <i data-lucide="message-circle" class="w-4 h-4 mb-0.5"></i>
-        <span>Chats</span>
+        <i data-lucide="message-circle" class="w-4 h-4 mb-0.5"></i><span>Chats & Matches</span>
       </button>
       <button onclick="switchTab('perfil')" id="nav-perfil" class="flex flex-col items-center text-gray-400">
-        <i data-lucide="settings" class="w-4 h-4 mb-0.5"></i>
-        <span>Mi Perfil</span>
+        <i data-lucide="settings" class="w-4 h-4 mb-0.5"></i><span>Mi Perfil</span>
       </button>
     </nav>
-
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
