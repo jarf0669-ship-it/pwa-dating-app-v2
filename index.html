@@ -13,13 +13,15 @@
     .custom-scroll::-webkit-scrollbar-thumb:hover { background: #ec4899; }
     .vibrant-shadow { box-shadow: 0 10px 30px -10px rgba(236, 72, 153, 0.3); }
     .club-shadow { box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.3); }
+    /* Transición suave para el cambio de perfiles al pasar el mouse */
+    .demo-card-img { transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out; }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex items-center justify-center p-2 sm:p-4 font-sans">
 
   <main class="w-full max-w-md bg-white rounded-3xl shadow-2xl overflow-hidden border border-slate-200 relative flex flex-col max-h-[85vh]">
 
-    <!-- 0. LANDING EXTENDIDA CON PERFILES FICTICIOS DE EJEMPLO (RESPETANDO PRIVACIDAD) -->
+    <!-- 0. LANDING EXTENDIDA CON PERFILES FICTICIOS DINÁMICOS AL PASAR EL MOUSE -->
     <section id="welcome-landing-section" class="flex-1 overflow-y-auto custom-scroll p-6 bg-gradient-to-b from-rose-50/60 via-white to-pink-50/40">
       
       <!-- Header Fijo Superior -->
@@ -35,38 +37,63 @@
       </header>
 
       <!-- Bloque Hero Principal -->
-      <div class="text-center space-y-3 mb-8">
+      <div class="text-center space-y-3 mb-6">
         <span class="inline-block bg-pink-100 text-pink-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">La Red Social del Amor Real</span>
         <h1 id="txt-title" class="text-2xl font-black text-slate-900 leading-tight">Conecta de verdad, encuentra a alguien especial</h1>
         <p id="txt-subtitle" class="text-xs text-slate-600 leading-relaxed px-2">Una plataforma moderna y luminosa basada en afinidades reales, cercanía y conexiones auténticas sin complicaciones.</p>
       </div>
 
-      <!-- Tarjetas de Demostración (Perfiles ficticios / Mockups estrictos para ilustrar) -->
+      <!-- Tarjetas de Demostración con Interacción Dinámica al Pasar el Mouse (Hover) -->
       <div class="mb-8">
         <div class="flex gap-3 overflow-x-auto pb-3 pt-1 custom-scroll snap-x">
-          <div class="min-w-[140px] h-48 rounded-2xl overflow-hidden relative shadow-md border border-pink-100 snap-center flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-2.5">
-              <span class="text-xs font-black text-white">Ejemplo: Carla, 25 💖</span>
-              <span class="text-[9px] text-pink-300 font-medium">📍 Perfil de Demostración</span>
+          
+          <!-- Tarjeta Demo 1 -->
+          <div class="min-w-[140px] h-48 rounded-2xl overflow-hidden relative shadow-md border border-pink-100 snap-center flex-shrink-0 cursor-pointer group"
+               onmouseenter="cambiarFotoDemo(this, 1)" onmouseleave="cambiarFotoDemo(this, 0)">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" 
+                 data-img-primary="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+                 data-img-secondary="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80"
+                 data-name-primary="Ejemplo: Carla, 25 💖"
+                 data-name-secondary="Ejemplo: Carla, Arte 🎨"
+                 class="w-full h-full object-cover demo-card-img group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-2.5 pointer-events-none">
+              <span class="demo-name-label text-xs font-black text-white">Ejemplo: Carla, 25 💖</span>
+              <span class="text-[9px] text-pink-300 font-medium">✨ Pasa el mouse para ver más</span>
             </div>
           </div>
-          <div class="min-w-[140px] h-48 rounded-2xl overflow-hidden relative shadow-md border border-purple-100 snap-center flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-2.5">
-              <span class="text-xs font-black text-white">Ejemplo: Club VIP 🔒</span>
+
+          <!-- Tarjeta Demo 2 (Club Privado) -->
+          <div class="min-w-[140px] h-48 rounded-2xl overflow-hidden relative shadow-md border border-purple-100 snap-center flex-shrink-0 cursor-pointer group"
+               onmouseenter="cambiarFotoDemo(this, 1)" onmouseleave="cambiarFotoDemo(this, 0)">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" 
+                 data-img-primary="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80"
+                 data-img-secondary="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80"
+                 data-name-primary="Ejemplo: Club VIP 🔒"
+                 data-name-secondary="Ejemplo: Privado 👑"
+                 class="w-full h-full object-cover demo-card-img group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-2.5 pointer-events-none">
+              <span class="demo-name-label text-xs font-black text-white">Ejemplo: Club VIP 🔒</span>
               <span class="text-[9px] text-purple-300 font-medium">Espacio Privado Demo</span>
             </div>
           </div>
-          <div class="min-w-[140px] h-48 rounded-2xl overflow-hidden relative shadow-md border border-rose-100 snap-center flex-shrink-0">
-            <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-2.5">
-              <span class="text-xs font-black text-white">Ejemplo: Marco, 28 ✨</span>
+
+          <!-- Tarjeta Demo 3 -->
+          <div class="min-w-[140px] h-48 rounded-2xl overflow-hidden relative shadow-md border border-rose-100 snap-center flex-shrink-0 cursor-pointer group"
+               onmouseenter="cambiarFotoDemo(this, 1)" onmouseleave="cambiarFotoDemo(this, 0)">
+            <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" 
+                 data-img-primary="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80"
+                 data-img-secondary="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80"
+                 data-name-primary="Ejemplo: Marco, 28 ✨"
+                 data-name-secondary="Ejemplo: Marco, Viajes ✈️"
+                 class="w-full h-full object-cover demo-card-img group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-2.5 pointer-events-none">
+              <span class="demo-name-label text-xs font-black text-white">Ejemplo: Marco, 28 ✨</span>
               <span class="text-[9px] text-rose-300 font-medium">📍 Perfil de Demostración</span>
             </div>
           </div>
+
         </div>
-        <p class="text-[10px] text-center text-slate-400 mt-1">Desliza para ver ejemplos de interfaz ➔</p>
+        <p class="text-[10px] text-center text-slate-400 mt-1">💡 Pasa el cursor sobre las tarjetas para interactuar con los ejemplos</p>
       </div>
 
       <!-- SECCIÓN EXPLICATIVA EXTENDIDA 1: ¿Qué es Amora? -->
@@ -337,7 +364,7 @@
         </div>
       </header>
 
-      <!-- TARJETA EXPLORAR / CARRUSEL -->
+      <!-- TARJETA EXPLORAR / CARRUSEL REAL DE LA APP -->
       <div id="profile-card" class="p-4 flex flex-col items-center flex-1 overflow-y-auto">
         <div class="relative w-full h-80 rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-slate-100 select-none">
           <img id="profile-img" src="" alt="Foto" class="w-full h-full object-cover">
@@ -473,6 +500,20 @@
       document.getElementById('txt-legal-2').innerText = traducciones[lang].legal2;
       document.getElementById('txt-legal-3').innerText = traducciones[lang].legal3;
       localStorage.setItem('amora_lang', lang);
+    }
+
+    // FUNCIÓN PARA CAMBIAR DE FOTO Y TEXTO DINÁMICAMENTE AL PASAR EL MOUSE (HOVER)
+    function cambiarFotoDemo(cardContainer, estado) {
+      const img = cardContainer.querySelector('.demo-card-img');
+      const label = cardContainer.querySelector('.demo-name-label');
+      
+      if (estado === 1) {
+        img.src = img.getAttribute('data-img-secondary');
+        label.textContent = img.getAttribute('data-name-secondary');
+      } else {
+        img.src = img.getAttribute('data-img-primary');
+        label.textContent = img.getAttribute('data-name-primary');
+      }
     }
 
     function irAAuthDesdeWelcome(tipo) {
