@@ -3,64 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amora PWA</title>
+  <title>Amora PWA - Club & Dating</title>
   <link rel="manifest" href="/manifest.json" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     .custom-scroll::-webkit-scrollbar { width: 4px; }
     .custom-scroll::-webkit-scrollbar-track { background: rgba(15, 23, 42, 0.6); }
-    .custom-scroll::-webkit-scrollbar-thumb { background: #f43f5e; border-radius: 10px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #ec4899; border-radius: 10px; }
+    .neon-glow { box-shadow: 0 0 25px rgba(236, 72, 153, 0.4); }
+    .club-glow { box-shadow: 0 0 25px rgba(168, 85, 247, 0.4); }
   </style>
 </head>
-<body class="bg-slate-900 text-slate-100 min-h-screen flex items-center justify-center p-2 sm:p-4 font-sans">
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center p-2 sm:p-4 font-sans">
 
-  <main class="w-full max-w-md bg-slate-800 rounded-3xl shadow-2xl overflow-hidden border border-slate-700/80 relative">
+  <main class="w-full max-w-md bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-800 relative">
 
-    <!-- 0. PANTALLA DE BIENVENIDA / LANDING MULTILENGUAJE (NUEVA ADICIÓN) -->
-    <section id="welcome-landing-section" class="p-6 flex flex-col justify-between min-h-[580px]">
+    <!-- 0. NUEVA PANTALLA DE BIENVENIDA / LANDING MULTILENGUAJE ULTRA LLAMATIVA -->
+    <section id="welcome-landing-section" class="p-6 flex flex-col justify-between min-h-[620px] bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950">
       <div>
         <header class="flex justify-between items-center mb-6">
-          <div class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400">✨ Amora</div>
+          <div class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-rose-400 to-purple-500 tracking-wider">✨ AMORA</div>
           <div class="language-selector">
-            <select id="langSelect" onchange="cambiarIdioma(this.value)" class="bg-slate-900 text-slate-200 border border-rose-500/50 rounded-xl px-2.5 py-1 text-xs focus:outline-none">
-              <option value="es">ES</option>
-              <option value="en">EN</option>
-              <option value="ru">RU</option>
+            <select id="langSelect" onchange="cambiarIdioma(this.value)" class="bg-slate-950 text-pink-300 border border-pink-500/50 rounded-xl px-3 py-1.5 text-xs font-bold focus:outline-none shadow-sm">
+              <option value="es">🇪🇸 ES</option>
+              <option value="en">🇬🇧 EN</option>
+              <option value="ru">🇷🇺 RU</option>
             </select>
           </div>
         </header>
 
-        <div class="text-center space-y-3 mb-6">
-          <h1 id="txt-title" class="text-2xl font-extrabold text-white leading-tight">Conecta de verdad, encuentra a alguien especial</h1>
-          <p id="txt-subtitle" class="text-xs text-slate-300">Una red moderna basada en afinidades reales, cercanía y conexiones auténticas sin complicaciones.</p>
+        <!-- Tarjetas Dinámicas de Presentación (Inspiración Carrusel Visual) -->
+        <div class="relative h-44 mb-5 flex items-center justify-center overflow-hidden rounded-2xl border border-pink-500/30 bg-slate-950/60 p-2">
+          <div class="absolute inset-0 bg-gradient-to-tr from-pink-500/10 to-purple-500/10 pointer-events-none"></div>
+          <div class="flex gap-3 overflow-x-auto w-full px-2 py-1 custom-scroll snap-x">
+            <div class="min-w-[120px] h-36 rounded-xl overflow-hidden relative border border-pink-500/50 snap-center shadow-lg">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent flex items-end p-2">
+                <span class="text-[10px] font-black text-pink-300">Sofía, 24 💖</span>
+              </div>
+            </div>
+            <div class="min-w-[120px] h-36 rounded-xl overflow-hidden relative border border-purple-500/50 snap-center shadow-lg">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent flex items-end p-2">
+                <span class="text-[10px] font-black text-purple-300">Alex Club 🔒</span>
+              </div>
+            </div>
+            <div class="min-w-[120px] h-36 rounded-xl overflow-hidden relative border border-rose-500/50 snap-center shadow-lg">
+              <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover">
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent flex items-end p-2">
+                <span class="text-[10px] font-black text-rose-300">Lucía, 26 ✨</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="bg-purple-950/40 p-3.5 rounded-2xl border border-purple-500/40 space-y-1 mb-6">
+        <div class="text-center space-y-2 mb-4">
+          <h1 id="txt-title" class="text-xl font-black text-white leading-tight">Conecta de verdad, encuentra a alguien especial</h1>
+          <p id="txt-subtitle" class="text-xs text-slate-300">Una red moderna basada en afinidades reales, cercanía y conexiones auténticas.</p>
+        </div>
+
+        <div class="bg-gradient-to-r from-purple-950/60 to-slate-900 p-3 rounded-2xl border border-purple-500/50 club-glow space-y-1 mb-4">
           <h3 id="txt-club-title" class="font-black text-purple-300 text-xs flex items-center gap-1.5">🔒 AMORA CLUB (Espacio Privado & LGTBIQ+)</h3>
-          <p id="txt-club-desc" class="text-[11px] text-purple-200">Un entorno 100% discreto, seguro y protegido para la comunidad. Tu privacidad es absoluta.</p>
+          <p id="txt-club-desc" class="text-[11px] text-purple-200">Entorno 100% discreto, seguro y protegido para la comunidad. Privacidad absoluta.</p>
         </div>
       </div>
 
       <div class="space-y-3">
         <div class="space-y-2">
-          <button onclick="irAAuthDesdeWelcome('login')" class="w-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 hover:opacity-90 text-white font-black py-3 rounded-2xl text-xs shadow-lg shadow-rose-500/30 transition-all" id="txt-btn-login">
-            Iniciar Sesión
+          <button onclick="irAAuthDesdeWelcome('login')" class="w-full bg-gradient-to-r from-pink-500 via-rose-500 to-purple-600 hover:opacity-95 text-white font-black py-3.5 rounded-2xl text-xs neon-glow transition-all uppercase tracking-wider" id="txt-btn-login">
+            🚀 Iniciar Sesión
           </button>
-          <button onclick="irAAuthDesdeWelcome('register')" class="w-full bg-slate-900 hover:bg-slate-950 border border-slate-700 text-slate-200 font-bold py-3 rounded-2xl text-xs transition-all" id="txt-btn-register">
+          <button onclick="irAAuthDesdeWelcome('register')" class="w-full bg-slate-950 hover:bg-slate-900 border border-pink-500/40 text-pink-300 font-bold py-3 rounded-2xl text-xs transition-all shadow-md" id="txt-btn-register">
             Crear Nueva Cuenta
           </button>
         </div>
 
         <div class="text-center">
-          <span id="txt-privacy" class="text-[10px] text-slate-400 italic">🔒 "Lo que pasa en Amora Club se queda en Amora Club."</span>
+          <span id="txt-privacy" class="text-[10px] text-pink-400 font-semibold">🔒 "Lo que pasa en Amora Club se queda en Amora Club."</span>
         </div>
 
-        <div class="border-t border-slate-700/80 pt-3 text-[10px] text-slate-400 space-y-1">
+        <div class="border-t border-slate-800 pt-2 text-[10px] text-slate-400">
           <details>
-            <summary id="txt-legal-title" class="cursor-pointer font-bold text-slate-300">Términos, Mayoría de Edad y Política</summary>
+            <summary id="txt-legal-title" class="cursor-pointer font-bold text-slate-300 hover:text-pink-400">Términos, Mayoría de Edad y Política</summary>
             <p id="txt-legal-1" class="mt-1">• Debes ser mayor de 18 años (+18) para acceder.</p>
-            <p id="txt-legal-2" class="mt-0.5">• Amora actúa como intermediario tecnológico y no asume responsabilidad civil/penal por mal uso o acuerdos externos.</p>
+            <p id="txt-legal-2" class="mt-0.5">• Amora actúa como intermediario tecnológico y no asume responsabilidad civil/penal por mal uso.</p>
             <p id="txt-legal-3" class="mt-0.5">• Tolerancia CERO al acoso o difusión no autorizada (Baneo automático).</p>
           </details>
         </div>
@@ -70,15 +96,15 @@
     <!-- 1. AUTENTICACIÓN -->
     <section id="auth-section" class="p-6 hidden">
       <div class="text-center mb-6">
-        <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400">Amora</h1>
+        <h1 class="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">Amora</h1>
         <p class="text-xs text-slate-400 mt-1 font-medium">Conecta con personas especiales</p>
       </div>
 
-      <div id="auth-tabs" class="grid grid-cols-2 gap-2 p-1 bg-slate-900/90 rounded-xl mb-6">
+      <div id="auth-tabs" class="grid grid-cols-2 gap-2 p-1 bg-slate-950 rounded-xl mb-6 border border-slate-800">
         <button id="tab-login" type="button" onclick="switchTab('login')" class="py-2.5 text-xs font-bold rounded-lg transition-all text-slate-400 hover:text-slate-200">
           Iniciar Sesión
         </button>
-        <button id="tab-register" type="button" onclick="switchTab('register')" class="py-2.5 text-xs font-bold rounded-lg transition-all bg-rose-500 text-white shadow-md shadow-rose-500/20">
+        <button id="tab-register" type="button" onclick="switchTab('register')" class="py-2.5 text-xs font-bold rounded-lg transition-all bg-pink-500 text-white shadow-md shadow-pink-500/30">
           Registrarse
         </button>
       </div>
@@ -86,13 +112,13 @@
       <form id="form-login" class="space-y-4 hidden" onsubmit="handleLogin(event)">
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Correo electrónico</label>
-          <input type="email" id="login-email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="tu@email.com">
+          <input type="email" id="login-email" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-pink-500 text-xs" placeholder="tu@email.com">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Contraseña</label>
-          <input type="password" id="login-password" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="••••••••">
+          <input type="password" id="login-password" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-pink-500 text-xs" placeholder="••••••••">
         </div>
-        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-rose-500/30 text-xs">
+        <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-pink-500/30 text-xs">
           Entrar
         </button>
       </form>
@@ -100,17 +126,17 @@
       <form id="form-register" class="space-y-4" onsubmit="handleRegister(event)">
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Nombre de usuario</label>
-          <input type="text" id="register-name" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="Tu Nombre">
+          <input type="text" id="register-name" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-pink-500 text-xs" placeholder="Tu Nombre">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Correo electrónico</label>
-          <input type="email" id="register-email" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="tu@email.com">
+          <input type="email" id="register-email" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-pink-500 text-xs" placeholder="tu@email.com">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-400 mb-1">Contraseña</label>
-          <input type="password" id="register-password" required minlength="6" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="Mínimo 6 caracteres">
+          <input type="password" id="register-password" required minlength="6" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-slate-100 focus:outline-none focus:border-pink-500 text-xs" placeholder="Mínimo 6 caracteres">
         </div>
-        <button type="submit" class="w-full bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-rose-500/30 text-xs">
+        <button type="submit" class="w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl transition-all shadow-lg shadow-pink-500/30 text-xs">
           Crear cuenta
         </button>
       </form>
@@ -118,38 +144,38 @@
 
     <!-- 2. CUESTIONARIO COMPLETO Y EXTENDIDO AMORA PRINCIPAL -->
     <section id="onboarding-main-section" class="p-5 hidden max-h-[580px] overflow-y-auto custom-scroll">
-      <div class="mb-4 bg-slate-900/90 p-3 rounded-2xl border border-slate-700/60 shadow-sm">
+      <div class="mb-4 bg-slate-950 p-3 rounded-2xl border border-slate-800 shadow-sm">
         <div class="flex justify-between items-center mb-1.5 text-xs font-bold">
-          <span class="text-rose-400 flex items-center gap-1.5">
-            <span class="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span> Completa tu Perfil
+          <span class="text-pink-400 flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-pink-500 animate-ping"></span> Completa tu Perfil
           </span>
           <span class="text-slate-300 font-mono">85% completado</span>
         </div>
-        <div class="w-full bg-slate-800 rounded-full h-2 overflow-hidden border border-slate-700">
-          <div class="bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 h-2 rounded-full w-[85%]"></div>
+        <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden border border-slate-800">
+          <div class="bg-gradient-to-r from-pink-500 to-purple-500 h-2 rounded-full w-[85%]"></div>
         </div>
       </div>
 
       <form onsubmit="saveMainProfile(event)" class="space-y-4 text-xs">
-        <div class="bg-slate-900/80 rounded-2xl border border-slate-700/80 overflow-hidden shadow-lg p-3 space-y-3">
-          <h3 class="font-black text-rose-400 text-xs uppercase tracking-wider flex items-center gap-2 border-b border-slate-700/80 pb-2">
+        <div class="bg-slate-950/80 rounded-2xl border border-slate-800 overflow-hidden shadow-lg p-3 space-y-3">
+          <h3 class="font-black text-pink-400 text-xs uppercase tracking-wider flex items-center gap-2 border-b border-slate-800 pb-2">
             <span>📋</span> Mi Información Principal
           </h3>
 
           <div>
             <label class="block text-slate-300 font-semibold mb-1">✍️ Descríbete como persona (Biografía)</label>
-            <textarea id="onboard-bio" rows="3" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" placeholder="Háblanos sobre tu día a día, metas, humor..."></textarea>
+            <textarea id="onboard-bio" rows="3" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-slate-100 focus:outline-none focus:border-pink-500 text-xs" placeholder="Háblanos sobre tu día a día, metas..."></textarea>
           </div>
 
           <div>
             <label class="block text-slate-300 font-semibold mb-1">💬 Frase de presentación / Lema personal</label>
-            <input type="text" id="onboard-tagline" placeholder="Ej: Fan del café especialidad y la montaña" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2.5 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+            <input type="text" id="onboard-tagline" placeholder="Ej: Fan del café especialidad y la montaña" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2.5 text-slate-100 focus:outline-none focus:border-pink-500 text-xs">
           </div>
 
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block text-slate-300 font-semibold mb-1">🖤 Relación</label>
-              <select id="onboard-relationship" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+              <select id="onboard-relationship" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-pink-500 text-xs">
                 <option value="Soltero/a">Soltero/a</option>
                 <option value="Divorciado/a">Divorciado/a</option>
                 <option value="Complicado">Es complicado</option>
@@ -157,7 +183,7 @@
             </div>
             <div>
               <label class="block text-slate-300 font-semibold mb-1">⚧️ Orientación</label>
-              <select id="onboard-orientation" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+              <select id="onboard-orientation" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-pink-500 text-xs">
                 <option value="Heterosexual">Heterosexual</option>
                 <option value="Bisexual">Bisexual</option>
                 <option value="Gay / Lesbiana">Gay / Lesbiana</option>
@@ -169,15 +195,15 @@
           <div class="grid grid-cols-3 gap-2">
             <div>
               <label class="block text-slate-300 font-semibold mb-1">📐 Estatura</label>
-              <input type="number" id="onboard-height" placeholder="170 cm" value="170" min="120" max="230" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+              <input type="number" id="onboard-height" placeholder="170 cm" value="170" min="120" max="230" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-pink-500 text-xs">
             </div>
             <div>
               <label class="block text-slate-300 font-semibold mb-1">🗣️ Idiomas</label>
-              <input type="text" id="onboard-languages" placeholder="Español, Inglés" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+              <input type="text" id="onboard-languages" placeholder="Español, Inglés" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-pink-500 text-xs">
             </div>
             <div>
               <label class="block text-slate-300 font-semibold mb-1">🍷 Alcohol</label>
-              <select id="onboard-alcohol" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs">
+              <select id="onboard-alcohol" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-pink-500 text-xs">
                 <option value="En contextos sociales">En contextos sociales</option>
                 <option value="Nunca bebo">Nunca bebo</option>
                 <option value="Con frecuencia">Con frecuencia</option>
@@ -187,32 +213,32 @@
 
           <div>
             <label class="block text-slate-300 font-semibold mb-1">🖼️ Foto Principal (URL)</label>
-            <input type="url" id="onboard-photo1" required class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-rose-500 text-xs" value="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=600&q=80">
+            <input type="url" id="onboard-photo1" required class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-100 focus:outline-none focus:border-pink-500 text-xs" value="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=600&q=80">
           </div>
         </div>
 
         <!-- INTERESES (CHIPS) -->
-        <div class="bg-slate-900/80 rounded-2xl border border-slate-700/80 p-3.5 space-y-2">
-          <h3 class="font-black text-rose-400 text-xs uppercase tracking-wider flex items-center gap-2">
+        <div class="bg-slate-950/80 rounded-2xl border border-slate-800 p-3.5 space-y-2">
+          <h3 class="font-black text-pink-400 text-xs uppercase tracking-wider flex items-center gap-2">
             <span>🏷️</span> Tus Intereses
           </h3>
           <div id="interests-container" class="flex flex-wrap gap-1.5">
-            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">🍿 Cine</span>
-            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">☕ Café</span>
-            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">✈️ Viajes</span>
-            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-950 border border-slate-700 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-rose-500 transition-all">🏋️‍♂️ Gym</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-pink-500 transition-all">🍿 Cine</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-pink-500 transition-all">☕ Café</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-pink-500 transition-all">✈️ Viajes</span>
+            <span onclick="toggleChip(this)" class="chip cursor-pointer bg-slate-900 border border-slate-800 text-slate-300 px-3 py-1.5 rounded-full text-xs hover:border-pink-500 transition-all">🏋️‍♂️ Gym</span>
           </div>
         </div>
 
         <!-- FILTROS DE PAREJA -->
-        <div class="bg-slate-900/80 rounded-2xl border border-pink-500/30 p-3.5 space-y-3">
+        <div class="bg-slate-950/80 rounded-2xl border border-pink-500/30 p-3.5 space-y-3">
           <h3 class="font-black text-pink-400 text-xs uppercase tracking-wider flex items-center gap-2">
             <span>🎯</span> La Pareja que Buscas
           </h3>
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block text-slate-300 font-semibold mb-1">Busco a</label>
-              <select id="target-gender" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 text-xs">
+              <select id="target-gender" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-100 text-xs">
                 <option value="Mujeres">👩 Mujeres</option>
                 <option value="Hombres">👨 Hombres</option>
                 <option value="Todos">🌈 Todos</option>
@@ -220,7 +246,7 @@
             </div>
             <div>
               <label class="block text-slate-300 font-semibold mb-1">Distancia máx.</label>
-              <select id="target-distance" class="w-full bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-100 text-xs">
+              <select id="target-distance" class="w-full bg-slate-900 border border-slate-800 rounded-xl p-2 text-slate-100 text-xs">
                 <option value="15 km">📍 15 km</option>
                 <option value="50 km">📍 50 km</option>
                 <option value="Sin límite">🌍 Sin límite</option>
@@ -229,7 +255,7 @@
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-rose-500 via-pink-500 to-rose-400 text-white font-black py-3.5 rounded-2xl shadow-xl text-xs tracking-wider">
+        <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-black py-3.5 rounded-2xl shadow-xl text-xs tracking-wider">
           🚀 GUARDAR Y EMPEZAR EN AMORA
         </button>
       </form>
@@ -246,16 +272,16 @@
       <form onsubmit="saveClubProfile(event)" class="space-y-3 text-xs">
         <div>
           <label class="block font-semibold text-purple-300 mb-1">Alias en el Club</label>
-          <input type="text" id="club-alias" placeholder="Ej: Alex_Priv" required class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 text-xs">
+          <input type="text" id="club-alias" placeholder="Ej: Alex_Priv" required class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-100 text-xs">
         </div>
         <div class="grid grid-cols-2 gap-2">
           <div>
             <label class="block font-semibold text-purple-300 mb-1">Edad</label>
-            <input type="number" id="club-age" value="25" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 text-xs">
+            <input type="number" id="club-age" value="25" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-100 text-xs">
           </div>
           <div>
             <label class="block font-semibold text-purple-300 mb-1">Rol</label>
-            <select id="club-role" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 text-xs">
+            <select id="club-role" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-100 text-xs">
               <option>Versátil</option>
               <option>Activo</option>
               <option>Pasivo</option>
@@ -265,7 +291,7 @@
         </div>
         <div>
           <label class="block font-semibold text-purple-300 mb-1">Foto para el Club (URL)</label>
-          <input type="url" id="club-photo" required value="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-slate-100 text-xs">
+          <input type="url" id="club-photo" required value="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=600&q=80" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2 text-slate-100 text-xs">
         </div>
         <button type="submit" class="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black py-3 rounded-xl text-xs shadow-lg">
           👑 Activar Mi Perfil de Amora Club
@@ -275,28 +301,28 @@
 
     <!-- 4. PANTALLA PRINCIPAL DE EXPLORACIÓN, CARRUSEL Y CHATS -->
     <section id="app-section" class="hidden">
-      <header class="p-3 bg-slate-900 border-b border-slate-700/80 flex justify-between items-center text-xs">
+      <header class="p-3 bg-slate-950 border-b border-slate-800 flex justify-between items-center text-xs">
         <div class="flex items-center gap-2">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
           <span id="user-display" class="text-slate-300 font-semibold truncate max-w-[90px]">Usuario</span>
         </div>
         <div class="flex items-center gap-1">
           <button onclick="openClubSection()" class="bg-purple-600 text-white font-bold px-2 py-1 rounded-xl text-[10px]">🔒 Club</button>
-          <button onclick="toggleSettings(true)" class="bg-slate-800 text-slate-200 border border-slate-700 px-2 py-1 rounded-xl text-[10px]">⚙️ Ajustes</button>
-          <button onclick="handleLogout()" class="text-rose-400 font-semibold text-[10px] underline">Salir</button>
+          <button onclick="toggleSettings(true)" class="bg-slate-900 text-slate-200 border border-slate-800 px-2 py-1 rounded-xl text-[10px]">⚙️ Ajustes</button>
+          <button onclick="handleLogout()" class="text-pink-400 font-semibold text-[10px] underline">Salir</button>
         </div>
       </header>
 
       <!-- TARJETA EXPLORAR / CARRUSEL -->
       <div id="profile-card" class="p-4 flex flex-col items-center">
-        <div class="relative w-full h-80 rounded-3xl overflow-hidden shadow-2xl border border-slate-700 bg-slate-900 select-none">
+        <div class="relative w-full h-80 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 bg-slate-950 select-none">
           <img id="profile-img" src="" alt="Foto" class="w-full h-full object-cover">
           <div id="gallery-bars" class="absolute top-2 left-2 right-2 flex gap-1 z-10"></div>
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-transparent to-transparent pointer-events-none"></div>
 
           <div class="absolute bottom-3 left-4 right-4 text-left pointer-events-none space-y-0.5">
             <h2 id="profile-title" class="text-xl font-black text-white">...</h2>
-            <p id="profile-details" class="text-[10px] text-rose-300 font-bold">...</p>
+            <p id="profile-details" class="text-[10px] text-pink-300 font-bold">...</p>
             <p id="profile-bio" class="text-xs text-slate-300 line-clamp-2">...</p>
           </div>
 
@@ -305,34 +331,34 @@
         </div>
 
         <div class="flex items-center justify-center gap-4 w-full mt-3">
-          <button onclick="nextProfile()" class="w-12 h-12 bg-slate-800 border border-slate-700 rounded-full flex items-center justify-center text-lg shadow">❌</button>
-          <button onclick="likeProfile()" class="w-14 h-14 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg shadow-rose-500/30">❤️</button>
-          <button onclick="openChatDirectly()" class="w-12 h-12 bg-slate-800 border border-slate-700 rounded-full flex items-center justify-center text-lg shadow">💬</button>
+          <button onclick="nextProfile()" class="w-12 h-12 bg-slate-900 border border-slate-800 rounded-full flex items-center justify-center text-lg shadow">❌</button>
+          <button onclick="likeProfile()" class="w-14 h-14 bg-gradient-to-r from-pink-500 to-rose-500 text-white rounded-full flex items-center justify-center text-xl shadow-lg shadow-pink-500/30">❤️</button>
+          <button onclick="openChatDirectly()" class="w-12 h-12 bg-slate-900 border border-slate-800 rounded-full flex items-center justify-center text-lg shadow">💬</button>
         </div>
       </div>
 
       <!-- PANEL DE CHAT (CON HISTORIAL REAL) -->
       <div id="chat-card" class="p-4 hidden flex-col h-[420px]">
-        <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-700 text-xs">
-          <h3 id="chat-header-title" class="font-bold text-rose-400">Chat</h3>
+        <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-800 text-xs">
+          <h3 id="chat-header-title" class="font-bold text-pink-400">Chat</h3>
           <button onclick="toggleChat(false)" class="text-slate-400">✕ Cerrar</button>
         </div>
         <div id="messages-container" class="flex-1 overflow-y-auto space-y-2 pr-1 text-xs custom-scroll"></div>
         <form onsubmit="sendMessage(event)" class="mt-2 flex gap-2">
-          <input type="text" id="chat-input" class="flex-1 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-rose-500" placeholder="Escribe un mensaje..." required>
-          <button type="submit" class="bg-rose-500 text-white font-semibold px-3 py-2 rounded-xl text-xs">Enviar</button>
+          <input type="text" id="chat-input" class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-pink-500" placeholder="Escribe un mensaje..." required>
+          <button type="submit" class="bg-pink-500 text-white font-semibold px-3 py-2 rounded-xl text-xs">Enviar</button>
         </form>
       </div>
 
       <!-- PANEL DE AJUSTES & MONETIZACIÓN CON VIDEO DE 30s -->
       <div id="settings-card" class="p-5 hidden flex-col space-y-3 max-h-[450px] overflow-y-auto custom-scroll text-xs">
-        <div class="flex justify-between items-center pb-2 border-b border-slate-700">
-          <h3 class="font-bold text-rose-400">⚙️ Ajustes y Gestión</h3>
+        <div class="flex justify-between items-center pb-2 border-b border-slate-800">
+          <h3 class="font-bold text-pink-400">⚙️ Ajustes y Gestión</h3>
           <button onclick="toggleSettings(false)" class="text-slate-400">✕ Cerrar</button>
         </div>
-        <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 space-y-2">
+        <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 space-y-2">
           <p class="text-[11px] text-slate-300">Pausar o eliminar cuentas requiere validación publicitaria de seguridad (video de 30s).</p>
-          <button onclick="initiateAction('pause_main')" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-bold py-2 rounded-xl">⏸️ Pausar Cuenta Amora</button>
+          <button onclick="initiateAction('pause_main')" class="w-full bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 font-bold py-2 rounded-xl">⏸️ Pausar Cuenta Amora</button>
         </div>
       </div>
     </section>
@@ -341,28 +367,28 @@
     <div id="match-modal" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex flex-col items-center justify-center p-6 hidden z-50">
       <div class="text-center space-y-3 max-w-xs">
         <span class="text-5xl animate-bounce">💖</span>
-        <h2 class="text-2xl font-extrabold text-rose-400">¡Es un Match!</h2>
+        <h2 class="text-2xl font-extrabold text-pink-400">¡Es un Match!</h2>
         <p id="match-text" class="text-xs text-slate-300">Hay interés mutuo.</p>
-        <button onclick="closeMatchAndChat()" class="w-full bg-rose-500 font-bold py-2.5 rounded-xl text-xs text-white">Enviar mensaje</button>
-        <button onclick="closeMatchModal()" class="w-full bg-slate-800 text-slate-400 py-2 rounded-xl text-xs">Seguir explorando</button>
+        <button onclick="closeMatchAndChat()" class="w-full bg-pink-500 font-bold py-2.5 rounded-xl text-xs text-white">Enviar mensaje</button>
+        <button onclick="closeMatchModal()" class="w-full bg-slate-900 text-slate-400 py-2 rounded-xl text-xs">Seguir explorando</button>
       </div>
     </div>
 
     <!-- 6. MODAL DE VIDEO AD DE 30s PARA CAMBIOS CRÍTICOS -->
     <div id="action-ad-modal" class="fixed inset-0 bg-slate-950/95 backdrop-blur-md flex flex-col items-center justify-center p-6 hidden z-50">
-      <div class="w-full max-w-xs bg-slate-900 border border-slate-700 rounded-3xl p-5 text-center shadow-2xl space-y-3">
-        <h3 class="text-sm font-black text-rose-400" id="action-title">Verificación de Seguridad</h3>
+      <div class="w-full max-w-xs bg-slate-950 border border-slate-800 rounded-3xl p-5 text-center shadow-2xl space-y-3">
+        <h3 class="text-sm font-black text-pink-400" id="action-title">Verificación de Seguridad</h3>
         <p class="text-[11px] text-slate-300" id="action-warning">Para realizar este cambio, mira este anuncio patrocinado.</p>
-        <div class="bg-slate-950 p-3 rounded-2xl border border-slate-800 space-y-2">
+        <div class="bg-slate-900 p-3 rounded-2xl border border-slate-800 space-y-2">
           <div class="flex justify-between items-center text-[10px] font-bold">
             <span class="text-amber-400">Anuncio obligatorio</span>
-            <span id="ad-timer" class="text-rose-400 font-mono">30s</span>
+            <span id="ad-timer" class="text-pink-400 font-mono">30s</span>
           </div>
           <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
-            <div id="ad-progress-bar" class="bg-rose-500 h-full transition-all duration-1000" style="width: 0%"></div>
+            <div id="ad-progress-bar" class="bg-pink-500 h-full transition-all duration-1000" style="width: 0%"></div>
           </div>
         </div>
-        <button id="btn-confirm-action" disabled onclick="executePendingAction()" class="w-full bg-slate-800 text-slate-500 font-black py-3 rounded-xl text-xs cursor-not-allowed">⏳ Espera 30 segundos...</button>
+        <button id="btn-confirm-action" disabled onclick="executePendingAction()" class="w-full bg-slate-900 text-slate-500 font-black py-3 rounded-xl text-xs cursor-not-allowed">⏳ Espera 30 segundos...</button>
         <button onclick="closeActionModal()" class="text-xs text-slate-400">Cancelar</button>
       </div>
     </div>
@@ -374,23 +400,23 @@
     const traducciones = {
       es: {
         title: "Conecta de verdad, encuentra a alguien especial",
-        subtitle: "Una red moderna basada en afinidades reales, cercanía y conexiones auténticas sin complicaciones.",
+        subtitle: "Una red moderna basada en afinidades reales, cercanía y conexiones auténticas.",
         clubTitle: "🔒 AMORA CLUB (Espacio Privado & LGTBIQ+)",
-        clubDesc: "Un entorno 100% discreto, seguro y protegido para la comunidad. Tu privacidad es absoluta.",
-        btnLogin: "Iniciar Sesión",
+        clubDesc: "Entorno 100% discreto, seguro y protegido para la comunidad. Privacidad absoluta.",
+        btnLogin: "🚀 Iniciar Sesión",
         btnRegister: "Crear Nueva Cuenta",
         privacy: "🔒 \"Lo que pasa en Amora Club se queda en Amora Club.\"",
         legalTitle: "Términos, Mayoría de Edad y Política",
         legal1: "• Debes ser mayor de 18 años (+18) para acceder.",
-        legal2: "• Amora actúa como intermediario tecnológico y no asume responsabilidad civil/penal por mal uso o acuerdos externos.",
+        legal2: "• Amora actúa como intermediario tecnológico y no asume responsabilidad civil/penal por mal uso.",
         legal3: "• Tolerancia CERO al acoso o difusión no autorizada (Baneo automático)."
       },
       en: {
         title: "Connect for real, find someone special",
-        subtitle: "A modern network based on real affinities, proximity, and hassle-free authentic connections.",
+        subtitle: "A modern network based on real affinities, proximity, and authentic connections.",
         clubTitle: "🔒 AMORA CLUB (Private Space & LGBTQ+)",
-        clubDesc: "A 100% discrete, safe, and protected environment for the community. Your privacy is absolute.",
-        btnLogin: "Log In",
+        clubDesc: "A 100% discrete, safe, and protected environment for the community. Absolute privacy.",
+        btnLogin: "🚀 Log In",
         btnRegister: "Create New Account",
         privacy: "🔒 \"What happens in Amora Club stays in Amora Club.\"",
         legalTitle: "Terms, Age of Majority & Policy",
@@ -400,10 +426,10 @@
       },
       ru: {
         title: "Общайтесь по-настоящему, найдите особенного человека",
-        subtitle: "Современная сеть на основе реальных интересов и подлинных связей без сложностей.",
+        subtitle: "Современная сеть на основе реальных интересов и подлинных связей.",
         clubTitle: "🔒 AMORA CLUB (Личное пространство и ЛГБТК+)",
         clubDesc: "На 100% конфиденциальная и безопасная среда для сообщества.",
-        btnLogin: "Войти",
+        btnLogin: "🚀 Войти",
         btnRegister: "Создать аккаунт",
         privacy: "🔒 «Всё, что происходит в Amora Club, остается в Amora Club».",
         legalTitle: "Условия и правила",
@@ -429,14 +455,12 @@
       localStorage.setItem('amora_lang', lang);
     }
 
-    // FLUJO DE NAVEGACIÓN DESDE EL LANDING DE BIENVENIDA
     function irAAuthDesdeWelcome(tipo) {
       document.getElementById('welcome-landing-section').classList.add('hidden');
       document.getElementById('auth-section').classList.remove('hidden');
       switchTab(tipo);
     }
 
-    // PERFILES DE PRUEBA Y CARRUSEL
     const PROFILES = [
       {
         name: "María, 24 ✔️",
@@ -464,9 +488,9 @@
     let chatHistories = {};
 
     function toggleChip(el) {
-      el.classList.toggle('bg-rose-500');
+      el.classList.toggle('bg-pink-500');
       el.classList.toggle('text-white');
-      el.classList.toggle('bg-slate-950');
+      el.classList.toggle('bg-slate-900');
       el.classList.toggle('text-slate-300');
     }
 
@@ -523,7 +547,7 @@
       }
       chatHistories[nameKey].forEach(m => {
         const msgDiv = document.createElement('div');
-        msgDiv.className = m.sender === 'user' ? 'bg-rose-500 text-white p-2.5 rounded-2xl max-w-[85%] ml-auto text-right' : 'bg-slate-700 text-slate-100 p-2.5 rounded-2xl max-w-[85%]';
+        msgDiv.className = m.sender === 'user' ? 'bg-pink-500 text-white p-2.5 rounded-2xl max-w-[85%] ml-auto text-right' : 'bg-slate-800 text-slate-100 p-2.5 rounded-2xl max-w-[85%]';
         msgDiv.textContent = m.text;
         container.appendChild(msgDiv);
       });
@@ -556,12 +580,12 @@
       const formRegister = document.getElementById('form-register');
 
       if (mode === 'register') {
-        tabRegister.className = "py-2.5 text-xs font-bold rounded-lg bg-rose-500 text-white shadow-md";
+        tabRegister.className = "py-2.5 text-xs font-bold rounded-lg bg-pink-500 text-white shadow-md";
         tabLogin.className = "py-2.5 text-xs font-bold rounded-lg text-slate-400";
         formRegister.classList.remove('hidden');
         formLogin.classList.add('hidden');
       } else {
-        tabLogin.className = "py-2.5 text-xs font-bold rounded-lg bg-rose-500 text-white shadow-md";
+        tabLogin.className = "py-2.5 text-xs font-bold rounded-lg bg-pink-500 text-white shadow-md";
         tabRegister.className = "py-2.5 text-xs font-bold rounded-lg text-slate-400";
         formLogin.classList.remove('hidden');
         formRegister.classList.add('hidden');
@@ -625,7 +649,7 @@
       const btn = document.getElementById('btn-confirm-action');
 
       btn.disabled = true;
-      btn.className = "w-full bg-slate-800 text-slate-500 font-bold py-3 rounded-xl text-xs cursor-not-allowed";
+      btn.className = "w-full bg-slate-900 text-slate-500 font-bold py-3 rounded-xl text-xs cursor-not-allowed";
       btn.textContent = "⏳ Espera 30 segundos...";
 
       clearInterval(adInterval);
@@ -636,7 +660,7 @@
         if (timeLeft <= 0) {
           clearInterval(adInterval);
           btn.disabled = false;
-          btn.className = "w-full bg-rose-600 hover:bg-rose-500 text-white font-black py-3 rounded-xl text-xs shadow-lg animate-pulse";
+          btn.className = "w-full bg-pink-600 hover:bg-pink-500 text-white font-black py-3 rounded-xl text-xs shadow-lg animate-pulse";
           btn.textContent = "✅ CONFIRMAR ACCIÓN";
         }
       }, 1000);
@@ -657,7 +681,6 @@
       location.reload();
     }
 
-    // CARGA INICIAL Y DETECCIÓN AUTOMÁTICA DE IDIOMA
     window.addEventListener('DOMContentLoaded', () => {
       let idiomaGuardado = localStorage.getItem('amora_lang');
       if (!idiomaGuardado) {
