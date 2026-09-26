@@ -21,7 +21,6 @@
 
 <!-- 0. LANDING EXTENDIDA CON PERFILES FICTICIOS DINÁMICOS AL PASAR EL MOUSE -->
 <section id="welcome-landing-section" class="flex-1 overflow-y-auto custom-scroll p-6 bg-gradient-to-b from-rose-50/60 via-white to-pink-50/40">
-  <!-- Header Fijo Superior -->
   <header class="flex justify-between items-center mb-6 sticky top-0 bg-white/90 backdrop-blur-md py-2 z-20 border-b border-slate-100">
     <div class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-rose-500 to-purple-600 tracking-wider">
       AMORA
@@ -35,17 +34,14 @@
     </div>
   </header>
 
-  <!-- Bloque Hero Principal -->
   <div class="text-center space-y-3 mb-6">
     <span class="inline-block bg-pink-100 text-pink-600 text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-widest">La Red Social del Amor Real</span>
     <h1 id="txt-title" class="text-2xl font-black text-slate-900 leading-tight">Conecta de verdad, encuentra a alguien especial</h1>
     <p id="txt-subtitle" class="text-xs text-slate-600 leading-relaxed px-2">Una plataforma moderna y luminosa basada en afinidades reales, cercanía y conexiones auténticas sin complicaciones.</p>
   </div>
 
-  <!-- Tarjetas de Demostración con Perfiles Ficticios e Interacción Hover -->
   <div class="mb-8">
     <div class="flex gap-3 overflow-x-auto pb-3 pt-1 custom-scroll snap-x">
-      <!-- Tarjeta Demo 1 -->
       <div class="min-w-[140px] h-48 rounded-2xl overflow-hidden relative shadow-md border border-pink-100 snap-center flex-shrink-0 cursor-pointer group" onmouseenter="cambiarFotoDemo(this, 1)" onmouseleave="cambiarFotoDemo(this, 0)">
         <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" 
              data-img-primary="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
@@ -59,7 +55,6 @@
         </div>
       </div>
 
-      <!-- Tarjeta Demo 2 (Club Privado) -->
       <div class="min-w-[140px] h-48 rounded-2xl overflow-hidden relative shadow-md border border-purple-100 snap-center flex-shrink-0 cursor-pointer group" onmouseenter="cambiarFotoDemo(this, 1)" onmouseleave="cambiarFotoDemo(this, 0)">
         <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" 
              data-img-primary="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80"
@@ -73,7 +68,6 @@
         </div>
       </div>
 
-      <!-- Tarjeta Demo 3 -->
       <div class="min-w-[140px] h-48 rounded-2xl overflow-hidden relative shadow-md border border-rose-100 snap-center flex-shrink-0 cursor-pointer group" onmouseenter="cambiarFotoDemo(this, 1)" onmouseleave="cambiarFotoDemo(this, 0)">
         <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" 
              data-img-primary="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80"
@@ -87,36 +81,24 @@
         </div>
       </div>
     </div>
-    <p class="text-[10px] text-center text-slate-400 mt-1">Pasa el cursor sobre las tarjetas para interactuar con los ejemplos</p>
   </div>
 
-  <!-- SECCIÓN EXPLICATIVA 1: ¿Qué es Amora? -->
   <div class="bg-gradient-to-br from-pink-500 to-rose-500 rounded-3xl p-5 text-white shadow-xl mb-6 space-y-3">
     <div class="flex items-center gap-2">
       <span class="text-2xl">🔥</span>
       <h3 class="font-black text-sm uppercase tracking-wide">¿Cómo Funciona Amora?</h3>
     </div>
     <p class="text-xs leading-relaxed text-pink-50">Amora no es otra app de citas común. Te conectamos mediante algoritmos de afinidad profunda, intereses compartidos y filtros avanzados por distancia real.</p>
-    <ul class="space-y-1.5 text-xs text-pink-100 font-medium pt-1">
-      <li>✨ Historial de chats y toques en tiempo real.</li>
-      <li>✨ Perfiles verificados y estrictamente protegidos.</li>
-      <li>✨ Sistema de matches sin esperas absurdas.</li>
-    </ul>
   </div>
 
-  <!-- SECCIÓN EXPLICATIVA 2: Amora Club (Espacio Privado) -->
   <div class="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-3xl p-5 text-white club-shadow mb-8 space-y-3">
     <div class="flex items-center gap-2">
       <span class="text-2xl">🔒</span>
       <h3 id="txt-club-title" class="font-black text-sm uppercase tracking-wide">AMORA CLUB (Espacio Privado & LGTBIQ+)</h3>
     </div>
-    <p id="txt-club-desc" class="text-xs leading-relaxed text-purple-100">Un entorno 100% discreto, seguro y protegido para la comunidad. Tu privacidad es absoluta y cuenta con accesos independientes y controlados.</p>
-    <div class="bg-white/10 p-2.5 rounded-2xl backdrop-blur-sm text-[11px] text-purple-200 font-semibold text-center">
-      "Lo que pasa en Amora Club se queda en Amora Club."
-    </div>
+    <p id="txt-club-desc" class="text-xs leading-relaxed text-purple-100">Un entorno 100% discreto, seguro y protegido para la comunidad. Tu privacidad es absoluta y cuenta con accesos independientes.</p>
   </div>
 
-  <!-- Botones de Acción Iniciar Sesión / Registro -->
   <div class="space-y-3 mb-6">
     <button onclick="irAAuthDesdeWelcome('login')" class="w-full bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 hover:opacity-95 text-white font-black py-4 rounded-2xl text-xs vibrant-shadow transition-all uppercase tracking-wider" id="txt-btn-login">
       Iniciar Sesión
@@ -124,16 +106,6 @@
     <button onclick="irAAuthDesdeWelcome('register')" class="w-full bg-white hover:bg-slate-50 border-2 border-pink-500 text-pink-600 font-black py-3.5 rounded-2xl text-xs transition-all shadow-sm" id="txt-btn-register">
       Crear Nueva Cuenta
     </button>
-  </div>
-
-  <!-- Términos y Políticas -->
-  <div class="border-t border-slate-200 pt-4 text-[10px] text-slate-500 pb-4">
-    <details>
-      <summary id="txt-legal-title" class="cursor-pointer font-bold text-slate-700 hover:text-pink-600">Términos, Privacidad y Mayoría de Edad</summary>
-      <p id="txt-legal-1" class="mt-1">• Debes ser mayor de 18 años (+18) para acceder y registrarte.</p>
-      <p id="txt-legal-2" class="mt-0.5">• Garantía total de privacidad: tus datos reales nunca se usan con fines publicitarios o públicos.</p>
-      <p id="txt-legal-3" class="mt-0.5">• Tolerancia CERO al acoso o difusión no autorizada (Baneo automático).</p>
-    </details>
   </div>
 </section>
 
@@ -183,7 +155,7 @@
   </form>
 </section>
 
-<!-- 2. CUESTIONARIO COMPLETO Y EXTENDIDO AMORA PRINCIPAL -->
+<!-- 2. CUESTIONARIO COMPLETO Y EXTENDIDO AMORA PRINCIPAL (CON EL NUEVO BLOQUE INTEGRADO) -->
 <section id="onboarding-main-section" class="p-5 hidden flex-1 overflow-y-auto custom-scroll bg-white">
   <div class="mb-4 bg-pink-50 p-3 rounded-2xl border border-pink-100 shadow-sm">
     <div class="flex justify-between items-center mb-1.5 text-xs font-bold">
@@ -199,10 +171,10 @@
   <form onsubmit="saveMainProfile(event)" class="space-y-4 text-xs">
     <div class="bg-slate-50 rounded-2xl border border-slate-200 overflow-hidden shadow-sm p-3 space-y-3">
       <h3 class="font-black text-pink-600 text-xs uppercase tracking-wider flex items-center gap-2 border-b border-slate-200 pb-2">
-        <span>👤</span> Mi Información Principal
+        <span>📄</span> Información Principal (Bloque Ampliado y Limpio)
       </h3>
       <div>
-        <label class="block text-slate-700 font-semibold mb-1">Descríbete como persona (Biografía)</label>
+        <label class="block text-slate-700 font-semibold mb-1">Descríbete como persona (Biografía y Lema)</label>
         <textarea id="onboard-bio" rows="3" required class="w-full bg-white border border-slate-200 rounded-xl p-2.5 text-slate-800 focus:outline-none focus:border-pink-500 text-xs" placeholder="Háblanos sobre tu día a día, metas..."></textarea>
       </div>
       <div>
@@ -238,7 +210,7 @@
           <input type="text" id="onboard-languages" placeholder="Español, Inglés" required class="w-full bg-white border border-slate-200 rounded-xl p-2 text-slate-800 focus:outline-none focus:border-pink-500 text-xs">
         </div>
         <div>
-          <label class="block text-slate-700 font-semibold mb-1">Alcohol</label>
+          <label class="block text-slate-700 font-semibold mb-1">Hábitos (Alcohol / Tabaco)</label>
           <select id="onboard-alcohol" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-slate-800 focus:outline-none focus:border-pink-500 text-xs">
             <option value="En contextos sociales">En contextos sociales</option>
             <option value="Nunca bebo">Nunca bebo</option>
@@ -246,13 +218,59 @@
           </select>
         </div>
       </div>
+
+      <!-- CAMPOS AÑADIDOS DEL TRABAJO DE HOY -->
+      <div class="grid grid-cols-2 gap-2 pt-1 border-t border-slate-200">
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">🎓 Nivel educativo</label>
+          <select id="onboard-education" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-slate-800 text-xs">
+            <option value="Secundaria">Secundaria[cite: 3]</option>
+            <option value="Universitaria">Universitaria</option>
+            <option value="Postgrado">Postgrado</option>
+            <option value="Otros">Otros</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">✨ Personalidad</label>
+          <select id="onboard-personality" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-slate-800 text-xs">
+            <option value="Extrovertido">Extrovertido[cite: 3]</option>
+            <option value="Introvertido">Introvertido</option>
+            <option value="Ambivertido">Ambivertido</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid grid-cols-3 gap-2">
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">🐾 Mascotas</label>
+          <input type="text" id="onboard-pets" placeholder="Ej: Perros, Gatos" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-slate-800 text-xs">
+        </div>
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">♈ Signo del zodiaco</label>
+          <input type="text" id="onboard-zodiac" placeholder="Ej: Aries" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-slate-800 text-xs">
+        </div>
+        <div>
+          <label class="block text-slate-700 font-semibold mb-1">⛪ Religión</label>
+          <input type="text" id="onboard-religion" placeholder="Opcional" class="w-full bg-white border border-slate-200 rounded-xl p-2 text-slate-800 text-xs">
+        </div>
+      </div>
+
       <div>
-        <label class="block text-slate-700 font-semibold mb-1">Foto Principal (URL)</label>
+        <label class="block text-slate-700 font-semibold mb-1">🖼️ Galería de Fotos (Mosaico Modular Multiusuario)</label>
         <input type="url" id="onboard-photo1" required class="w-full bg-white border border-slate-200 rounded-xl p-2 text-slate-800 focus:outline-none focus:border-pink-500 text-xs" value="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=600&q=80">
       </div>
     </div>
 
-    <!-- INTERESES (CHIPS) -->
+    <!-- SECCIÓN DE PREGUNTAS OPCIONALES AÑADIDA HOY -->
+    <div class="bg-slate-50 rounded-2xl border border-slate-200 p-3.5 space-y-2 text-center">
+      <h3 class="font-black text-pink-600 text-xs uppercase tracking-wider">
+        ✨ Comparte un poco más sobre ti (Opcional)
+      </h3>
+      <p class="text-[10px] text-slate-500">Responde preguntas rápidas para mejorar afinidades</p>
+      <button type="button" class="w-full bg-white border border-pink-300 text-pink-600 hover:bg-pink-50 font-bold py-2 rounded-xl text-xs transition-all shadow-sm">
+        + Añadir preguntas
+      </button>
+    </div>
+
     <div class="bg-slate-50 rounded-2xl border border-slate-200 p-3.5 space-y-2">
       <h3 class="font-black text-pink-600 text-xs uppercase tracking-wider flex items-center gap-2">
         <span>✨</span> Tus Intereses
@@ -265,7 +283,6 @@
       </div>
     </div>
 
-    <!-- FILTROS DE PAREJA -->
     <div class="bg-slate-50 rounded-2xl border border-pink-200 p-3.5 space-y-3">
       <h3 class="font-black text-pink-600 text-xs uppercase tracking-wider flex items-center gap-2">
         <span>🎯</span> La Pareja que Buscas
@@ -346,7 +363,6 @@
     </div>
   </header>
 
-  <!-- TARJETA EXPLORAR / CARRUSEL REAL DE LA APP -->
   <div id="profile-card" class="p-4 flex flex-col items-center flex-1 overflow-y-auto">
     <div class="relative w-full h-80 rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-slate-100 select-none">
       <img id="profile-img" src="" alt="Foto" class="w-full h-full object-cover">
@@ -367,7 +383,6 @@
     </div>
   </div>
 
-  <!-- PANEL DE CHAT -->
   <div id="chat-card" class="p-4 hidden flex-col flex-1">
     <div class="flex justify-between items-center pb-2 mb-2 border-b border-slate-200 text-xs">
       <h3 id="chat-header-title" class="font-bold text-pink-600">Chat</h3>
@@ -380,7 +395,6 @@
     </form>
   </div>
 
-  <!-- PANEL DE AJUSTES -->
   <div id="settings-card" class="p-5 hidden flex-col space-y-3 flex-1 overflow-y-auto custom-scroll text-xs">
     <div class="flex justify-between items-center pb-2 border-b border-slate-200">
       <h3 class="font-bold text-pink-600">⚙️ Ajustes y Gestión</h3>
@@ -404,7 +418,7 @@
   </div>
 </div>
 
-<!-- 6. MODAL DE VIDEO AD DE 30S PARA CAMBIOS CRÍTICOS -->
+<!-- 6. MODAL DE VIDEO AD DE 30S -->
 <div id="action-ad-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm flex flex-col items-center justify-center p-6 hidden z-50">
   <div class="w-full max-w-xs bg-white border border-slate-200 rounded-3xl p-5 text-center shadow-2xl space-y-3">
     <h3 class="text-sm font-black text-pink-600" id="action-title">Verificación de Seguridad</h3>
@@ -426,7 +440,6 @@
 </main>
 
 <script>
-// SISTEMA MULTILINGÜE AUTOMÁTICO Y MANUAL (ES, EN, RU)
 const traducciones = {
   es: {
     title: "Conecta de verdad, encuentra a alguien especial",
@@ -434,23 +447,15 @@ const traducciones = {
     clubTitle: "AMORA CLUB (Espacio Privado & LGTBIQ+)",
     clubDesc: "Un entorno 100% discreto, seguro y protegido para la comunidad. Tu privacidad es absoluta y cuenta con accesos independientes.",
     btnLogin: "Iniciar Sesión",
-    btnRegister: "Crear Nueva Cuenta",
-    legalTitle: "Términos, Privacidad y Mayoría de Edad",
-    legal1: "• Debes ser mayor de 18 años (+18) para acceder y registrarte.",
-    legal2: "• Garantía total de privacidad: tus datos reales nunca se usan con fines publicitarios o públicos.",
-    legal3: "• Tolerancia CERO al acoso o difusión no autorizada (Baneo automático)."
+    btnRegister: "Crear Nueva Cuenta"
   },
   en: {
     title: "Connect for real, find someone special",
     subtitle: "A modern, bright platform based on real affinities, proximity, and authentic connections.",
     clubTitle: "AMORA CLUB (Private Space & LGBTQ+)",
-    clubDesc: "A 100% discrete, safe, and protected environment for the community. Absolute privacy guaranteed.",
+    clubDesc: "A 100% discrete, safe, and protected environment for the community.",
     btnLogin: "Log In",
-    btnRegister: "Create New Account",
-    legalTitle: "Terms, Privacy & Age of Majority",
-    legal1: "• You must be 18 or older (+18) to access and register.",
-    legal2: "• Total privacy guarantee: your real data is never used publicly or for ads.",
-    legal3: "• ZERO tolerance for harassment."
+    btnRegister: "Create New Account"
   },
   ru: {
     title: "Настоящие знакомства для особенных людей",
@@ -458,11 +463,7 @@ const traducciones = {
     clubTitle: "AMORA CLUB (Приватное пространство)",
     clubDesc: "100% конфиденциальная, безопасная и защищенная среда.",
     btnLogin: "Войти",
-    btnRegister: "Создать аккаунт",
-    legalTitle: "Условия и конфиденциальность",
-    legal1: "• Вам должно быть больше 18 лет (+18).",
-    legal2: "• Полная гарантия конфиденциальности.",
-    legal3: "• Нулевая терпимость к домогательствам."
+    btnRegister: "Создать аккаунт"
   }
 };
 
@@ -475,10 +476,6 @@ function cambiarIdioma(lang) {
   document.getElementById('txt-club-desc').innerText = t.clubDesc;
   document.getElementById('txt-btn-login').innerText = t.btnLogin;
   document.getElementById('txt-btn-register').innerText = t.btnRegister;
-  document.getElementById('txt-legal-title').innerText = t.legalTitle;
-  document.getElementById('txt-legal-1').innerText = t.legal1;
-  document.getElementById('txt-legal-2').innerText = t.legal2;
-  document.getElementById('txt-legal-3').innerText = t.legal3;
 }
 
 function cambiarFotoDemo(card, estado) {
