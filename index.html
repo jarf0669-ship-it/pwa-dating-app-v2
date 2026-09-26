@@ -3,14 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amora - Perfil Principal Modular</title>
+    <title>Amora - Página Principal y Perfil Modular Completo</title>
     <!-- Tailwind CSS para diseño moderno y minimalista -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-<body class="bg-slate-100 min-y-screen flex items-center justify-center p-4">
+<body class="bg-slate-100 min-h-screen flex flex-col items-center justify-start p-4 space-y-6">
 
-    <!-- CONTENEDOR PRINCIPAL MODULAR -->
-    <div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-4 space-y-6 font-sans text-gray-800">
+    <!-- HEADER / NAVEGACIÓN PRINCIPAL DE AMORA -->
+    <header class="max-w-md w-full bg-white rounded-2xl shadow-md p-4 flex items-center justify-between">
+        <div class="flex items-center space-x-2">
+            <span class="text-xl font-black bg-gradient-to-r from-pink-500 to-purple-600 bg-clip-text text-transparent">AMORA</span>
+            <span class="text-xs px-2 py-0.5 bg-pink-50 text-pink-600 rounded-full font-medium">Principal</span>
+        </div>
+        <div class="flex items-center space-x-3 text-gray-600 text-sm">
+            <span class="cursor-pointer hover:text-pink-600">Explorar</span>
+            <span class="cursor-pointer hover:text-pink-600 font-semibold text-pink-600">Perfil</span>
+        </div>
+    </header>
+
+    <!-- CONTENEDOR PRINCIPAL DE LA VISTA DE PERFIL Y CONFIGURACIÓN -->
+    <main class="max-w-md w-full bg-white rounded-2xl shadow-xl p-4 space-y-6 font-sans text-gray-800">
       
       <!-- Barra de Progreso -->
       <div class="space-y-1">
@@ -81,7 +93,7 @@
           </div>
         </div>
 
-        <!-- NUEVOS PANELES DE OPCIONES (Diseño limpio, sin emojis pesados) -->
+        <!-- PANELES DE OPCIONES AMPLIADOS (Nivel educativo, personalidad, mascotas, zodiaco, religión) -->
         <div class="pt-2 border-t border-gray-200 space-y-3">
           <div class="flex justify-between items-center p-2.5 bg-white border border-gray-200 rounded-lg text-sm cursor-pointer hover:border-pink-400">
             <span class="text-gray-600">Nivel educativo</span>
@@ -167,26 +179,82 @@
         </div>
       </div>
 
-      <!-- SECCIÓN 4: VERIFICACIÓN Y PRIVILEGIOS -->
-      <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-2">
+      <!-- SECCIÓN 4: DOBLE SISTEMA DE VERIFICACIÓN (Insignias de Privilegio) -->
+      <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-3">
         <div class="flex items-center justify-between">
-          <h3 class="text-sm font-bold tracking-wider text-pink-600 uppercase">Verificación</h3>
-          <span class="text-blue-500 font-bold text-lg">✓</span>
+          <h3 class="text-sm font-bold tracking-wider text-pink-600 uppercase">Verificación de Perfil</h3>
+          <span class="text-pink-600 font-bold">🛡️</span>
         </div>
-        <p class="text-xs text-gray-500">Un perfil verificado te asegura que hablas con alguien real y otorga privilegios exclusivos.</p>
+        <p class="text-xs text-gray-500">Verifica tu cuenta para obtener una insignia dorada y privilegios exclusivos en Amora.</p>
+        
+        <div class="space-y-2 pt-1">
+          <!-- Opción 1: Foto con gesto random -->
+          <div class="flex items-center justify-between p-2.5 bg-white border border-gray-200 rounded-lg text-sm">
+            <span class="text-gray-700 text-xs font-medium">📷 Verificación por foto (Gesto aleatorio)</span>
+            <button onclick="alert('Iniciando verificación por gesto fotográfico...')" class="px-3 py-1 bg-pink-100 text-pink-600 rounded-md text-xs font-semibold hover:bg-pink-200 cursor-pointer">Verificar</button>
+          </div>
+          <!-- Opción 2: Verificación telefónica -->
+          <div class="flex items-center justify-between p-2.5 bg-white border border-gray-200 rounded-lg text-sm">
+            <span class="text-gray-700 text-xs font-medium">📱 Verificación telefónica (SMS)</span>
+            <button onclick="alert('Enviando código SMS de verificación...')" class="px-3 py-1 bg-pink-100 text-pink-600 rounded-md text-xs font-semibold hover:bg-pink-200 cursor-pointer">Verificar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN 5: LA PAREJA QUE BUSCAS (Filtros Avanzados Completos) -->
+      <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-3">
+        <h3 class="text-sm font-bold tracking-wider text-pink-600 uppercase">
+          La Pareja que Buscas
+        </h3>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div class="space-y-1">
+            <label class="text-xs font-medium text-gray-600">Busco a</label>
+            <select class="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-white">
+              <option>Mujeres</option>
+              <option>Hombres</option>
+              <option>Todos</option>
+            </select>
+          </div>
+          <div class="space-y-1">
+            <label class="text-xs font-medium text-gray-600">Distancia máx.</label>
+            <select class="w-full p-2.5 border border-gray-200 rounded-lg text-sm bg-white">
+              <option>15 km</option>
+              <option>50 km</option>
+              <option>100 km</option>
+              <option>Todo el mundo</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Filtros avanzados de búsqueda -->
+        <div class="pt-2 border-t border-gray-200 space-y-2 text-xs">
+          <div class="flex justify-between items-center p-2 bg-white border border-gray-200 rounded-lg cursor-pointer">
+            <span class="text-gray-600">Estatura deseada</span>
+            <span class="font-medium text-gray-900">160 cm - 185 cm &gt;</span>
+          </div>
+          <div class="flex justify-between items-center p-2 bg-white border border-gray-200 rounded-lg cursor-pointer">
+            <span class="text-gray-600">Hijos / Deseo de hijos</span>
+            <span class="font-medium text-gray-900">Sin hijos (Quiere) &gt;</span>
+          </div>
+          <div class="flex justify-between items-center p-2 bg-white border border-gray-200 rounded-lg cursor-pointer">
+            <span class="text-gray-600">Mascotas preferidas</span>
+            <span class="font-medium text-gray-900">Indiferente &gt;</span>
+          </div>
+        </div>
       </div>
 
       <!-- BOTÓN FINAL DE ACCIÓN -->
       <button 
-        onclick="alert('¡Módulo de Amora guardado de forma segura y modular!');"
+        onclick="alert('¡Página principal de Amora y módulo completo guardados correctamente!');"
         class="w-full py-3.5 bg-gradient-to-r from-pink-500 to-purple-600 text-white rounded-xl font-bold shadow-lg hover:opacity-95 transition text-sm cursor-pointer"
       >
         🚀 GUARDAR Y EMPEZAR EN AMORA
       </button>
 
-    </div>
+    </main>
 
-    <!-- Script sencillo para interactividad del cuestionario opcional -->
+    <!-- Script para interactividad -->
     <script>
       function toggleQuestionnaire() {
         const box = document.getElementById('questionnaireBox');
