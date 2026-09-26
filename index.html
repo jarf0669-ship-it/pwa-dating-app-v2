@@ -3,232 +3,280 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amora PWA - Future Dating Experience</title>
+  <title>Amora PWA - Club & Dating</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2/plus+jakarta+sans:wght@300;400;500;600;700;800&display=swap');
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .glass-futuristic { background: rgba(18, 18, 24, 0.75); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
-    .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.06); }
-    .neon-glow { box-shadow: 0 0 25px -5px rgba(236, 72, 153, 0.4); }
-    .custom-scroll::-webkit-scrollbar { width: 4px; }
-    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
-    .custom-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 10px; }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #f8fafc; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #f43f5e; border-radius: 10px; }
+    .vibrant-shadow { box-shadow: 0 12px 35px -10px rgba(244, 63, 94, 0.35); }
   </style>
 </head>
-<body class="bg-[#0b0b0f] text-slate-100 min-h-screen flex items-center justify-center p-2 sm:p-4 selection:bg-pink-500 selection:text-white">
+<body class="bg-gradient-to-br from-rose-100 via-pink-50 to-purple-100 text-slate-800 min-h-screen flex items-center justify-center p-3 font-sans">
 
-  <!-- Contenedor Principal Estilo Dispositivo Futurista -->
-  <main class="w-full max-w-md glass-futuristic rounded-[32px] shadow-2xl overflow-hidden relative flex flex-col h-[90vh] max-h-[850px] border border-white/10">
+  <!-- CONTENEDOR PRINCIPAL TIPO APP MÓVIL LUMINOSA -->
+  <main class="w-full max-w-md bg-white/95 backdrop-blur-xl rounded-[36px] shadow-2xl overflow-hidden border border-white relative flex flex-col h-[90vh] max-h-[880px]">
 
-    <!-- BARRA SUPERIOR DE ESTADO FUTURISTA -->
-    <header class="px-6 py-4 flex justify-between items-center border-b border-white/5 bg-black/20">
-      <div class="flex items-center gap-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-pink-500 animate-pulse"></span>
-        <span class="font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-rose-400 to-purple-400 text-sm">AMORA OS</span>
-      </div>
-      <div class="text-[11px] font-mono text-pink-400/80 bg-pink-500/10 px-3 py-1 rounded-full border border-pink-500/20">
-        MODULAR v3.0
-      </div>
-    </header>
+    <!-- 1. PÁGINA DE BIENVENIDA (LANDING DINÁMICA Y LUMINOSA) -->
+    <section id="welcome-section" class="flex-1 overflow-y-auto custom-scrollbar p-6 space-y-6">
+      
+      <!-- Header Superior -->
+      <header class="flex justify-between items-center bg-white/80 sticky top-0 py-2 z-10 border-b border-rose-100">
+        <div class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 via-rose-500 to-purple-600 tracking-wider">✨ AMORA</div>
+        <span class="text-[10px] bg-rose-100 text-rose-600 font-bold px-3 py-1 rounded-full uppercase tracking-widest">Dating & Club</span>
+      </header>
 
-    <!-- 1. SECCIÓN DE REGISTRO / AUTENTICACIÓN -->
-    <section id="auth-section" class="p-6 flex-1 overflow-y-auto custom-scroll flex flex-col justify-center space-y-6">
-      <div class="text-center space-y-2">
-        <h1 class="text-3xl font-extrabold tracking-tight text-white">Bienvenido a <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-500">Amora</span></h1>
-        <p class="text-xs text-slate-400">Conexiones cuánticas y afinidades reales en un entorno protegido.</p>
+      <!-- Bloque Hero -->
+      <div class="text-center space-y-3 pt-2">
+        <h1 class="text-2xl font-black text-slate-900 leading-tight">Conecta de verdad, encuentra a alguien especial</h1>
+        <p class="text-xs text-slate-600 leading-relaxed px-2">Una plataforma moderna, luminosa y dinámica basada en afinidades reales y conexiones auténticas.</p>
       </div>
 
-      <div class="glass-card p-5 rounded-3xl space-y-4">
-        <div class="space-y-3">
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Correo electrónico</label>
-            <input type="email" id="auth-email" placeholder="tu@email.com" class="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white focus:outline-none focus:border-pink-500 transition-all">
-          </div>
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-300 mb-1">Contraseña</label>
-            <input type="password" id="auth-pass" placeholder="••••••••" class="w-full bg-black/40 border border-white/10 rounded-2xl px-4 py-3 text-xs text-white focus:outline-none focus:border-pink-500 transition-all">
+      <!-- Tarjetas de Demostración Dinámicas -->
+      <div class="grid grid-cols-2 gap-3">
+        <div class="h-44 rounded-3xl overflow-hidden relative shadow-md border border-rose-100 group cursor-pointer">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-3">
+            <span class="text-xs font-black text-white">Carla, 25 💖</span>
+            <span class="text-[9px] text-pink-300 font-medium">Madrid • Verificada</span>
           </div>
         </div>
-        <button onclick="irAlCuestionario()" class="w-full bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 hover:opacity-95 text-white font-bold py-3.5 rounded-2xl text-xs neon-glow transition-all uppercase tracking-wider">
-          Iniciar Experiencia
+        <div class="h-44 rounded-3xl overflow-hidden relative shadow-md border border-purple-100 group cursor-pointer">
+          <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80" class="w-full h-full object-cover group-hover:scale-105 transition-all duration-500">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent flex flex-col justify-end p-3">
+            <span class="text-xs font-black text-white">Alex, 28 🔒</span>
+            <span class="text-[9px] text-purple-300 font-medium">Amora Club VIP</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección Explicativa Amora Club -->
+      <div class="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-3xl p-5 text-white shadow-xl space-y-2">
+        <div class="flex items-center gap-2">
+          <span class="text-xl">🔒</span>
+          <h3 class="font-black text-xs uppercase tracking-wide">AMORA CLUB (Espacio Privado)</h3>
+        </div>
+        <p class="text-[11px] leading-relaxed text-purple-100">Un entorno 100% discreto, protegido y exclusivo para conexiones libres. Accesos independientes garantizados.</p>
+      </div>
+
+      <!-- Botones de Acción de Inicio -->
+      <div class="space-y-3 pt-2">
+        <button onclick="irAAuth()" class="w-full bg-gradient-to-r from-pink-600 via-rose-600 to-purple-600 text-white font-black py-4 rounded-2xl text-xs vibrant-shadow uppercase tracking-wider transition-all hover:opacity-95">
+          🚀 Comenzar Ahora
         </button>
       </div>
     </section>
 
-    <!-- 2. CUESTIONARIO MODULAR COMPLETO (CON TODO LO SOLICITADO) -->
-    <section id="onboarding-section" class="p-6 hidden flex-1 overflow-y-auto custom-scroll space-y-6">
-      <div class="flex justify-between items-center border-b border-white/10 pb-3">
+    <!-- 2. AUTENTICACIÓN -->
+    <section id="auth-section" class="p-6 hidden flex-1 overflow-y-auto custom-scrollbar flex flex-col justify-center space-y-6 bg-white">
+      <div class="text-center space-y-1">
+        <h2 class="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-pink-600 to-purple-600">Acceso a Amora</h2>
+        <p class="text-xs text-slate-500">Introduce tus credenciales para continuar</p>
+      </div>
+      <div class="space-y-4">
         <div>
-          <h2 class="text-sm font-black text-white uppercase tracking-wider">Configuración de Perfil</h2>
-          <p class="text-[10px] text-slate-400">Completa tus datos modulares</p>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Correo electrónico</label>
+          <input type="email" id="auth-email" placeholder="tu@email.com" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-pink-500">
         </div>
-        <span class="text-xs font-mono text-pink-400 font-bold">100% Personalizado</span>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 mb-1">Contraseña</label>
+          <input type="password" id="auth-pass" placeholder="••••••••" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-xs focus:outline-none focus:border-pink-500">
+        </div>
+        <button onclick="irAlCuestionario()" class="w-full bg-pink-600 text-white font-bold py-3.5 rounded-2xl text-xs shadow-lg shadow-pink-600/30">
+          Entrar / Registrarse
+        </button>
+      </div>
+    </section>
+
+    <!-- 3. CUESTIONARIO MODULAR COMPLETO Y DETALLADO -->
+    <section id="onboarding-section" class="p-5 hidden flex-1 overflow-y-auto custom-scrollbar space-y-5 bg-white">
+      <div class="bg-rose-50 p-3 rounded-2xl border border-rose-100 flex justify-between items-center text-xs">
+        <span class="font-bold text-rose-600">✨ Cuestionario de Afinidades</span>
+        <span class="font-mono text-slate-500">Paso 1 de 2</span>
       </div>
 
-      <form onsubmit="guardarPerfilCompleto(event)" class="space-y-5 text-xs">
+      <form onsubmit="finalizarPerfil(event)" class="space-y-4 text-xs">
         
-        <!-- Identidad Principal -->
-        <div class="glass-card p-4 rounded-3xl space-y-3">
-          <h3 class="font-bold text-pink-400 text-xs flex items-center gap-2">👤 Identidad y Datos Básicos</h3>
+        <!-- Identidad -->
+        <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200 space-y-3">
+          <h3 class="font-black text-pink-600 uppercase text-[11px] tracking-wider">👤 Identidad y Biografía</h3>
           <div class="grid grid-cols-2 gap-2">
-            <input type="text" placeholder="Nombre o apodo" required class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-white text-xs">
-            <input type="number" placeholder="Edad (+18)" min="18" required class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-white text-xs">
+            <input type="text" placeholder="Nombre o Apodo" required class="bg-white border border-slate-200 rounded-xl p-2.5">
+            <input type="number" placeholder="Edad (+18)" min="18" required class="bg-white border border-slate-200 rounded-xl p-2.5">
           </div>
-          <textarea rows="2" placeholder="Biografía: ¿Cómo es tu día a día?" class="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-white text-xs"></textarea>
-          <input type="text" placeholder="Lema personal / Frase de presentación" class="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-white text-xs">
+          <textarea rows="2" placeholder="Biografía: ¿Cómo eres en tu día a día?" class="w-full bg-white border border-slate-200 rounded-xl p-2.5"></textarea>
+          <input type="text" placeholder="Lema personal o frase de presentación" class="w-full bg-white border border-slate-200 rounded-xl p-2.5">
         </div>
 
-        <!-- Estilo de Vida y Hábitos (Incluyendo Tabaco y Alcohol) -->
-        <div class="glass-card p-4 rounded-3xl space-y-3">
-          <h3 class="font-bold text-pink-400 text-xs flex items-center gap-2">✨ Estilo de Vida y Afinidad</h3>
+        <!-- Estilo de Vida Extendido (Tabaco, Alcohol, etc.) -->
+        <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200 space-y-3">
+          <h3 class="font-black text-pink-600 uppercase text-[11px] tracking-wider">🍷 Estilo de Vida y Hábitos</h3>
           <div class="grid grid-cols-2 gap-2">
-            <select class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-slate-300 text-xs">
-              <option>Soltero/a</option><option>Divorciado/a</option><option>Complicado</option>
+            <select class="bg-white border border-slate-200 rounded-xl p-2.5">
+              <option>Estado: Soltero/a</option><option>Estado: Divorciado/a</option><option>Estado: Complicado</option>
             </select>
-            <select class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-slate-300 text-xs">
-              <option>Heterosexual</option><option>Bisexual</option><option>Gay / Lesbiana</option><option>Pansexual</option>
+            <select class="bg-white border border-slate-200 rounded-xl p-2.5">
+              <option>Orientación: Heterosexual</option><option>Orientación: Bisexual</option><option>Orientación: Gay / Lesbiana</option>
             </select>
           </div>
           <div class="grid grid-cols-3 gap-2">
-            <input type="text" placeholder="Estatura" value="170 cm" class="bg-black/40 border border-white/10 rounded-xl p-2 text-white text-xs">
-            <select class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-slate-300 text-xs">
+            <input type="text" placeholder="Estatura" value="170 cm" class="bg-white border border-slate-200 rounded-xl p-2">
+            <select class="bg-white border border-slate-200 rounded-xl p-2">
               <option>🍷 Alcohol: Social</option><option>🍷 Alcohol: Nunca</option><option>🍷 Alcohol: Frecuente</option>
             </select>
-            <select class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-slate-300 text-xs">
+            <select class="bg-white border border-slate-200 rounded-xl p-2">
               <option>🚬 Fumas: No</option><option>🚬 Fumas: Sí</option><option>🚬 Fumas: Ocasional</option>
             </select>
           </div>
         </div>
 
-        <!-- Paneles de Opciones Integrados (Educación, Personalidad, Mascotas, Signo, Religión) -->
-        <div class="glass-card p-4 rounded-3xl space-y-3">
-          <h3 class="font-bold text-pink-400 text-xs flex items-center gap-2">📋 Paneles de Opciones Modulares</h3>
+        <!-- Paneles de Opciones Avanzados (Educación, Personalidad, Mascotas, Signo, Religión) -->
+        <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200 space-y-3">
+          <h3 class="font-black text-pink-600 uppercase text-[11px] tracking-wider">📋 Detalles Adicionales y Personalidad</h3>
           <div class="grid grid-cols-2 gap-2">
-            <select class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-slate-300 text-xs">
-              <option>🎓 Universitario</option><option>🎓 Secundaria</option><option>🎓 Posgrado</option>
+            <select class="bg-white border border-slate-200 rounded-xl p-2.5">
+              <option>🎓 Nivel: Universitario</option><option>🎓 Nivel: Secundaria</option><option>🎓 Nivel: Posgrado</option>
             </select>
-            <select class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-slate-300 text-xs">
-              <option>✨ Extrovertido/a</option><option>✨ Introvertido/a</option><option>✨ Ambivertido/a</option>
+            <select class="bg-white border border-slate-200 rounded-xl p-2.5">
+              <option>✨ Personalidad: Extrovertido/a</option><option>✨ Personalidad: Introvertido/a</option><option>✨ Personalidad: Ambivertido/a</option>
             </select>
           </div>
           <div class="grid grid-cols-3 gap-2">
-            <select class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-slate-300 text-xs">
+            <select class="bg-white border border-slate-200 rounded-xl p-2">
               <option>🐾 Perros</option><option>🐾 Gatos</option><option>🐾 Sin mascotas</option>
             </select>
-            <select class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-slate-300 text-xs">
+            <select class="bg-white border border-slate-200 rounded-xl p-2">
               <option>♈ Aries</option><option>♈ Tauro</option><option>♈ Géminis</option><option>♈ Cáncer</option><option>♈ Leo</option><option>♈ Virgo</option><option>♈ Libra</option><option>♈ Escorpio</option><option>♈ Sagitario</option><option>♈ Capricornio</option><option>♈ Acuario</option><option>♈ Piscis</option>
             </select>
-            <select class="bg-black/40 border border-white/10 rounded-xl p-2.5 text-slate-300 text-xs">
+            <select class="bg-white border border-slate-200 rounded-xl p-2">
               <option>⛪ Agnóstico</option><option>⛪ Católico</option><option>⛪ Espiritual</option>
             </select>
           </div>
         </div>
 
-        <!-- MOSAICO DE FOTOS REAL (CUADRADOS INTERACTIVOS) -->
-        <div class="glass-card p-4 rounded-3xl space-y-3">
-          <h3 class="font-bold text-pink-400 text-xs flex items-center gap-2">🖼️ Mosaico de Galería de Fotos</h3>
-          <p class="text-[10px] text-slate-400">Diseño modular en cuadrícula interactiva para tus imágenes:</p>
-          <div class="grid grid-cols-3 gap-2">
-            <div class="h-24 rounded-2xl bg-black/60 border-2 border-dashed border-pink-500/40 flex flex-col items-center justify-center text-[10px] text-pink-400 cursor-pointer hover:bg-pink-500/10 transition-all">
-              <span>➕ Principal</span>
-            </div>
-            <div class="h-24 rounded-2xl bg-black/60 border border-white/10 flex flex-col items-center justify-center text-[10px] text-slate-500 cursor-pointer hover:border-white/30 transition-all">
-              <span>+ Foto 2</span>
-            </div>
-            <div class="h-24 rounded-2xl bg-black/60 border border-white/10 flex flex-col items-center justify-center text-[10px] text-slate-500 cursor-pointer hover:border-white/30 transition-all">
-              <span>+ Foto 3</span>
-            </div>
+        <!-- MÓDULO DE PREGUNTAS RÁPIDAS CON OPCIONES DE RESPUESTA -->
+        <div class="bg-gradient-to-r from-pink-50 to-purple-50 p-4 rounded-3xl border border-pink-200 space-y-2">
+          <h4 class="font-bold text-slate-800">💬 Pregunta Rápida de Afinidades</h4>
+          <p class="text-[10px] text-slate-500">¿Qué prefieres para una primera cita?</p>
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <button type="button" onclick="this.classList.toggle('bg-pink-600'); this.classList.toggle('text-white')" class="bg-white border border-pink-300 rounded-xl p-2 text-slate-700 font-semibold text-center transition-all">☕ Café y charla</button>
+            <button type="button" onclick="this.classList.toggle('bg-pink-600'); this.classList.toggle('text-white')" class="bg-white border border-pink-300 rounded-xl p-2 text-slate-700 font-semibold text-center transition-all">🍷 Copas de noche</button>
           </div>
         </div>
 
-        <!-- OPCIONES DE VERIFICACIÓN DE PERFIL (FOTO O SMS) -->
-        <div class="glass-card p-4 rounded-3xl space-y-3">
-          <h3 class="font-bold text-pink-400 text-xs flex items-center gap-2">🛡️ Verificación de Perfil y Privilegios</h3>
+        <!-- MOSAICO DE FOTOS EN CUADRÍCULA (4 CUADROS AMPLIADOS) -->
+        <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200 space-y-3">
+          <h3 class="font-black text-pink-600 uppercase text-[11px] tracking-wider">🖼️ Mosaico de Galería de Fotos (4 Cuadros)</h3>
           <div class="grid grid-cols-2 gap-2">
-            <div onclick="this.classList.toggle('border-pink-500')" class="p-3 rounded-2xl bg-black/40 border border-white/10 cursor-pointer text-center space-y-1">
-              <span class="text-lg">📸</span>
-              <p class="text-[11px] font-bold text-white">Verificación por Foto</p>
-              <p class="text-[9px] text-slate-400">Imita un gesto aleatorio</p>
+            <div class="h-28 rounded-2xl bg-white border-2 border-dashed border-pink-400 flex flex-col items-center justify-center text-pink-600 font-bold cursor-pointer shadow-sm">
+              <span class="text-lg">➕</span>
+              <span class="text-[10px]">Foto Principal</span>
             </div>
-            <div onclick="this.classList.toggle('border-pink-500')" class="p-3 rounded-2xl bg-black/40 border border-white/10 cursor-pointer text-center space-y-1">
-              <span class="text-lg">📱</span>
-              <p class="text-[11px] font-bold text-white">Verificación por SMS</p>
-              <p class="text-[9px] text-slate-400">Código seguro al móvil</p>
+            <div class="h-28 rounded-2xl bg-white border border-slate-200 flex flex-col items-center justify-center text-slate-400 font-medium cursor-pointer shadow-sm hover:border-pink-300">
+              <span class="text-lg">+</span>
+              <span class="text-[10px]">Foto 2</span>
+            </div>
+            <div class="h-28 rounded-2xl bg-white border border-slate-200 flex flex-col items-center justify-center text-slate-400 font-medium cursor-pointer shadow-sm hover:border-pink-300">
+              <span class="text-lg">+</span>
+              <span class="text-[10px]">Foto 3</span>
+            </div>
+            <div class="h-28 rounded-2xl bg-white border border-slate-200 flex flex-col items-center justify-center text-slate-400 font-medium cursor-pointer shadow-sm hover:border-pink-300">
+              <span class="text-lg">+</span>
+              <span class="text-[10px]">Foto 4</span>
             </div>
           </div>
         </div>
 
-        <!-- PANEL AVANZADO EXTENDIDO DE BÚSQUEDA DE PAREJA -->
-        <div class="glass-card p-4 rounded-3xl space-y-3">
-          <h3 class="font-bold text-pink-400 text-xs flex items-center gap-2">🎯 Panel Avanzado: La Pareja que Buscas</h3>
+        <!-- OPCIONES DE VERIFICACIÓN DE PERFIL -->
+        <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200 space-y-3">
+          <h3 class="font-black text-pink-600 uppercase text-[11px] tracking-wider">🛡️ Verificación de Identidad</h3>
+          <div class="grid grid-cols-2 gap-2">
+            <div onclick="this.classList.toggle('border-pink-600'); this.classList.toggle('bg-pink-50')" class="bg-white p-3 rounded-2xl border border-slate-200 cursor-pointer text-center space-y-1 transition-all">
+              <span class="text-base">📸</span>
+              <p class="font-bold text-slate-700">Verificación por Foto</p>
+            </div>
+            <div onclick="this.classList.toggle('border-pink-600'); this.classList.toggle('bg-pink-50')" class="bg-white p-3 rounded-2xl border border-slate-200 cursor-pointer text-center space-y-1 transition-all">
+              <span class="text-base">📱</span>
+              <p class="font-bold text-slate-700">Verificación por SMS</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANEL DE BÚSQUEDA DE PAREJA EXTENDIDO Y PROFUNDO -->
+        <div class="bg-slate-50 p-4 rounded-3xl border border-slate-200 space-y-3">
+          <h3 class="font-black text-pink-600 uppercase text-[11px] tracking-wider">🎯 Panel Avanzado: La Pareja que Buscas</h3>
           <div class="grid grid-cols-2 gap-2">
             <div>
-              <label class="block text-[10px] text-slate-400 mb-1">Busco a</label>
-              <select class="w-full bg-black/40 border border-white/10 rounded-xl p-2 text-slate-300 text-xs">
+              <label class="block text-[10px] text-slate-500 mb-1 font-semibold">Busco a</label>
+              <select class="w-full bg-white border border-slate-200 rounded-xl p-2">
                 <option>👩 Mujeres</option><option>👨 Hombres</option><option>🌈 Todos</option>
               </select>
             </div>
             <div>
-              <label class="block text-[10px] text-slate-400 mb-1">Distancia máx.</label>
-              <select class="w-full bg-black/40 border border-white/10 rounded-xl p-2 text-slate-300 text-xs">
+              <label class="block text-[10px] text-slate-500 mb-1 font-semibold">Distancia máx.</label>
+              <select class="w-full bg-white border border-slate-200 rounded-xl p-2">
                 <option>📍 15 km</option><option>📍 50 km</option><option>🌍 Sin límite</option>
               </select>
             </div>
           </div>
           <div class="grid grid-cols-2 gap-2 pt-1">
             <div>
-              <label class="block text-[10px] text-slate-400 mb-1">Hijos</label>
-              <select class="w-full bg-black/40 border border-white/10 rounded-xl p-2 text-slate-300 text-xs">
-                <option>Indiferente</option><option>Sin hijos</option><option>Tiene y quiere más</option>
+              <label class="block text-[10px] text-slate-500 mb-1 font-semibold">Hijos</label>
+              <select class="w-full bg-white border border-slate-200 rounded-xl p-2">
+                <option>Indiferente</option><option>Sin hijos</option><option>Quiere tener</option>
               </select>
             </div>
             <div>
-              <label class="block text-[10px] text-slate-400 mb-1">Hábitos compatibles</label>
-              <select class="w-full bg-black/40 border border-white/10 rounded-xl p-2 text-slate-300 text-xs">
+              <label class="block text-[10px] text-slate-500 mb-1 font-semibold">Hábitos compatibles</label>
+              <select class="w-full bg-white border border-slate-200 rounded-xl p-2">
                 <option>No fumadores</option><option>Sociales</option><option>Indiferente</option>
               </select>
             </div>
           </div>
         </div>
 
-        <button type="submit" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black py-4 rounded-2xl text-xs uppercase tracking-wider neon-glow">
-          🚀 GUARDAR Y ENTRAR A AMORA
+        <button type="submit" class="w-full bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black py-4 rounded-2xl shadow-xl uppercase tracking-wider">
+          🚀 GUARDAR PERFIL Y ENTRAR A AMORA
         </button>
       </form>
     </section>
 
-    <!-- 3. PANTALLA PRINCIPAL DE LA APP -->
-    <section id="app-section" class="hidden flex-1 flex flex-col bg-[#0b0b0f]">
-      <header class="p-4 border-b border-white/10 flex justify-between items-center text-xs">
-        <span class="text-pink-400 font-bold">✨ Explorando Amora</span>
-        <button onclick="irAlAuth()" class="text-slate-400 hover:text-white underline text-[10px]">Cerrar Sesión</button>
+    <!-- 4. PANTALLA PRINCIPAL DE LA APP -->
+    <section id="app-section" class="hidden flex-1 flex flex-col bg-white">
+      <header class="p-4 border-b border-slate-100 flex justify-between items-center text-xs">
+        <span class="font-bold text-pink-600">✨ Amora Descubrir</span>
+        <button onclick="volverAlInicio()" class="text-slate-400 font-semibold underline text-[10px]">Cerrar Sesión</button>
       </header>
       <div class="flex-1 p-6 flex flex-col items-center justify-center text-center space-y-4">
-        <div class="w-48 h-64 rounded-3xl bg-gradient-to-br from-pink-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center">
-          <span class="text-3xl">💖</span>
+        <div class="w-48 h-64 rounded-3xl bg-gradient-to-br from-pink-400 to-purple-500 shadow-xl flex items-center justify-center text-white font-black text-xl">
+          💖 ¡Match Activo!
         </div>
-        <h2 class="text-lg font-bold text-white">¡Perfil configurado con éxito!</h2>
-        <p class="text-xs text-slate-400 max-w-xs">Tu perfil modular futurista está activo y listo para conectar con personas afines.</p>
+        <h3 class="text-base font-bold text-slate-800">Tu perfil está completado y verificado</h3>
+        <p class="text-xs text-slate-500 max-w-xs">Ya puedes explorar perfiles luminosos y conectar de verdad.</p>
       </div>
     </section>
 
   </main>
 
   <script>
+    function irAAuth() {
+      document.getElementById('welcome-section').classList.add('hidden');
+      document.getElementById('auth-section').classList.remove('hidden');
+    }
     function irAlCuestionario() {
       document.getElementById('auth-section').classList.add('hidden');
       document.getElementById('onboarding-section').classList.remove('hidden');
     }
-    function guardarPerfilCompleto(e) {
+    function finalizarPerfil(e) {
       e.preventDefault();
       document.getElementById('onboarding-section').classList.add('hidden');
       document.getElementById('app-section').classList.remove('hidden');
     }
-    function irAlAuth() {
+    function volverAlInicio() {
       document.getElementById('app-section').classList.add('hidden');
       document.getElementById('onboarding-section').classList.add('hidden');
-      document.getElementById('auth-section').classList.remove('hidden');
+      document.getElementById('auth-section').classList.add('hidden');
+      document.getElementById('welcome-section').classList.remove('hidden');
     }
   </script>
 </body>
